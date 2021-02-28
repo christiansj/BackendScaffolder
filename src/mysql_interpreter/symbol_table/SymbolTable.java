@@ -1,5 +1,6 @@
 package mysql_interpreter.symbol_table;
 
+import mysql_entity.data_type.MySQLType;
 import mysql_interpreter.classification.Classif;
 import mysql_interpreter.classification.Subclassif;
 import mysql_interpreter.stentry.STEntry;
@@ -36,14 +37,13 @@ public class SymbolTable {
     }
 
     private void initTable(){
-        final Set<String> DECLARE_STRINGS = MYSQL_TO_JAVA_MAP.keySet();
         final String[] OPERATION_STRINGS = {"CREATE", "ALTER", "UPDATE", "DROP", "RENAME", "REFERENCES"};
         final String[] ARTICLE_STRINGS = {"TABLE", "COLUMN", "KEY"};
         final String[] KEY_TYPE_STRINGS = {"PRIMARY", "FOREIGN"};
 
-        DECLARE_STRINGS.forEach(str->{
-            ht.put(str, new STEntry(str, Classif.CONTROL, Subclassif.DECLARE));
-        });
+        for (MySQLType mySQLType :  MySQLType.values()) {
+            ht.put(mySQLType.name(), new STEntry(mySQLType.name(), Classif.CONTROL, Subclassif.DECLARE));
+        }
 
         putStringSymbols(OPERATION_STRINGS, new STEntry(null, Classif.OPERATION, Subclassif.DECLARE));
         putStringSymbols(ARTICLE_STRINGS, new STEntry(null, Classif.ARTICLE, Subclassif.BUILTIN));
