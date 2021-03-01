@@ -13,7 +13,7 @@ public class STEntryTest {
     @DisplayName("constructor should properly set class variables")
     public void testConstructor(){
         STEntry stEntry = new STEntry("mySymbol", Classif.ARTICLE, Subclassif.BUILTIN);
-        
+
         assertEquals("mySymbol", stEntry.symbol);
         assertEquals(Classif.ARTICLE, stEntry.primClassif);
         assertEquals(Subclassif.BUILTIN, stEntry.subclassif);

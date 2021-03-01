@@ -38,7 +38,8 @@ public class SymbolTableTest {
     @Test
     @DisplayName("HashMap should have correct number of keys")
     public void testHashMapKeyCount(){
-        assertEquals(symbolTable.getEntryHashMap().size(), EXPECTED_KEYS.length + MySQLType.values().length);
+        final int expectedCount = EXPECTED_KEYS.length + MySQLType.values().length;
+        assertEquals(expectedCount, symbolTable.getEntryHashMap().size(), );
     }
 
     @Test
@@ -48,9 +49,9 @@ public class SymbolTableTest {
 
         for(String operationString : OPERATION_STRINGS){
             STEntry stEntry =  symbolTable.getEntryHashMap().get(operationString);
-            assertEquals(stEntry.symbol, operationString);
-            assertEquals(stEntry.primClassif, Classif.OPERATION);
-            assertEquals(stEntry.subclassif, Subclassif.BUILTIN);
+            assertEquals(operationString, stEntry.symbol);
+            assertEquals(Classif.OPERATION, stEntry.primClassif);
+            assertEquals(Subclassif.BUILTIN, stEntry.subclassif);
         }
     }
 
@@ -61,9 +62,9 @@ public class SymbolTableTest {
 
         for(String articleString : ARTICLE_STRINGS){
             STEntry stEntry = symbolTable.getEntryHashMap().get(articleString);
-            assertEquals(stEntry.symbol, articleString);
-            assertEquals(stEntry.primClassif, Classif.ARTICLE);
-            assertEquals(stEntry.subclassif, Subclassif.BUILTIN);
+            assertEquals(articleString, stEntry.symbol);
+            assertEquals(Classif.ARTICLE, stEntry.primClassif);
+            assertEquals(Subclassif.BUILTIN, stEntry.subclassif);
         }
     }
 
@@ -74,9 +75,9 @@ public class SymbolTableTest {
 
         for(String keyTypeString : KEY_TYPE_STRINGS){
             STEntry stEntry = symbolTable.getEntryHashMap().get(keyTypeString);
-            assertEquals(stEntry.symbol, keyTypeString);
-            assertEquals(stEntry.primClassif, Classif.KEY_TYPE);
-            assertEquals(stEntry.subclassif, Subclassif.BUILTIN);
+            assertEquals(keyTypeString, stEntry.symbol);
+            assertEquals(Classif.KEY_TYPE, stEntry.primClassif);
+            assertEquals(Subclassif.BUILTIN, stEntry.subclassif);
         }
     }
 
@@ -87,9 +88,9 @@ public class SymbolTableTest {
 
         for(String operatorString : OPERATOR_STRINGS){
             STEntry stEntry = symbolTable.getEntryHashMap().get(operatorString);
-            assertEquals(stEntry.symbol, operatorString);
-            assertEquals(stEntry.primClassif, Classif.OPERATOR);
-            assertEquals(stEntry.subclassif, Subclassif.BUILTIN);
+            assertEquals(operatorString, stEntry.symbol);
+            assertEquals(Classif.OPERATOR, stEntry.primClassif);
+            assertEquals(Subclassif.BUILTIN, stEntry.subclassif);
         }
     }
 }
