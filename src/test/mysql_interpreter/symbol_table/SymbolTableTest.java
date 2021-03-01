@@ -39,7 +39,7 @@ public class SymbolTableTest {
     @DisplayName("HashMap should have correct number of keys")
     public void testHashMapKeyCount(){
         final int expectedCount = EXPECTED_KEYS.length + MySQLType.values().length;
-        assertEquals(expectedCount, symbolTable.getEntryHashMap().size(), );
+        assertEquals(expectedCount, symbolTable.getEntryHashMap().size());
     }
 
     @Test
