@@ -159,4 +159,8 @@ public class MySQLScanner {
     public ArrayList<String> getLineList(){
         return lineList;
     }
+
+    public String getInputFileName(){
+        return inputFileName;
+    }
 }
