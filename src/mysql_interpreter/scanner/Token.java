@@ -23,22 +23,10 @@ public class Token {
     }
 
     public void printToken(){
-        String primClassifStr;
-        String subClassifStr;
+        String primClassifStr = primClassif != Classif.EMPTY ? primClassif.toString() : "**EMPTY**";
+        String subClassifStr = subclassif != Subclassif.EMPTY ? subclassif.toString() : "**EMPTY**";
 
-        if(primClassif != Classif.EMPTY){
-            primClassifStr = primClassif.toString();
-        }else{
-            primClassifStr = "**EMPTY**";
-        }
-
-        if(subclassif != Subclassif.EMPTY){
-            subClassifStr = subclassif.toString();
-        }else{
-            subClassifStr = "**EMPTY**";
-        }
-
-        System.out.printf("%-11 %-12s %s\n"
+        System.out.printf("%-11s %-12s %s\n"
                 , primClassifStr
                 , subClassifStr
                 , tokenStr);
