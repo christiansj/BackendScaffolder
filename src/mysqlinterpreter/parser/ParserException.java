@@ -20,4 +20,8 @@ public class ParserException extends Exception {
 
         return sb.toString();
     }
+
+    public String getMessage() {
+        return message;
+    }
 }

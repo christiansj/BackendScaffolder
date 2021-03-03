@@ -27,7 +27,7 @@ public class MySQLParser {
         }
     }
 
-    private void error(String format, Object... args) throws ParserException{
+    public void error(String format, Object... args) throws ParserException{
         String errorMessage = String.format(format, args);
 
         throw new ParserException(errorMessage, scanner.getLineNumber()+1, scanner.getInputFileName());
