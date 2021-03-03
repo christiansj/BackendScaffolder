@@ -1,10 +1,10 @@
-package test.mysql_interpreter.symbol_table;
+package test.mysqlinterpreter.symboltable;
 
-import mysql_entity.data_type.MySQLType;
-import mysql_interpreter.classification.Classif;
-import mysql_interpreter.classification.Subclassif;
-import mysql_interpreter.stentry.STEntry;
-import mysql_interpreter.symbol_table.SymbolTable;
+import mysql_entity.datatype.MySQLType;
+import mysqlinterpreter.classification.Classif;
+import mysqlinterpreter.classification.Subclassif;
+import mysqlinterpreter.stentry.STEntry;
+import mysqlinterpreter.symboltable.SymbolTable;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

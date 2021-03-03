@@ -1,8 +1,8 @@
-package test.mysql_interpreter.scanner;
+package test.mysqlinterpreter.scanner;
 
-import mysql_interpreter.classification.Classif;
-import mysql_interpreter.classification.Subclassif;
-import mysql_interpreter.scanner.Token;
+import mysqlinterpreter.classification.Classif;
+import mysqlinterpreter.classification.Subclassif;
+import mysqlinterpreter.scanner.Token;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

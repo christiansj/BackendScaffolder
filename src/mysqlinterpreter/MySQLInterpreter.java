@@ -1,7 +1,7 @@
-package mysql_interpreter;
+package mysqlinterpreter;
 
-import mysql_interpreter.scanner.MySQLScanner;
-import mysql_interpreter.symbol_table.SymbolTable;
+import mysqlinterpreter.scanner.MySQLScanner;
+import mysqlinterpreter.symboltable.SymbolTable;
 
 public class MySQLInterpreter {
     private static void runScanner(String filePath) throws Exception{

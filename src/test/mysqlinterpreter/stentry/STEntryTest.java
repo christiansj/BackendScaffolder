@@ -1,8 +1,8 @@
-package test.mysql_interpreter.stentry;
+package test.mysqlinterpreter.stentry;
 
-import mysql_interpreter.classification.Classif;
-import mysql_interpreter.classification.Subclassif;
-import mysql_interpreter.stentry.STEntry;
+import mysqlinterpreter.classification.Classif;
+import mysqlinterpreter.classification.Subclassif;
+import mysqlinterpreter.stentry.STEntry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

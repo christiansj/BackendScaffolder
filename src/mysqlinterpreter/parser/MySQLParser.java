@@ -1,8 +1,8 @@
-package mysql_interpreter.parser;
+package mysqlinterpreter.parser;
 
-import mysql_interpreter.classification.Classif;
-import mysql_interpreter.scanner.MySQLScanner;
-import mysql_interpreter.scanner.Token;
+import mysqlinterpreter.classification.Classif;
+import mysqlinterpreter.scanner.MySQLScanner;
+import mysqlinterpreter.scanner.Token;
 
 public class MySQLParser {
     private MySQLScanner scanner;

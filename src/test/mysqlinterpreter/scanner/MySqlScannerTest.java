@@ -1,10 +1,10 @@
-package test.mysql_interpreter.scanner;
+package test.mysqlinterpreter.scanner;
 
-import mysql_interpreter.classification.Classif;
-import mysql_interpreter.classification.Subclassif;
-import mysql_interpreter.scanner.MySQLScanner;
-import mysql_interpreter.scanner.Token;
-import mysql_interpreter.symbol_table.SymbolTable;
+import mysqlinterpreter.classification.Classif;
+import mysqlinterpreter.classification.Subclassif;
+import mysqlinterpreter.scanner.MySQLScanner;
+import mysqlinterpreter.scanner.Token;
+import mysqlinterpreter.symboltable.SymbolTable;
 
 import java.io.FileNotFoundException;
 
@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MySqlScannerTest {
-    private final String INPUT_FOLDER_PATH = "src/test/mysql_interpreter/scanner/test_input/";
+    private final String INPUT_FOLDER_PATH = "src/test/mysqlinterpreter/scanner/testinput/";
 
     private MySQLScanner newTestScanner(String fileName) throws Exception{
         return new MySQLScanner(INPUT_FOLDER_PATH + fileName, new SymbolTable());

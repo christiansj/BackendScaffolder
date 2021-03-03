@@ -1,7 +1,7 @@
-package mysql_interpreter.scanner;
+package mysqlinterpreter.scanner;
 
-import mysql_interpreter.classification.Classif;
-import mysql_interpreter.classification.Subclassif;
+import mysqlinterpreter.classification.Classif;
+import mysqlinterpreter.classification.Subclassif;
 
 public class Token {
     public String tokenStr = "";

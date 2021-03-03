@@ -1,4 +1,4 @@
-package mysql_interpreter.classification;
+package mysqlinterpreter.classification;
 
 public enum Subclassif {
     EMPTY,

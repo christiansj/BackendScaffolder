@@ -1,9 +1,9 @@
-package mysql_interpreter.scanner;
+package mysqlinterpreter.scanner;
 
-import mysql_interpreter.classification.Classif;
-import mysql_interpreter.classification.Subclassif;
-import mysql_interpreter.stentry.STEntry;
-import mysql_interpreter.symbol_table.SymbolTable;
+import mysqlinterpreter.classification.Classif;
+import mysqlinterpreter.classification.Subclassif;
+import mysqlinterpreter.stentry.STEntry;
+import mysqlinterpreter.symboltable.SymbolTable;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

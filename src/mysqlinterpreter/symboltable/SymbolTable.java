@@ -1,9 +1,9 @@
-package mysql_interpreter.symbol_table;
+package mysqlinterpreter.symboltable;
 
-import mysql_entity.data_type.MySQLType;
-import mysql_interpreter.classification.Classif;
-import mysql_interpreter.classification.Subclassif;
-import mysql_interpreter.stentry.STEntry;
+import mysql_entity.datatype.MySQLType;
+import mysqlinterpreter.classification.Classif;
+import mysqlinterpreter.classification.Subclassif;
+import mysqlinterpreter.stentry.STEntry;
 
 import java.util.*;
 

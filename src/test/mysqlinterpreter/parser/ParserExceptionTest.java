@@ -1,6 +1,6 @@
-package test.mysql_interpreter.parser;
+package test.mysqlinterpreter.parser;
 
-import mysql_interpreter.parser.ParserException;
+import mysqlinterpreter.parser.ParserException;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

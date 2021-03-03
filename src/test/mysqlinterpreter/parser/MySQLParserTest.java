@@ -1,9 +1,9 @@
-package test.mysql_interpreter.parser;
+package test.mysqlinterpreter.parser;
 
-import mysql_interpreter.parser.MySQLParser;
-import mysql_interpreter.parser.ParserException;
-import mysql_interpreter.scanner.MySQLScanner;
-import mysql_interpreter.symbol_table.SymbolTable;
+import mysqlinterpreter.parser.MySQLParser;
+import mysqlinterpreter.parser.ParserException;
+import mysqlinterpreter.scanner.MySQLScanner;
+import mysqlinterpreter.symboltable.SymbolTable;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MySQLParserTest {
-    private final String INPUT_FOLDER_PATH = "src/test/mysql_interpreter/parser/testinput/";
+    private final String INPUT_FOLDER_PATH = "src/test/mysqlinterpreter/parser/testinput/";
 
     @Test
     @DisplayName("constructor should set scanner member variable")

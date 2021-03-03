@@ -1,4 +1,4 @@
-package mysql_interpreter.parser;
+package mysqlinterpreter.parser;
 
 public class ParserException extends Exception {
     private int iLineNumber;
