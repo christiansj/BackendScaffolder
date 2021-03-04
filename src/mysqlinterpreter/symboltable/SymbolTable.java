@@ -1,11 +1,12 @@
 package mysqlinterpreter.symboltable;
 
-import mysql_entity.datatype.MySQLType;
 import mysqlinterpreter.classification.Classif;
 import mysqlinterpreter.classification.Subclassif;
 import mysqlinterpreter.stentry.STEntry;
 
 import java.util.*;
+
+import mysqlentity.datatype.MySQLType;
 
 public class SymbolTable {
 

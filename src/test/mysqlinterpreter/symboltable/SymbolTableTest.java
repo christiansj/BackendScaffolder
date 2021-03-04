@@ -1,6 +1,5 @@
 package test.mysqlinterpreter.symboltable;
 
-import mysql_entity.datatype.MySQLType;
 import mysqlinterpreter.classification.Classif;
 import mysqlinterpreter.classification.Subclassif;
 import mysqlinterpreter.stentry.STEntry;
@@ -9,6 +8,8 @@ import mysqlinterpreter.symboltable.SymbolTable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import mysqlentity.datatype.MySQLType;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;

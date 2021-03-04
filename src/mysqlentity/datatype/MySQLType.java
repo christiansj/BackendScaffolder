@@ -1,4 +1,4 @@
-package mysql_entity.datatype;
+package mysqlentity.datatype;
 
 public enum MySQLType {
     INT,
