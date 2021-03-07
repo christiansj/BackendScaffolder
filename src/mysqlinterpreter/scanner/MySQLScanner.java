@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class MySQLScanner {
     private final String DELIMITERS = " ();,\n\t";
+    private final String SEPARATORS = "(),;";
     private SymbolTable symbolTable;
 
     private int iColPos;
@@ -71,7 +72,7 @@ public class MySQLScanner {
         token.iLineNum = iLineNumber;
         String firstChar = String.valueOf(textCharM[token.iColPos]);
 
-        if("();".contains(firstChar)){
+        if(SEPARATORS.contains(firstChar)){
             token.tokenStr = firstChar;
             iColPos += 1;
         }else{
@@ -139,7 +140,7 @@ public class MySQLScanner {
         if(stEntry != null){
             currentToken.primClassif = stEntry.primClassif;
             currentToken.subclassif = stEntry.subclassif;
-        }else if("(),;".contains(tokenStr)){
+        }else if(SEPARATORS.contains(tokenStr)){
             currentToken.primClassif = Classif.SEPARATOR;
         }else if(tokenStr.matches("\\d*")){
             currentToken.subclassif = Subclassif.INTEGER;
