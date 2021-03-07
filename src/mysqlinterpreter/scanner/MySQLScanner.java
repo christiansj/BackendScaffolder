@@ -141,7 +141,7 @@ public class MySQLScanner {
             currentToken.subclassif = stEntry.subclassif;
         }else if("(),;".contains(tokenStr)){
             currentToken.primClassif = Classif.SEPARATOR;
-        }else if(String.valueOf(tokenStr.charAt(0)).matches("\\d")){
+        }else if(tokenStr.matches("\\d*")){
             currentToken.subclassif = Subclassif.INTEGER;
         }else{
             currentToken.subclassif = Subclassif.IDENTIFIER;
