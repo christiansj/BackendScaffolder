@@ -1,0 +1,3 @@
+CREATE TABLE Student(
+	date_registered DATE(11)
+);

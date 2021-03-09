@@ -1,8 +1,10 @@
 package mysqlinterpreter.parser;
 
 import mysqlinterpreter.classification.Classif;
+import mysqlinterpreter.parser.operations.CreateTableOperation;
 import mysqlinterpreter.scanner.MySQLScanner;
 import mysqlinterpreter.scanner.Token;
+import mysqlinterpreter.parser.operations.Operation;
 
 public class MySQLParser {
     private MySQLScanner scanner;
@@ -25,6 +27,18 @@ public class MySQLParser {
             error("Unexpected %s token for \"%s\" found, expected OPERATION token",
                     currentToken.primClassif.toString(), currentToken.tokenStr);
         }
+        
+
+        switch(currentToken.tokenStr) {
+        case "CREATE":
+        	new CreateTableOperation(this).execute();
+        	
+        	break;
+        default:
+        	error("%s OPERATION is not yet supported", currentToken.tokenStr);
+        }
+        
+        
     }
 
     public void error(String format, Object... args) throws ParserException{
