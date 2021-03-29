@@ -88,7 +88,7 @@ public class CreateTableOperationTest {
     @Test
     @DisplayName("missing close parenthesis for column length")
     public void testMissingCloseParenForLength() {
-    	String expectedMessage = "Expected ')' instead got ','";
+    	String expectedMessage = "Expected ')' token, instead got ','";
     	exceptionMessageTest("missing_close_paren_column_length.txt", expectedMessage);
     }
 }

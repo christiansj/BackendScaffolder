@@ -1,5 +1,6 @@
 package mysqlinterpreter;
 
+import mysqlinterpreter.parser.MySQLParser;
 import mysqlinterpreter.scanner.MySQLScanner;
 import mysqlinterpreter.symboltable.SymbolTable;
 
@@ -9,7 +10,7 @@ public class MySQLInterpreter {
 
         scanner.printCurrentLine();
         printTokenHeading();
-        int currentLine = 1;
+        int currentLine = 0;
 
         while(!scanner.getNext().isEmpty()){
             scanner.currentToken.printToken();
@@ -28,12 +29,21 @@ public class MySQLInterpreter {
                 , "subClassif"
                 , "tokenStr");
     }
+    
+    private static void runParser(String filePath) throws Exception{
+    	MySQLScanner scanner = new MySQLScanner(filePath, new SymbolTable());
+    	MySQLParser parser = new MySQLParser(scanner);
+    	
+    	parser.run();
+    }
 
     public static void main(String[] args) {
         try{
             runScanner(args[0]);
+            runParser(args[0]);
         }catch(Exception e){
-            System.err.println(e);
+        	e.printStackTrace();
+//            System.err.println(e);
         }
     }
 }

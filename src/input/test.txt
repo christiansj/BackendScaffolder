@@ -1,3 +1,4 @@
 CREATE TABLE Student(
-    name VARCHAR(22)
+    firstName VARCHAR(255),
+    registerDt DATE
 );
