@@ -12,7 +12,7 @@ public class SpringWriterUtilTest {
 	@Test
 	@DisplayName("writeImports should return String with imports")
 	public void writeImportsTest() {
-		String expected = "com.alpha.bravo.one\ncom.alpha.bravo.two\ncom.alpha.bravo.three\n";
+		String expected = "\ncom.alpha.bravo.one\ncom.alpha.bravo.two\ncom.alpha.bravo.three\n";
 		String[] packages = {"one", "two", "three"};
 		assertEquals(expected, SpringWriterUtil.writeImports("com.alpha.bravo", packages));
 	}
