@@ -1,5 +1,6 @@
 package mysqlentity.mysqltable;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ public class MySQLTable {
 	private final String name;
 	
 	private Set<MySQLColumn> columns = new HashSet<>();
+	private ArrayList<MySQLColumn> columnList = new ArrayList<>();
 	
 	public MySQLTable(String name) {
 		this.name = name;
@@ -23,10 +25,11 @@ public class MySQLTable {
 			}
 		}
 		columns.add(column);
+		columnList.add(column);
 	}
 	
-	public Set<MySQLColumn> getColumns(){
-		return columns;
+	public ArrayList<MySQLColumn> getColumns(){
+		return columnList;
 	}
 	
 	public String getName() {
