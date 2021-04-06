@@ -8,6 +8,7 @@ import mysqlentity.mysqltable.MySQLTable;
 import mysqlinterpreter.classification.Classif;
 import mysqlinterpreter.classification.Subclassif;
 import mysqlinterpreter.parser.MySQLParser;
+import springwriter.SpringWriter;
 
 public class CreateTableOperation extends Operation {
 	final String[] typesWithLength = {"TINYINT", "INT", "VARCHAR", "BIGINT", "CHAR"};
@@ -30,6 +31,9 @@ public class CreateTableOperation extends Operation {
         
         checkTokenStr(";", true);
     	scanner.getNext();
+    	
+    	SpringWriter springWriter = new SpringWriter("src/output", mySQLTable);
+    	springWriter.writeFiles();
     }
 
     private void readTableName() throws Exception{

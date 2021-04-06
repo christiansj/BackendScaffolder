@@ -1,4 +1,5 @@
 CREATE TABLE Student(
-    firstName VARCHAR(255),
-    registerDt DATE
+	id INT,
+    last_name VARCHAR(255),
+    major VARCHAR(299)
 );

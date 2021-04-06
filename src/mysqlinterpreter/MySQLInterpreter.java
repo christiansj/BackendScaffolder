@@ -39,7 +39,7 @@ public class MySQLInterpreter {
 
     public static void main(String[] args) {
         try{
-            runScanner(args[0]);
+//            runScanner(args[0]);
             runParser(args[0]);
         }catch(Exception e){
         	e.printStackTrace();
