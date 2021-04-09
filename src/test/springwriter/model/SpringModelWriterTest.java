@@ -38,7 +38,7 @@ public class SpringModelWriterTest {
 	
 	private void evaluateFileContents(String className) throws Exception {
 		String filePath = String.format("src/test/springwriter/model/models/%s.java", className);
-		String expectedPath = String.format("src/test/springwriter/model/models/Expected%s.java", className);
+		String expectedPath = String.format("src/test/springwriter/model/models/%s.txt", className);
 
 		assertEquals(fileToString(expectedPath), fileToString(filePath));
 		new File(filePath).delete();
