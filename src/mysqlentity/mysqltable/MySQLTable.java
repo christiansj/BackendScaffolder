@@ -27,7 +27,7 @@ public class MySQLTable {
 		columnList.add(column);
 	}
 	
-	public void setPrimaryKey(String colName, boolean isPrimary) throws Exception {
+	public void addPrimaryKey(String colName, boolean isPrimary) throws Exception {
 		MySQLColumn col = columnMap.get(colName);
 		if(col == null) {
 			String fmt = "'%s' doesn't exists in table '%s'";

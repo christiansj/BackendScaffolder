@@ -35,4 +35,8 @@ public class MySQLColumn {
 	public int getLength() {
 		return length;
 	}
+	
+	public boolean isPrimaryKey() {
+		return isPrimaryKey;
+	}
 }

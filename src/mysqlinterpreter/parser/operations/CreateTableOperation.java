@@ -81,6 +81,9 @@ public class CreateTableOperation extends Operation {
     	}
     	
     	mySQLTable.addColumn(col);
+    	if(col.isPrimaryKey()) {
+    		mySQLTable.addPrimaryKey(col.getName(), col.isPrimaryKey());
+    	}
     }
     
     private int getColumnLength(String columnType) throws Exception {
@@ -108,7 +111,7 @@ public class CreateTableOperation extends Operation {
     
     private MySQLColumn handleKeyType(MySQLColumn col) throws Exception {
     	if(!scanner.currentToken.tokenStr.equals("PRIMARY")) {
-    		if(!scanner.currentToken.tokenStr.equals("KEY")) {
+    		if(scanner.currentToken.tokenStr.equals("KEY")) {
     			parser.error("expected 'PRIMARY' before 'KEY'");
     		}
     		parser.error("'%s' key type is not supported yet", 
@@ -117,7 +120,7 @@ public class CreateTableOperation extends Operation {
     	checkTokenStr("KEY", true);
     	
     	col.setIsPrimaryKey(true);
-    	mySQLTable.setPrimaryKey(col.getName(), true);
+    	
     	scanner.getNext();
     	
     	return col;
