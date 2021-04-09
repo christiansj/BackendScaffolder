@@ -1,16 +1,10 @@
 package springwriter.model;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 import mysqlentity.mysqlcolumn.MySQLColumn;
 import mysqlentity.mysqltable.MySQLTable;
@@ -18,49 +12,24 @@ import springwriter.SpringWriter;
 import springwriter.SpringWriterUtil;
 
 public class SpringModelWriter {
+	final String SINGULAR = "model";
+	final String PLURAL = "models";
+	
 	MySQLTable mySQLTable;
 	
 	String directory;
 	String packageStr;
+	SpringWriter springWriter;
 	String primaryKeyType;
-	HashMap<String, String> mySQLToJavaMap = new HashMap<String, String>();
 	
+	HashMap<String, String> mySQLToJavaMap = new HashMap<>();
 	
 	public SpringModelWriter(SpringWriter springWriter) throws Exception {
 		this.mySQLTable = springWriter.getMySqlTable();
 		this.packageStr = springWriter.getPackageStr();
-		
-		initPackageAndDirectory();
+		this.springWriter = springWriter;
+	
 		initMySqlToJavaMap();
-	}
-	
-	private void initPackageAndDirectory() throws Exception {
-		directory = packageStr.replaceAll("\\.", "\\/");
-		packageStr = initPackage();
-	
-		
-		if(directoryExists(directory + "/model")) {
-			packageStr += ".model";
-			directory += "/model";
-		}else {
-			packageStr += ".models";
-			directory += "/models";
-			if(!directoryExists(directory + "/models")) {
-				new File(directory).mkdir();	
-			}
-		}
-	}
-	
-	private String initPackage() throws Exception {
-		final List<String> TOKENS = Arrays.asList(packageStr.split("\\."));
-		String packagePath = "";
-		for(int i = TOKENS.indexOf("src")+1; i < TOKENS.size(); i++) {
-			packagePath += TOKENS.get(i);
-			if(i + 1 != TOKENS.size()) {
-				packagePath+=".";
-			}
-		}
-		return packagePath;
 	}
 	
 	private void initMySqlToJavaMap() {
@@ -79,26 +48,24 @@ public class SpringModelWriter {
 	
 	public void writeModelFile() throws Exception {
 		String filePath = String.format("%s/%s.java", 
-				directory,
+				springWriter.setDirectory(SINGULAR, PLURAL),
 				mySQLTable.getName()
 		);
-
+		
 		BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
 		
 		writer.write(createModelString());
 		writer.close();
 	}
 	
-	private boolean directoryExists(String pathStr) {
-		return Files.exists(Paths.get(pathStr));
-	}
-	
-	private String createModelString() throws Exception {
+	public String createModelString() throws Exception {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(String.format("package %s;", packageStr));
+		// package and imports
+		sb.append(springWriter.createPackageStr(SINGULAR, PLURAL));
 		sb.append(importStrings());
 		
+		// class body
 		sb.append("@Entity\n");
 		sb.append(String.format("public class %s {\n\n", mySQLTable.getName()));
 		sb.append(createVariableString());
@@ -129,9 +96,11 @@ public class SpringModelWriter {
 				String err = String.format("'%s' is not in MySQLToJavaMap", colType);
 				throw new Exception(err);
 			}
+			
 			if(col.isPrimaryKey()) {
 				pw.println("\t@Id");
 			}
+			
 			pw.println(String.format("\tprivate %s %s;", 
 					mySQLToJavaMap.get(colType), 
 					SpringWriterUtil.formatMySQLVariable(col.getName())
