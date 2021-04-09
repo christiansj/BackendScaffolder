@@ -21,6 +21,11 @@ import springwriter.SpringWriter;
 import springwriter.model.SpringModelWriter;
 
 public class SpringModelWriterTest {
+	private final String MODEL_DIR = "src/test/springwriter/model";
+	private SpringModelWriter newModelWriter(String directoryPath, MySQLTable table) throws Exception {
+		SpringWriter springWriter = new SpringWriter(directoryPath, table);
+		return new SpringModelWriter(springWriter);
+	}
 	@Test
 	@DisplayName("testWriteModelFile should write model file with correct contents")
 	public void testWriteModelFile() throws Exception{
@@ -29,11 +34,24 @@ public class SpringModelWriterTest {
 		table.addColumn(new MySQLColumn("first_name", MySQLType.VARCHAR, 100));
 		table.addColumn(new MySQLColumn("last_name", MySQLType.VARCHAR, 100));
 		
-		SpringWriter springWriter = new SpringWriter("src/test/springwriter/model", table);
-		SpringModelWriter modelWriter = new SpringModelWriter(springWriter);
+		SpringModelWriter modelWriter = newModelWriter(MODEL_DIR, table);
 		
 		modelWriter.writeModelFile();
 		evaluateFileContents("Person");
+	}
+	
+	@Test
+	@DisplayName("should generate model file with @Id field")
+	public void testPrimaryKeyModel() throws Exception {
+		MySQLTable table = new MySQLTable("Book");
+		table.addColumn(new MySQLColumn("id", MySQLType.INT, 10));
+		table.addColumn(new MySQLColumn("title", MySQLType.VARCHAR, 255));
+		table.addPrimaryKey("id", true);
+		
+		SpringModelWriter modelWriter = newModelWriter(MODEL_DIR, table);
+		modelWriter.writeModelFile();
+		
+		evaluateFileContents("Book");
 	}
 	
 	private void evaluateFileContents(String className) throws Exception {

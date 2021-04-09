@@ -124,9 +124,13 @@ public class SpringModelWriter {
 
 		for(MySQLColumn col : mySQLTable.getColumns()) {
 			String colType = col.getMySQLType().name();
+			
 			if(!mySQLToJavaMap.containsKey(colType)) {
 				String err = String.format("'%s' is not in MySQLToJavaMap", colType);
 				throw new Exception(err);
+			}
+			if(col.isPrimaryKey()) {
+				pw.println("\t@Id");
 			}
 			pw.println(String.format("\tprivate %s %s;", 
 					mySQLToJavaMap.get(colType), 

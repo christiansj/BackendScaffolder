@@ -1,0 +1,12 @@
+package test.springwriter.model.models;
+
+import javax.persistance.Entity;
+import javax.persistance.Id;
+
+@Entity
+public class Book {
+
+	@Id
+	private int id;
+	private String title;
+}
