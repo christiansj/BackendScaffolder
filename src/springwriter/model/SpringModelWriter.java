@@ -62,7 +62,7 @@ public class SpringModelWriter {
 		StringBuilder sb = new StringBuilder();
 		
 		// package and imports
-		sb.append(springWriter.createPackageStr(SINGULAR, PLURAL));
+		sb.append("package " + springWriter.createPackageStr(SINGULAR, PLURAL) + ";");
 		sb.append(importStrings());
 		
 		// class body

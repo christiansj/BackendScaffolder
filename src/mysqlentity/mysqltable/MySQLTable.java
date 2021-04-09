@@ -37,11 +37,23 @@ public class MySQLTable {
 		col.setIsPrimaryKey(isPrimary);
 		columnList.set(columnList.indexOf(col), col);
 		columnMap.put(colName, col);
-		primaryKeyNames.add(name);
+		primaryKeyNames.add(colName);
+	}
+	
+	public ArrayList<String> getPrimaryKeyNames(){
+		return primaryKeyNames;
 	}
 	
 	public ArrayList<MySQLColumn> getColumns(){
 		return columnList;
+	}
+	
+	public MySQLColumn getColumn(String columnName) throws Exception{
+		if(!columnMap.containsKey(columnName)) {
+			String fmt = String.format("column '%s' isn't defined in table '%s'", columnName, name);
+			throw new Exception(fmt);
+		}
+		return columnMap.get(columnName);
 	}
 	
 	public String getName() {

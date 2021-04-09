@@ -8,7 +8,7 @@ import java.util.List;
 
 import mysqlentity.mysqltable.MySQLTable;
 import springwriter.model.SpringModelWriter;
-
+import springwriter.repository.SpringRepositoryWriter;
 
 public class SpringWriter {
 	private MySQLTable mySQLTable;
@@ -42,9 +42,9 @@ public class SpringWriter {
 	
 	public String createPackageStr(String singular, String plural) {
 		if(directoryExists(folderPath + "/" + singular)) {
-			return String.format("package %s.%s;", packageRootStr,  singular);
+			return String.format("%s.%s", packageRootStr,  singular);
 		}
-		return String.format("package %s.%s;", packageRootStr, plural);
+		return String.format("%s.%s", packageRootStr, plural);
 	}
 	
 	public String setDirectory(String singular, String plural) throws Exception {
@@ -69,6 +69,8 @@ public class SpringWriter {
 	public void writeFiles() throws Exception{
 		SpringModelWriter modelWriter = new SpringModelWriter(this);
 		modelWriter.createModelString();
+		SpringRepositoryWriter repoWriter = new SpringRepositoryWriter(this);
+		System.out.println(repoWriter.createRepositoryString());
 		
 		modelWriter.writeModelFile();
 	}
