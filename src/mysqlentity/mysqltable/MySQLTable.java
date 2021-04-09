@@ -2,7 +2,6 @@ package mysqlentity.mysqltable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import mysqlentity.mysqlcolumn.MySQLColumn;
 

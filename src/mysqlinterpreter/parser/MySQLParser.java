@@ -4,7 +4,6 @@ import mysqlinterpreter.classification.Classif;
 import mysqlinterpreter.parser.operations.CreateTableOperation;
 import mysqlinterpreter.scanner.MySQLScanner;
 import mysqlinterpreter.scanner.Token;
-import mysqlinterpreter.parser.operations.Operation;
 
 public class MySQLParser {
     private MySQLScanner scanner;

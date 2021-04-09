@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
 
-import mysqlentity.mysqlcolumn.MySQLColumn;
 import mysqlentity.mysqltable.MySQLTable;
 import springwriter.SpringWriter;
 
@@ -31,9 +30,12 @@ public class SpringRepositoryWriter {
 	
 	public String createRepositoryString() throws Exception{
 		StringBuilder sb = new StringBuilder();
+		// package and imports
 		sb.append("package " + springWriter.createPackageStr(SINGULAR, PLURAL)+ ";\n");
 		sb.append("\n");
 		sb.append(importStrings());
+		
+		// class body
 		sb.append("@Repository\n");
 		sb.append(prototypeString());
 		sb.append("\n");
@@ -73,6 +75,4 @@ public class SpringRepositoryWriter {
 				mySQLToIdTypeMap.get(primaryKeyType)
 		);
 	}
-	
-	
 }

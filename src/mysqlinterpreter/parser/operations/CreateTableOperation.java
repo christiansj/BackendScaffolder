@@ -77,7 +77,6 @@ public class CreateTableOperation extends Operation {
     	MySQLColumn col = new MySQLColumn(columnName, columnType, columnLength);
     	if(scanner.currentToken.primClassif == Classif.KEY_TYPE) {
     		col = handleKeyType(col);
-//    		parser.error("KEY_TYPE columns are not supported yet");
     	}
     	
     	mySQLTable.addColumn(col);
