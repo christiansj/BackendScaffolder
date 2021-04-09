@@ -9,16 +9,13 @@ import java.util.List;
 import mysqlentity.mysqltable.MySQLTable;
 import springwriter.model.SpringModelWriter;
 
+
 public class SpringWriter {
 	private MySQLTable mySQLTable;
 	private String packageStr;
 	private String folderPath;
 	private final String packageRootStr;
-	
-	private String modelDirPath;
-	private String modelPackageStr;
-	
-	
+		
 	public SpringWriter(String packagePath, MySQLTable mySQLTable) throws Exception {
 		this.folderPath = packagePath;
 		this.packageStr = packagePath.replaceAll("\\/", ".");
@@ -33,6 +30,7 @@ public class SpringWriter {
 		
 		final List<String> TOKENS = Arrays.asList(packageStr.split("\\."));
 		String packagePath = "";
+		
 		for(int i = TOKENS.indexOf("src")+1; i < TOKENS.size(); i++) {
 			packagePath += TOKENS.get(i);
 			if(i + 1 != TOKENS.size()) {
