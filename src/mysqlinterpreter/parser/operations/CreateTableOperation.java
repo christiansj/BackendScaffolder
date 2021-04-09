@@ -74,14 +74,13 @@ public class CreateTableOperation extends Operation {
     	scanner.getNext();
     	int columnLength = getColumnLength(columnType.name());
     	
-    	System.out.printf("columnName: %s columnType: %s length %d\n", 
-    			columnName, columnType.name(), columnLength);
-    	
+    	MySQLColumn col = new MySQLColumn(columnName, columnType, columnLength);
     	if(scanner.currentToken.primClassif == Classif.KEY_TYPE) {
-    		parser.error("KEY_TYPE columns are not supported yet");
+    		col = handleKeyType(col);
+//    		parser.error("KEY_TYPE columns are not supported yet");
     	}
     	
-    	mySQLTable.addColumn(new MySQLColumn(columnName, columnType, columnLength));
+    	mySQLTable.addColumn(col);
     }
     
     private int getColumnLength(String columnType) throws Exception {
@@ -105,6 +104,23 @@ public class CreateTableOperation extends Operation {
     	
     	scanner.getNext();
     	return Integer.parseInt(tokenStr);
+    }
+    
+    private MySQLColumn handleKeyType(MySQLColumn col) throws Exception {
+    	if(!scanner.currentToken.tokenStr.equals("PRIMARY")) {
+    		if(!scanner.currentToken.tokenStr.equals("KEY")) {
+    			parser.error("expected 'PRIMARY' before 'KEY'");
+    		}
+    		parser.error("'%s' key type is not supported yet", 
+    			scanner.currentToken.tokenStr);
+    	}
+    	checkTokenStr("KEY", true);
+    	
+    	col.setIsPrimaryKey(true);
+    	mySQLTable.setPrimaryKey(col.getName(), true);
+    	scanner.getNext();
+    	
+    	return col;
     }
     
     private void checkTokenStr(String expectedString, boolean isGetNext) throws Exception {

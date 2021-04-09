@@ -1,31 +1,43 @@
 package mysqlentity.mysqltable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
 
 import mysqlentity.mysqlcolumn.MySQLColumn;
 
 public class MySQLTable {
-	private final String name;
 	
-	private Set<MySQLColumn> columns = new HashSet<>();
+	private final String name;
+	private ArrayList<String> primaryKeyNames = new ArrayList<String>();
 	private ArrayList<MySQLColumn> columnList = new ArrayList<>();
+	private HashMap<String, MySQLColumn> columnMap = new HashMap<>();
 	
 	public MySQLTable(String name) {
 		this.name = name;
 	}
-	
-	
+
 	public void addColumn(MySQLColumn column) throws Exception{
-		for(MySQLColumn currColumn : columns) {
-			if(currColumn.getName().equals(column.getName())){
-				throw new Exception(String.format("Column '%s' already exists in table '%s'", 
-						column.getName(), name));
-			}
+		if(columnMap.containsKey(column.getName())) {
+			throw new Exception(String.format("Column '%s' already exists in table '%s'", 
+					column.getName(), name));
 		}
-		columns.add(column);
+
+		columnMap.put(column.getName(), column);
 		columnList.add(column);
+	}
+	
+	public void setPrimaryKey(String colName, boolean isPrimary) throws Exception {
+		MySQLColumn col = columnMap.get(colName);
+		if(col == null) {
+			String fmt = "'%s' doesn't exists in table '%s'";
+			throw new Exception(String.format(fmt, colName, name));
+		}
+		
+		col.setIsPrimaryKey(isPrimary);
+		columnList.set(columnList.indexOf(col), col);
+		columnMap.put(colName, col);
+		primaryKeyNames.add(name);
 	}
 	
 	public ArrayList<MySQLColumn> getColumns(){
