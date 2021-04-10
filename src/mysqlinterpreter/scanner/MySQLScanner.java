@@ -54,9 +54,12 @@ public class MySQLScanner {
             textCharM = line.toCharArray();
 
             if(iColPos < textCharM.length){
-                return createToken(line);
+            	Token token = createToken(line);
+            	if(!token.tokenStr.equals("")) {
+            		return token;
+            	}
+//                return ;
             }
-
             iLineNumber += 1;
             iColPos = 0;
         }
@@ -67,11 +70,15 @@ public class MySQLScanner {
     private Token createToken(String line) {
         Token token = new Token();
         eatWhiteSpace();
-
+        System.out.println(iColPos);
+        if(iColPos >= textCharM.length) {
+        	System.out.println("ralph");
+        	return token;
+        }
         token.iColPos = iColPos;
         token.iLineNum = iLineNumber;
+       
         String firstChar = String.valueOf(textCharM[token.iColPos]);
-
         if(SEPARATORS.contains(firstChar)){
             token.tokenStr = firstChar;
             iColPos += 1;
