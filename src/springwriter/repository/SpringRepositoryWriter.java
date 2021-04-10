@@ -35,10 +35,10 @@ public class SpringRepositoryWriter {
 				springWriter.setDirectory(SINGULAR, PLURAL),
 				mySQLTable.getName()
 		);
-		
+		final String REPO_STRING = createRepositoryString();
 		BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
 		
-		writer.write(createRepositoryString());
+		writer.write(REPO_STRING);
 		writer.close();
 	}
 	

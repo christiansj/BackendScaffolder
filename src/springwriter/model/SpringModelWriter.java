@@ -51,10 +51,10 @@ public class SpringModelWriter {
 				springWriter.setDirectory(SINGULAR, PLURAL),
 				mySQLTable.getName()
 		);
-		
+		final String MODEL_STRING = createModelString();
 		BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
 		
-		writer.write(createModelString());
+		writer.write(MODEL_STRING);
 		writer.close();
 	}
 	
