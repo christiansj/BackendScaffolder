@@ -70,9 +70,10 @@ public class SpringWriter {
 		SpringModelWriter modelWriter = new SpringModelWriter(this);
 		modelWriter.createModelString();
 		SpringRepositoryWriter repoWriter = new SpringRepositoryWriter(this);
-		System.out.println(repoWriter.createRepositoryString());
+		repoWriter.createRepositoryString();
 		
 		modelWriter.writeModelFile();
+		repoWriter.writeRepositoryFile();
 	}
 		
 	public MySQLTable getMySqlTable() {
