@@ -1,5 +1,7 @@
 package springwriter.repository;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -26,6 +28,18 @@ public class SpringRepositoryWriter {
 		mySQLToIdTypeMap.put("INT", "Integer");
 		mySQLToIdTypeMap.put("BIGINT", "Integer");
 		mySQLToIdTypeMap.put("VARCHAR", "String");
+	}
+	
+	public void writeRepositoryFile() throws Exception {
+		String filePath = String.format("%s/%sRepository.java", 
+				springWriter.setDirectory(SINGULAR, PLURAL),
+				mySQLTable.getName()
+		);
+		
+		BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+		
+		writer.write(createRepositoryString());
+		writer.close();
 	}
 	
 	public String createRepositoryString() throws Exception{

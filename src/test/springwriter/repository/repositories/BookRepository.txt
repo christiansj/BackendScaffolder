@@ -1,11 +1,10 @@
 package test.springwriter.repository.repositories;
 
-import test.springwriter.model.models.Person;
-
+import test.springwriter.repository.models.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PersonRespository extends JpaRepository<Person, Integer> {
+public interface BookRepository extends JpaRepository<Book, Integer> {
 
 }
