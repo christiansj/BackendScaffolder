@@ -70,9 +70,8 @@ public class MySQLScanner {
     private Token createToken(String line) {
         Token token = new Token();
         eatWhiteSpace();
-        System.out.println(iColPos);
+
         if(iColPos >= textCharM.length) {
-        	System.out.println("ralph");
         	return token;
         }
         token.iColPos = iColPos;
