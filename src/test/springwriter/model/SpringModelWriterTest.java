@@ -23,7 +23,7 @@ public class SpringModelWriterTest {
 		MySQLTable table = WriterTestData.personTable();
 		SpringModelWriter modelWriter = newModelWriter(MODEL_DIR, table);
 		
-		modelWriter.writeModelFile();
+		modelWriter.writeFile();
 		TestUtility.evaluateFileContents(table, "model");
 	}
 	
@@ -33,7 +33,7 @@ public class SpringModelWriterTest {
 		MySQLTable table = WriterTestData.bookTable();
 		SpringModelWriter modelWriter = newModelWriter(MODEL_DIR, table);
 		
-		modelWriter.writeModelFile();
+		modelWriter.writeFile();
 		TestUtility.evaluateFileContents(table, "model");
 	}
 }

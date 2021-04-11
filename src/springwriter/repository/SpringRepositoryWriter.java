@@ -6,20 +6,19 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
 
-import mysqlentity.mysqltable.MySQLTable;
 import springwriter.SpringWriter;
+import springwriter.springfilewriter.SpringFileWriter;
+import springwriter.springfilewriter.SpringFileWriterInterface;
 
-public class SpringRepositoryWriter {
+public class SpringRepositoryWriter extends SpringFileWriter implements SpringFileWriterInterface{
 	final String SINGULAR = "repository";
 	final String PLURAL = "repositories";
 	
-	final MySQLTable mySQLTable;
-	final SpringWriter springWriter;
+
 	HashMap <String, String> mySQLToIdTypeMap = new HashMap<>();
 	
 	public SpringRepositoryWriter(SpringWriter springWriter) throws Exception {
-		this.springWriter = springWriter;
-		mySQLTable = springWriter.getMySqlTable();
+		super(springWriter);
 		
 		initMySQLtoIdTypeMap();
 	}
@@ -30,19 +29,19 @@ public class SpringRepositoryWriter {
 		mySQLToIdTypeMap.put("VARCHAR", "String");
 	}
 	
-	public void writeRepositoryFile() throws Exception {
+	public void writeFile() throws Exception {
 		String filePath = String.format("%s/%sRepository.java", 
 				springWriter.setDirectory(SINGULAR, PLURAL),
 				mySQLTable.getName()
 		);
-		final String REPO_STRING = createRepositoryString();
+		final String REPO_STRING = createFileString();
 		BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
 		
 		writer.write(REPO_STRING);
 		writer.close();
 	}
 	
-	public String createRepositoryString() throws Exception{
+	public String createFileString() throws Exception{
 		StringBuilder sb = new StringBuilder();
 		// package and imports
 		sb.append("package " + springWriter.createPackageStr(SINGULAR, PLURAL)+ ";\n");

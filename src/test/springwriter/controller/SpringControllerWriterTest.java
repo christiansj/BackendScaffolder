@@ -24,7 +24,7 @@ public class SpringControllerWriterTest {
 		MySQLTable table = WriterTestData.bookTable();
 		SpringControllerWriter controllerWriter = newControllerWriter(CONTROL_DIR, table);
 		
-		controllerWriter.writeControllerFile();
+		controllerWriter.writeFile();
 		TestUtility.evaluateFileContents(table, "controller");
 	}
 }

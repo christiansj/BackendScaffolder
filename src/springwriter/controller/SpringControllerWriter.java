@@ -1,18 +1,20 @@
 package springwriter.controller;
 
-import mysqlentity.mysqltable.MySQLTable;
 import springwriter.SpringWriter;
+import springwriter.springfilewriter.SpringFileWriter;
+import springwriter.springfilewriter.SpringFileWriterInterface;
 
-public class SpringControllerWriter {
-	SpringWriter springWriter;
-	MySQLTable mySQLTable;
-	
+public class SpringControllerWriter extends SpringFileWriter implements SpringFileWriterInterface {
+
 	public SpringControllerWriter(SpringWriter springWriter) {
-		this.springWriter = springWriter;
-		mySQLTable = springWriter.getMySqlTable();
+		super(springWriter);
 	}
 	
-	public void writeControllerFile() throws Exception {
+	public void writeFile() throws Exception {
 		
+	}
+	
+	public String createFileString() throws Exception{
+		return "";
 	}
 }

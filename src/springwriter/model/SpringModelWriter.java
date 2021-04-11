@@ -7,25 +7,22 @@ import java.io.StringWriter;
 import java.util.HashMap;
 
 import mysqlentity.mysqlcolumn.MySQLColumn;
-import mysqlentity.mysqltable.MySQLTable;
 import springwriter.SpringWriter;
 import springwriter.SpringWriterUtil;
+import springwriter.springfilewriter.SpringFileWriter;
+import springwriter.springfilewriter.SpringFileWriterInterface;
 
-public class SpringModelWriter {
+public class SpringModelWriter extends SpringFileWriter implements SpringFileWriterInterface {
 	final String SINGULAR = "model";
 	final String PLURAL = "models";
 	
-	MySQLTable mySQLTable;
-	
 	String directory;
-	SpringWriter springWriter;
 	String primaryKeyType;
 	
 	HashMap<String, String> mySQLToJavaMap = new HashMap<>();
 	
 	public SpringModelWriter(SpringWriter springWriter) throws Exception {
-		this.mySQLTable = springWriter.getMySqlTable();
-		this.springWriter = springWriter;
+		super(springWriter);
 	
 		initMySqlToJavaMap();
 	}
@@ -44,19 +41,19 @@ public class SpringModelWriter {
 		mySQLToJavaMap.put("TIMESTAMP", "Timestamp");
 	}
 	
-	public void writeModelFile() throws Exception {
+	public void writeFile() throws Exception {
 		String filePath = String.format("%s/%s.java", 
 				springWriter.setDirectory(SINGULAR, PLURAL),
 				mySQLTable.getName()
 		);
-		final String MODEL_STRING = createModelString();
+		final String MODEL_STRING = createFileString();
 		BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
 		
 		writer.write(MODEL_STRING);
 		writer.close();
 	}
 	
-	public String createModelString() throws Exception {
+	public String createFileString() throws Exception {
 		StringBuilder sb = new StringBuilder();
 		
 		// package and imports

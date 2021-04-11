@@ -1,20 +1,12 @@
 package test.springwriter.repository;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.stream.Collectors;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import mysqlentity.datatype.MySQLType;
-import mysqlentity.mysqlcolumn.MySQLColumn;
 import mysqlentity.mysqltable.MySQLTable;
 import springwriter.SpringWriter;
-import springwriter.model.SpringModelWriter;
 import springwriter.repository.SpringRepositoryWriter;
 import test.testutil.TestUtility;
 import test.testutil.WriterTestData;
@@ -33,7 +25,7 @@ public class SpringRepositoryWriterTest {
 		MySQLTable table = WriterTestData.bookTable();
 		SpringRepositoryWriter repoWriter = newRepoWriter(REPO_DIR, WriterTestData.bookTable());
 		
-		repoWriter.writeRepositoryFile();
+		repoWriter.writeFile();
 		TestUtility.evaluateFileContents(table, "repository");
 	}
 	
@@ -43,7 +35,7 @@ public class SpringRepositoryWriterTest {
 		SpringRepositoryWriter repoWriter = newRepoWriter(REPO_DIR, WriterTestData.personTable());
 		
 		Exception exception = assertThrows(Exception.class, ()->{
-			repoWriter.writeRepositoryFile();
+			repoWriter.writeFile();
 		});
 		assertEquals("no primary key defined in table 'Person'", exception.getMessage());
 	}
