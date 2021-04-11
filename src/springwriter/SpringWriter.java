@@ -68,12 +68,12 @@ public class SpringWriter {
 	
 	public void writeFiles() throws Exception{
 		SpringModelWriter modelWriter = new SpringModelWriter(this);
-		modelWriter.createModelString();
+		modelWriter.createFileString();
 		SpringRepositoryWriter repoWriter = new SpringRepositoryWriter(this);
-		repoWriter.createRepositoryString();
+		repoWriter.createFileString();
 		
-		modelWriter.writeModelFile();
-		repoWriter.writeRepositoryFile();
+		modelWriter.writeFile();
+		repoWriter.writeFile();
 	}
 		
 	public MySQLTable getMySqlTable() {
