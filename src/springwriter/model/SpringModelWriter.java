@@ -18,7 +18,6 @@ public class SpringModelWriter {
 	MySQLTable mySQLTable;
 	
 	String directory;
-	String packageStr;
 	SpringWriter springWriter;
 	String primaryKeyType;
 	
@@ -26,7 +25,6 @@ public class SpringModelWriter {
 	
 	public SpringModelWriter(SpringWriter springWriter) throws Exception {
 		this.mySQLTable = springWriter.getMySqlTable();
-		this.packageStr = springWriter.getPackageStr();
 		this.springWriter = springWriter;
 	
 		initMySqlToJavaMap();

@@ -1,0 +1,25 @@
+package test.springwriter.controller.controllers;
+
+import test.springwriter.controller.models.Book;
+import test.springwriter.controller.repositories.BookRepository;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@RestController
+class BookController {
+	private final BookRepository repository;
+	
+	BookController(BookRepository repository){
+		this.repository = repository; 
+	}
+	
+	@GetMapping("/book")
+	List<Book> getAll(){
+		return repository.findAll();
+	}
+	
+	@PostMapping("/book")
+	Book postBook(@RequestBody Book newBook){
+		return repository.save(newBook);
+	}
+}
