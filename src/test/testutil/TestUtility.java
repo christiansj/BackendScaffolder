@@ -27,8 +27,11 @@ public class TestUtility {
 		String testFilePath = String.format("%s%s.java", WRITER_DIR, springDirMap.get(springFileType), table.getName());
 		String expectedFilePath = String.format("%s%s.txt", WRITER_DIR, springDirMap.get(springFileType), table.getName());
 		
-		assertEquals(fileToString(expectedFilePath), fileToString(testFilePath));
+		final String EXPECTED = fileToString(expectedFilePath);
+		final String ACTUAL = fileToString(testFilePath);
 		new File(testFilePath).delete();
+		
+		assertEquals(EXPECTED, ACTUAL);
 	}
 	
 	private static String fileToString(String filePath) throws Exception {
