@@ -54,26 +54,42 @@ public class SpringControllerWriter extends SpringFileWriter implements SpringFi
 		return sw.toString();
 	}
 	
-	private String classBodyString() {
+	private String classBodyString() throws Exception {
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
 		
 		pw.println("\t@Autowired");
 		pw.println(String.format("\tprivate %sRepository repository;\n", TABLE_NAME));
 		
+		writeGetAll(pw);
+		writeGetOne(pw);
+		writePost(pw);
+		
+		return sw.toString();
+	}
+	
+	private void writeGetAll(PrintWriter pw) {
 		pw.println(mappingStr("Get", MODEL_PATH));
 		pw.println(String.format("\tList<%s> getAll(){", TABLE_NAME));
 		pw.println("\t\treturn repository.findAll();");
 		pw.println("\t}\n");
-		
+	}
+	
+	private void writeGetOne(PrintWriter pw) throws Exception {
+		pw.println(mappingStr("Get", MODEL_PATH + "/{id}"));
+		pw.println(String.format("\t%s getOne(@PathVariable %s id){",
+				TABLE_NAME, SpringWriterUtil.getPrimaryKeyType(mySQLTable)));
+		pw.println("\t\treturn repository.findById(id);");
+		pw.println("\t}\n");
+	}
+	
+	private void writePost(PrintWriter pw) {
 		pw.println(mappingStr("Post", MODEL_PATH));
 		pw.println(String.format("\t%s post%s(@RequestBody %s new%s){", 
 				TABLE_NAME, TABLE_NAME, TABLE_NAME, TABLE_NAME
 		));
 		pw.println(String.format("\t\treturn repository.save(new%s);", TABLE_NAME));
 		pw.println("\t}");
-		
-		return sw.toString();
 	}
 	
 	private String mappingStr(String method, String url) {

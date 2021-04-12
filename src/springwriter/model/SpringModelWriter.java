@@ -20,7 +20,7 @@ public class SpringModelWriter extends SpringFileWriter implements SpringFileWri
 	}
 	
 	private void initMySqlToJavaMap() {
-		mySQLToJavaMap.put("INT", "int");
+		mySQLToJavaMap.put("INT", "Integer");
 		mySQLToJavaMap.put("BIGINT", "Long");
 		mySQLToJavaMap.put("TINYINT", "byte");
 		mySQLToJavaMap.put("BIT", "boolean");

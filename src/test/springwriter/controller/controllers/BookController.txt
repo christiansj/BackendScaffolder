@@ -21,6 +21,11 @@ class BookController {
 		return repository.findAll();
 	}
 
+	@GetMapping("/book/{id}")
+	Book getOne(@PathVariable Integer id){
+		return repository.findById(id);
+	}
+
 	@PostMapping("/book")
 	Book postBook(@RequestBody Book newBook){
 		return repository.save(newBook);
