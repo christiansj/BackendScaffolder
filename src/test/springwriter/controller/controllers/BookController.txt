@@ -32,4 +32,10 @@ class BookController {
 		return repository.save(newBook);
 	}
 
+	@PutMapping("/book/{id}")
+	Book putBook(@RequestBody Book newBook, @PathVariable Integer id){
+		newBook.setId(id);
+		return repository.save(newBook);
+	}
+
 }

@@ -11,12 +11,13 @@ import springwriter.springfilewriter.SpringFileWriterInterface;
 public class SpringControllerWriter extends SpringFileWriter implements SpringFileWriterInterface {
 	final String MODEL_PATH;
 	final String TABLE_NAME;
-	
-	public SpringControllerWriter(SpringWriter springWriter) {
+	final String PRIMARY_TYPE;
+	public SpringControllerWriter(SpringWriter springWriter) throws Exception {
 		super(springWriter, "controller", "controllers");
 		
 		this.TABLE_NAME = mySQLTable.getName();
-		this.MODEL_PATH = String.valueOf(TABLE_NAME.charAt(0)).toLowerCase() + TABLE_NAME.substring(1);
+		this.MODEL_PATH = SpringWriterUtil.lowercaseFirstChar(TABLE_NAME);
+		this.PRIMARY_TYPE = SpringWriterUtil.getPrimaryKeyType(mySQLTable);
 	}
 	
 	public String createFileString() throws Exception{
@@ -46,10 +47,10 @@ public class SpringControllerWriter extends SpringFileWriter implements SpringFi
 		pw.println(String.format("import %s.%sRepository;",
 				springWriter.createPackageStr("repository", "repositories"),
 				TABLE_NAME));
-		pw.println("import org.springframework.beans.factory.annotation.Autowired;");
+		pw.println("import org.springframework.beans.factory.annotation.Autowired;\n");
 		
 		pw.println(SpringWriterUtil.writeImports("org.springframework.web.bind.annotation", ANNOTATIONS));
-		
+//		pw.println("\n");
 		
 		return sw.toString();
 	}
@@ -64,6 +65,7 @@ public class SpringControllerWriter extends SpringFileWriter implements SpringFi
 		writeGetAll(pw);
 		writeGetOne(pw);
 		writePost(pw);
+		writePut(pw);
 		
 		return sw.toString();
 	}
@@ -78,7 +80,8 @@ public class SpringControllerWriter extends SpringFileWriter implements SpringFi
 	private void writeGetOne(PrintWriter pw) throws Exception {
 		pw.println(mappingStr("Get", MODEL_PATH + "/{id}"));
 		pw.println(String.format("\t%s getOne(@PathVariable %s id){",
-				TABLE_NAME, SpringWriterUtil.getPrimaryKeyType(mySQLTable)));
+				TABLE_NAME, PRIMARY_TYPE
+		));
 		pw.println("\t\treturn repository.findById(id);");
 		pw.println("\t}\n");
 	}
@@ -88,6 +91,22 @@ public class SpringControllerWriter extends SpringFileWriter implements SpringFi
 		pw.println(String.format("\t%s post%s(@RequestBody %s new%s){", 
 				TABLE_NAME, TABLE_NAME, TABLE_NAME, TABLE_NAME
 		));
+		pw.println(String.format("\t\treturn repository.save(new%s);", TABLE_NAME));
+		pw.println("\t}\n");
+	}
+	
+	private void writePut(PrintWriter pw) {
+		pw.println(mappingStr("Put", MODEL_PATH + "/{id}"));
+		pw.println(String.format("\t%s put%s(@RequestBody %s new%s, @PathVariable %s id){", 
+				TABLE_NAME, TABLE_NAME, TABLE_NAME, TABLE_NAME, PRIMARY_TYPE
+		));
+		
+		final String PRIMARY_NAME = mySQLTable.getPrimaryKeyNames().get(0);
+		pw.println(String.format("\t\tnew%s.set%s(id);", 
+				TABLE_NAME, 
+				SpringWriterUtil.uppercaseFirstChar(PRIMARY_NAME)
+		));
+		
 		pw.println(String.format("\t\treturn repository.save(new%s);", TABLE_NAME));
 		pw.println("\t}\n");
 	}

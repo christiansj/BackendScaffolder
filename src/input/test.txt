@@ -1,4 +1,4 @@
-CREATE TABLE student(
+CREATE TABLE Student(
 	id INT PRIMARY KEY,
     last_name VARCHAR(255),
     major VARCHAR(299)
