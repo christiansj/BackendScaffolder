@@ -36,7 +36,7 @@ public class SpringControllerWriter extends SpringFileWriter implements SpringFi
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
 
-		final String[] ANNOTATIONS = {"RestController", "GetMapping", "PostMapping", "RequestBody"};
+		final String[] ANNOTATIONS = {"RestController", "GetMapping", "PostMapping", "RequestBody", "PathVariable"};
 		
 		pw.println("\n");
 		pw.println("import java.util.List;");
@@ -89,7 +89,7 @@ public class SpringControllerWriter extends SpringFileWriter implements SpringFi
 				TABLE_NAME, TABLE_NAME, TABLE_NAME, TABLE_NAME
 		));
 		pw.println(String.format("\t\treturn repository.save(new%s);", TABLE_NAME));
-		pw.println("\t}");
+		pw.println("\t}\n");
 	}
 	
 	private String mappingStr(String method, String url) {
