@@ -3,10 +3,21 @@ package test.springwriter.model.models;
 import javax.persistance.Entity;
 import javax.persistance.Id;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 @Entity
+@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Book {
 
 	@Id
-	private int id;
+	private Integer id;
 	private String title;
 }

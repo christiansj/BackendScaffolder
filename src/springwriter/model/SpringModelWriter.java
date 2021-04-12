@@ -12,10 +12,11 @@ import springwriter.springfilewriter.SpringFileWriterInterface;
 
 public class SpringModelWriter extends SpringFileWriter implements SpringFileWriterInterface {
 	HashMap<String, String> mySQLToJavaMap = new HashMap<>();
+	final String[] LOMBOKS = {"Data", "Getter", "Setter", "AllArgsConstructor", "NoArgsConstructor"};
 	
 	public SpringModelWriter(SpringWriter springWriter) throws Exception {
 		super(springWriter, "model", "models");
-	
+
 		initMySqlToJavaMap();
 	}
 	
@@ -37,11 +38,14 @@ public class SpringModelWriter extends SpringFileWriter implements SpringFileWri
 		StringBuilder sb = new StringBuilder();
 		
 		// package and imports
-		sb.append("package " + springWriter.createPackageStr(SINGULAR, PLURAL) + ";");
+		sb.append("package " + springWriter.createPackageStr(SINGULAR, PLURAL) + ";\n");
 		sb.append(importStrings());
 		
 		// class body
 		sb.append("@Entity\n");
+		for(String l : LOMBOKS) {
+			sb.append(String.format("@%s\n", l));
+		}
 		sb.append(String.format("public class %s {\n\n", mySQLTable.getName()));
 		sb.append(createVariableString());
 		sb.append("}\n");
@@ -51,12 +55,14 @@ public class SpringModelWriter extends SpringFileWriter implements SpringFileWri
 		
 	private String importStrings() {
 		final String[] PERSISTANCES = {"Entity", "Id"};
+		
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
 		
 		pw.println();	
 		pw.println(SpringWriterUtil.writeImports("javax.persistance", PERSISTANCES));
-
+		pw.println(SpringWriterUtil.writeImports("lombok", LOMBOKS));
+		
 		return sw.toString();
 	}
 	
