@@ -74,7 +74,7 @@ public class SpringWriter {
 		
 		modelWriter.writeFile();
 		repoWriter.writeFile();
-		System.out.println(controllerWriter.createFileString());
+		controllerWriter.writeFile();
 	}
 		
 	public MySQLTable getMySqlTable() {
