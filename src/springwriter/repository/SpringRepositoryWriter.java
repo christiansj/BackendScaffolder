@@ -2,27 +2,18 @@ package springwriter.repository;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.HashMap;
 
 import springwriter.SpringWriter;
+import springwriter.SpringWriterUtil;
 import springwriter.springfilewriter.SpringFileWriter;
 import springwriter.springfilewriter.SpringFileWriterInterface;
 
 public class SpringRepositoryWriter extends SpringFileWriter implements SpringFileWriterInterface{
-	HashMap <String, String> mySQLToIdTypeMap = new HashMap<>();
-	
+
 	public SpringRepositoryWriter(SpringWriter springWriter) throws Exception {
 		super(springWriter, "repository", "repositories");
-		
-		initMySQLtoIdTypeMap();
 	}
-	
-	private void initMySQLtoIdTypeMap() {
-		mySQLToIdTypeMap.put("INT", "Integer");
-		mySQLToIdTypeMap.put("BIGINT", "Integer");
-		mySQLToIdTypeMap.put("VARCHAR", "String");
-	}
-	
+
 	public String createFileString() throws Exception{
 		StringBuilder sb = new StringBuilder();
 		// package and imports
@@ -54,20 +45,10 @@ public class SpringRepositoryWriter extends SpringFileWriter implements SpringFi
 	}
 	
 	private String prototypeString() throws Exception{
-		final int PRIMARY_COUNT = mySQLTable.getPrimaryKeyNames().size();
-		if(PRIMARY_COUNT == 0) {
-			throw new Exception(String.format("no primary key defined in table '%s'", 
-					mySQLTable.getName()));
-		}else if(PRIMARY_COUNT > 1) {
-			throw new Exception("composite keys are not supported yet");
-		}
-		
-		String primaryKeyName = mySQLTable.getPrimaryKeyNames().get(0);
-		String primaryKeyType = mySQLTable.getColumn(primaryKeyName).getMySQLType().name();
 		return String.format("public interface %sRepository extends JpaRepository<%s, %s> {\n", 
 				mySQLTable.getName(),
 				mySQLTable.getName(),
-				mySQLToIdTypeMap.get(primaryKeyType)
+				SpringWriterUtil.getPrimaryKeyType(mySQLTable)
 		);
 	}
 }
