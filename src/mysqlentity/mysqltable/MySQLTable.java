@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import mysqlentity.mysqlcolumn.MySQLColumn;
+import springwriter.SpringWriterUtil;
 
 public class MySQLTable {
 	
@@ -13,7 +14,7 @@ public class MySQLTable {
 	private HashMap<String, MySQLColumn> columnMap = new HashMap<>();
 	
 	public MySQLTable(String name) {
-		this.name = name;
+		this.name = SpringWriterUtil.uppercaseFirstChar(SpringWriterUtil.formatMySQLVariable(name));
 	}
 
 	public void addColumn(MySQLColumn column) throws Exception{

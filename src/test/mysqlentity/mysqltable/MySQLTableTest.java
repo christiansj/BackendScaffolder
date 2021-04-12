@@ -13,7 +13,7 @@ public class MySQLTableTest {
 	@Test
 	@DisplayName("constructor should set table name")
 	public void testConstructor() {
-		assertEquals("New Table", new MySQLTable("New Table").getName());
+		assertEquals("NewTable", new MySQLTable("new_table").getName());
 	}
 	
 	@Test
