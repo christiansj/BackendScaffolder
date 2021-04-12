@@ -1,7 +1,5 @@
 package springwriter.model;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -13,16 +11,10 @@ import springwriter.springfilewriter.SpringFileWriter;
 import springwriter.springfilewriter.SpringFileWriterInterface;
 
 public class SpringModelWriter extends SpringFileWriter implements SpringFileWriterInterface {
-	final String SINGULAR = "model";
-	final String PLURAL = "models";
-	
-	String directory;
-	String primaryKeyType;
-	
 	HashMap<String, String> mySQLToJavaMap = new HashMap<>();
 	
 	public SpringModelWriter(SpringWriter springWriter) throws Exception {
-		super(springWriter);
+		super(springWriter, "model", "models");
 	
 		initMySqlToJavaMap();
 	}
@@ -40,19 +32,7 @@ public class SpringModelWriter extends SpringFileWriter implements SpringFileWri
 		mySQLToJavaMap.put("DATETIME", "Date");
 		mySQLToJavaMap.put("TIMESTAMP", "Timestamp");
 	}
-	
-	public void writeFile() throws Exception {
-		String filePath = String.format("%s/%s.java", 
-				springWriter.setDirectory(SINGULAR, PLURAL),
-				mySQLTable.getName()
-		);
-		final String MODEL_STRING = createFileString();
-		BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
 		
-		writer.write(MODEL_STRING);
-		writer.close();
-	}
-	
 	public String createFileString() throws Exception {
 		StringBuilder sb = new StringBuilder();
 		

@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import mysqlentity.mysqltable.MySQLTable;
+import springwriter.controller.SpringControllerWriter;
 import springwriter.model.SpringModelWriter;
 import springwriter.repository.SpringRepositoryWriter;
 
@@ -68,12 +69,12 @@ public class SpringWriter {
 	
 	public void writeFiles() throws Exception{
 		SpringModelWriter modelWriter = new SpringModelWriter(this);
-		modelWriter.createFileString();
 		SpringRepositoryWriter repoWriter = new SpringRepositoryWriter(this);
-		repoWriter.createFileString();
+		SpringControllerWriter controllerWriter = new SpringControllerWriter(this);
 		
 		modelWriter.writeFile();
 		repoWriter.writeFile();
+		System.out.println(controllerWriter.createFileString());
 	}
 		
 	public MySQLTable getMySqlTable() {

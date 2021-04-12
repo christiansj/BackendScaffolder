@@ -1,7 +1,5 @@
 package springwriter.repository;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -11,14 +9,10 @@ import springwriter.springfilewriter.SpringFileWriter;
 import springwriter.springfilewriter.SpringFileWriterInterface;
 
 public class SpringRepositoryWriter extends SpringFileWriter implements SpringFileWriterInterface{
-	final String SINGULAR = "repository";
-	final String PLURAL = "repositories";
-	
-
 	HashMap <String, String> mySQLToIdTypeMap = new HashMap<>();
 	
 	public SpringRepositoryWriter(SpringWriter springWriter) throws Exception {
-		super(springWriter);
+		super(springWriter, "repository", "repositories");
 		
 		initMySQLtoIdTypeMap();
 	}
@@ -27,18 +21,6 @@ public class SpringRepositoryWriter extends SpringFileWriter implements SpringFi
 		mySQLToIdTypeMap.put("INT", "Integer");
 		mySQLToIdTypeMap.put("BIGINT", "Integer");
 		mySQLToIdTypeMap.put("VARCHAR", "String");
-	}
-	
-	public void writeFile() throws Exception {
-		String filePath = String.format("%s/%sRepository.java", 
-				springWriter.setDirectory(SINGULAR, PLURAL),
-				mySQLTable.getName()
-		);
-		final String REPO_STRING = createFileString();
-		BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
-		
-		writer.write(REPO_STRING);
-		writer.close();
 	}
 	
 	public String createFileString() throws Exception{
