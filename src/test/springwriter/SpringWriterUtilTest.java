@@ -35,11 +35,25 @@ public class SpringWriterUtilTest {
 		assertEquals("String", SpringWriterUtil.getPrimaryKeyType(newTable(MySQLType.VARCHAR)));
 	}
 	
-	private MySQLTable newTable(MySQLType primaryType) throws Exception{
+	private MySQLTable newTable(MySQLType primaryType) throws Exception {
 		MySQLTable table = new MySQLTable("test_table");
 		table.addColumn(new MySQLColumn("id", primaryType, 100));
 		table.addPrimaryKey("id", true);
 		
 		return table;
+	}
+	
+	@Test
+	@DisplayName("uppercaseFirstChar should uppercase first char of String and return it")
+	public void uppercaseFirstCharTest() {
+		assertEquals("Abc", SpringWriterUtil.uppercaseFirstChar("abc"));
+		assertEquals("CoolKids", SpringWriterUtil.uppercaseFirstChar("coolKids"));
+	}
+	
+	@Test
+	@DisplayName("lowercaseFirstChar should lowercase first char of String and return it")
+	public void lowercaseFirstCharTest() {
+		assertEquals("red", SpringWriterUtil.lowercaseFirstChar("Red"));
+		assertEquals("myVariable", SpringWriterUtil.lowercaseFirstChar("MyVariable"));
 	}
 }

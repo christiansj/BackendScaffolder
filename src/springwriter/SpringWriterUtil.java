@@ -55,4 +55,12 @@ public class SpringWriterUtil {
 		
 		return mySQLToIdTypeMap.get(primaryKeyType);
 	}
+	
+	public static String uppercaseFirstChar(String s) {
+		return String.valueOf(s.charAt(0)).toUpperCase() + s.substring(1);
+	}
+	
+	public static String lowercaseFirstChar(String s) {
+		return String.valueOf(s.charAt(0)).toLowerCase() + s.substring(1);
+	}
 }
