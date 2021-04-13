@@ -38,4 +38,9 @@ class BookController {
 		return repository.save(newBook);
 	}
 
+	@DeleteMapping("/book/{id}")
+	void deleteBook(@PathVariable Integer id){
+		repository.deleteById(id);
+	}
+
 }

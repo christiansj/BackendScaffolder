@@ -66,6 +66,7 @@ public class SpringControllerWriter extends SpringFileWriter implements SpringFi
 		writeGetOne(pw);
 		writePost(pw);
 		writePut(pw);
+		writeDelete(pw);
 		
 		return sw.toString();
 	}
@@ -108,6 +109,15 @@ public class SpringControllerWriter extends SpringFileWriter implements SpringFi
 		));
 		
 		pw.println(String.format("\t\treturn repository.save(new%s);", TABLE_NAME));
+		pw.println("\t}\n");
+	}
+	
+	private void writeDelete(PrintWriter pw) {
+		pw.println(mappingStr("Delete", MODEL_PATH + "/{id}"));
+		pw.println(String.format("\tvoid delete%s(@PathVariable %s id){", 
+				TABLE_NAME, PRIMARY_TYPE
+				));
+		pw.println("\t\trepository.deleteById(id);");
 		pw.println("\t}\n");
 	}
 	
