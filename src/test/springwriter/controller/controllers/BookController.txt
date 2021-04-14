@@ -5,6 +5,9 @@ import test.springwriter.controller.models.Book;
 import test.springwriter.controller.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,29 +21,42 @@ class BookController {
 	private BookRepository repository;
 
 	@GetMapping("/book")
-	List<Book> getAll(){
-		return repository.findAll();
+	ResponseEntity<List<Book>> getAll(){
+		return ResponseEntity.ok(repository.findAll());
 	}
 
 	@GetMapping("/book/{id}")
-	Book getOne(@PathVariable Integer id){
-		return repository.findById(id);
+	ResponseEntity<Book> getOne(@PathVariable Integer id){
+		Book book = repository.findById(id);
+		if(book == null){
+			return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
+		}
+
+		return ResponseEntity.ok(book);
 	}
 
 	@PostMapping("/book")
-	Book postBook(@RequestBody Book newBook){
-		return repository.save(newBook);
+	ResponseEntity<Book> postBook(@RequestBody Book newBook){
+		return ResponseEntity.ok(repository.save(newBook));
 	}
 
 	@PutMapping("/book/{id}")
-	Book putBook(@RequestBody Book newBook, @PathVariable Integer id){
+	ResponseEntity<Book> putBook(@RequestBody Book newBook, @PathVariable Integer id){
+		if(repository.findById(id) == null){
+			return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
+		}
+
 		newBook.setId(id);
-		return repository.save(newBook);
+		return ResponseEntity.ok(repository.save(newBook));
 	}
 
 	@DeleteMapping("/book/{id}")
-	void deleteBook(@PathVariable Integer id){
-		repository.deleteById(id);
+	ResponseEntity<Book> deleteBook(@PathVariable Integer id){
+		if(repository.findById(id) == null){
+			return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<Book>(HttpStatus.OK);
 	}
 
 }
