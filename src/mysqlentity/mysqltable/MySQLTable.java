@@ -68,4 +68,35 @@ public class MySQLTable {
 	public String getName() {
 		return name;
 	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("=== MySQLTable ===\n");
+		sb.append(String.format("Name:\n\t\"%s\"\n", name));
+		
+		sb.append("Columns:\n");
+		final String HEADER_FMT = "\t%-15s %-10s %s\n";
+		sb.append(String.format(HEADER_FMT, 
+				"NAME", "TYPE", "LENGTH"
+		));
+		sb.append(String.format(HEADER_FMT, 
+				"------", "------", "--------"
+		));
+		for(MySQLColumn col : columnList) {
+			sb.append(String.format(HEADER_FMT, 
+					col.getName(), col.getMySQLType().name(), col.getLength()
+			));
+		}
+		
+		sb.append(String.format("Primary Key%s:\n\t",
+				primaryKeyNames.size() > 1 ? "s" : ""
+		));
+		
+		for(int i = 0; i < primaryKeyNames.size(); i++) {
+			sb.append(primaryKeyNames.get(i));
+			sb.append(i+1 < primaryKeyNames.size() ? ", " : "\n");
+		}
+		
+		return sb.toString();
+	}
 }

@@ -11,6 +11,8 @@ import mysqlinterpreter.parser.MySQLParser;
 import springwriter.SpringWriter;
 
 public class CreateTableOperation extends Operation {
+	final boolean DEBUG_TABLE = true;
+	
 	final String[] typesWithLength = {"TINYINT", "INT", "VARCHAR", "BIGINT", "CHAR"};
 	private MySQLTable mySQLTable;
 
@@ -31,7 +33,9 @@ public class CreateTableOperation extends Operation {
         
         checkTokenStr(";", true);
     	scanner.getNext();
-    	
+    	if(DEBUG_TABLE) {
+    		System.out.println(mySQLTable);
+    	}
     	SpringWriter springWriter = new SpringWriter("src/output", mySQLTable);
     	springWriter.writeFiles();
     }

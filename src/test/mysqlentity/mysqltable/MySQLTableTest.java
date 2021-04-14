@@ -37,4 +37,34 @@ public class MySQLTableTest {
 		
 		assertEquals("Column 'Apple' already exists in table 'Fruit'", exception.getMessage());
 	}
+	
+	@Test
+	@DisplayName("toString method should print out table name, columns and primary keys")
+	public void testToString() throws Exception {
+		MySQLTable table = new MySQLTable("Person");
+		table.addColumn(new MySQLColumn("id", MySQLType.INT, 11));
+		table.addColumn(new MySQLColumn("first_name", MySQLType.VARCHAR, 255));
+		table.addColumn(new MySQLColumn("last_name", MySQLType.VARCHAR, 255));
+		table.addPrimaryKey("id", true);
+		
+		assertEquals(expectedToString(), table.toString());
+	}
+	
+	private String expectedToString() {
+		StringBuilder sb = new StringBuilder("=== MySQLTable ===\n");
+		sb.append("Name:\n\t\"Person\"\n");
+		sb.append("Columns:\n");
+		
+		final String HEADER_FMT = "\t%-15s %-10s %s\n";
+		sb.append(String.format(HEADER_FMT,"NAME", "TYPE", "LENGTH"));
+		sb.append(String.format(HEADER_FMT, "------", "------", "--------"));
+		sb.append(String.format(HEADER_FMT, "id", "INT", "11"));
+		sb.append(String.format(HEADER_FMT, "first_name", "VARCHAR", "255"));
+		sb.append(String.format(HEADER_FMT, "last_name", "VARCHAR", "255"));
+		
+		sb.append("Primary Key:\n");
+		sb.append("\tid\n");
+		
+		return sb.toString();
+	}
 }
