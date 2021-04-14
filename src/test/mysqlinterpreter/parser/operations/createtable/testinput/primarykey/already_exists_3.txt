@@ -1,0 +1,4 @@
+CREATE TABLE Person(
+	id_one INT PRIMARY KEY,
+	id_two INT PRIMARY KEY
+);

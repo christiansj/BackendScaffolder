@@ -56,15 +56,61 @@ public class CreateTableOperation extends Operation {
     
     private void readColumns() throws Exception {
     	while(!scanner.currentToken.tokenStr.equals(")")) {
-    		readColumn();
+    		if(scanner.currentToken.primClassif == Classif.KEY_TYPE) {
+    			readKey();
+    		}else {
+    			readColumn();
+    		}
+    		
     		if(scanner.currentToken.tokenStr.equals(",")) {
     			scanner.getNext();
     		}
     	}
     }
     
+    private void readKey() throws Exception {
+    	String tokenStr = scanner.currentToken.tokenStr;
+    	if(tokenStr.equals("FOREIGN")) {
+    		parser.error("FOREIGN keys are not supported yet");
+    	}else if(tokenStr.equals("AUTO_INCREMENT")) {
+    		parser.error("AUTO_INCREMENT is not connected to a column");
+    	}
+    	
+    	checkTokenStr("PRIMARY", false);
+    	checkTokenStr("KEY", true);
+    	checkTokenStr("(", true);
+    	
+    	if(mySQLTable.getPrimaryKeyNames().size() > 0) {
+    		parser.error("PRIMARY KEY(s) are already defined for table '%s'", mySQLTable.getName());
+    	}
+    	
+    	tokenStr = scanner.getNext();
+    	
+    	if(tokenStr.equals(")")) {
+    		parser.error("Expected column name for PRIMARY KEY");
+    	}
+    	
+    	while(!scanner.currentToken.tokenStr.equals(")")) {
+    		addPrimaryKey();
+    	}
+    	scanner.getNext();
+    }
+    
+    private void addPrimaryKey() throws Exception {
+    	checkSubclassif(Subclassif.IDENTIFIER);
+    	MySQLColumn col = mySQLTable.getColumn(scanner.currentToken.tokenStr);
+    	mySQLTable.addPrimaryKey(col.getName(), true);
+    	
+    	if(scanner.getNext().equals(",")) {
+    		scanner.getNext();
+    	}
+    }
+    
     private void readColumn() throws Exception {
     	String columnName = scanner.currentToken.tokenStr;
+    	if(columnName.equals("KEY")) {
+    		parser.error("'PRIMARY' or 'FOREIGN' must precede KEY");
+    	}
     	checkSubclassif(Subclassif.IDENTIFIER);
 
     	scanner.getNext();
@@ -117,6 +163,10 @@ public class CreateTableOperation extends Operation {
     			scanner.currentToken.tokenStr);
     	}
     	checkTokenStr("KEY", true);
+    	
+    	if(mySQLTable.getPrimaryKeyNames().size() > 0) {
+    		parser.error("PRIMARY KEY(s) are already defined for table '%s'", mySQLTable.getName());
+    	}
     	
     	col.setIsPrimaryKey(true);
     	

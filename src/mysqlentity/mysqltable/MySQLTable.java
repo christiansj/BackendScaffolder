@@ -33,11 +33,20 @@ public class MySQLTable {
 			String fmt = "'%s' doesn't exists in table '%s'";
 			throw new Exception(String.format(fmt, colName, name));
 		}
+		if(primaryKeyNames.contains(colName) && isPrimary) {
+			String fmt = "table '%s' already has PRIMARY KEY '%s'";
+			throw new Exception(String.format(fmt, name, colName));
+		}
 		
 		col.setIsPrimaryKey(isPrimary);
 		columnList.set(columnList.indexOf(col), col);
 		columnMap.put(colName, col);
-		primaryKeyNames.add(colName);
+		
+		if(isPrimary) {
+			primaryKeyNames.add(colName);
+		}else {
+			primaryKeyNames.remove(colName);
+		}
 	}
 	
 	public ArrayList<String> getPrimaryKeyNames(){
