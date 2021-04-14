@@ -30,10 +30,10 @@ public class MySQLTable {
 	public void addPrimaryKey(String colName, boolean isPrimary) throws Exception {
 		MySQLColumn col = columnMap.get(colName);
 		if(col == null) {
-			String fmt = "'%s' doesn't exists in table '%s'";
+			String fmt = "'%s' doesn't exist in table '%s'";
 			throw new Exception(String.format(fmt, colName, name));
 		}
-		if(primaryKeyNames.contains(colName) && isPrimary) {
+		else if(primaryKeyNames.contains(colName) && isPrimary) {
 			String fmt = "table '%s' already has PRIMARY KEY '%s'";
 			throw new Exception(String.format(fmt, name, colName));
 		}

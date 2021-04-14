@@ -39,6 +39,52 @@ public class MySQLTableTest {
 	}
 	
 	@Test
+	@DisplayName("adding PRIMARY KEY for nonexistent column should throw an Exception")
+	public void testAddingNonexistentPrimaryColumn() {
+		MySQLTable table = new MySQLTable("Person");
+		Exception exception = assertThrows(Exception.class, ()->{
+			table.addPrimaryKey("id", true);
+		});
+		
+		assertEquals("'id' doesn't exist in table 'Person'", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("adding existing PRIMARY KEY should throw an Exception")
+	public void testAddingExistingPrimaryKey() throws Exception {
+		MySQLTable table = new MySQLTable("Person");
+		table.addColumn(new MySQLColumn("id", MySQLType.INT, 11));
+		table.addPrimaryKey("id", true);
+		
+		Exception exception = assertThrows(Exception.class, ()->{
+			table.addPrimaryKey("id", true);
+		});
+		assertEquals("table 'Person' already has PRIMARY KEY 'id'", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("addPrimaryKeyName should add primary key name when isPrimary is true")
+	public void testAddPrimaryKeyName() throws Exception {
+		MySQLTable table = new MySQLTable("Person");
+		table.addColumn(new MySQLColumn("id", MySQLType.INT, 11));
+		table.addPrimaryKey("id", true);
+		
+		assertEquals(1, table.getPrimaryKeyNames().size());
+		assertEquals("id", table.getPrimaryKeyNames().get(0));
+	}
+	
+	@Test
+	@DisplayName("addPrimaryKeyName should remove primary key name when isPrimary is false")
+	public void testRemovingPrimaryKeyName() throws Exception{
+		MySQLTable table = new MySQLTable("Person");
+		table.addColumn(new MySQLColumn("id", MySQLType.INT, 11));
+		table.addPrimaryKey("id", true);
+		table.addPrimaryKey("id", false);
+		
+		assertEquals(0, table.getPrimaryKeyNames().size());
+	}
+	
+	@Test
 	@DisplayName("toString method should print out table name, columns and primary keys")
 	public void testToString() throws Exception {
 		MySQLTable table = new MySQLTable("Person");
