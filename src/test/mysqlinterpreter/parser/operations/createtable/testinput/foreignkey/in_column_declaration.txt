@@ -1,0 +1,4 @@
+CREATE TABLE Person(
+	id INT,
+	occupation_id INT FOREIGN KEY REFERENCES
+);

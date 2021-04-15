@@ -138,10 +138,10 @@ public class CreateTableOperation extends Operation {
     private int getColumnLength(String columnType) throws Exception {
     	String tokenStr = scanner.currentToken.tokenStr;
     	
-    	if(tokenStr.equals("PRIMARY") || tokenStr.equals(",") || tokenStr.equals("AUTO_INCREMENT")) {
+    	if(scanner.currentToken.primClassif == Classif.KEY_TYPE || tokenStr.equals(",")) {
     		return 0;
     	}else if(!tokenStr.equals("(")) {
-    		if(!Arrays.asList(typesWithLength).contains(columnType)) {
+    		if(tokenStr.equals(")")) {
     			return 0;
     		}
     		parser.error("unexpected token '%s', expected '('", tokenStr);
@@ -159,10 +159,10 @@ public class CreateTableOperation extends Operation {
     }
     
     private MySQLColumn handleKeyType(MySQLColumn col) throws Exception {
-    	if(!scanner.currentToken.tokenStr.equals("PRIMARY")) {
-    		if(scanner.currentToken.tokenStr.equals("KEY")) {
-    			parser.error("expected 'PRIMARY' before 'KEY'");
-    		}
+    	final String tokenStr = scanner.currentToken.tokenStr;
+    	if(tokenStr.equals("FOREIGN")) {
+			parser.error("FOREIGN keys cannot be created in column declaration");
+		} else if(!tokenStr.equals("PRIMARY")) {
     		parser.error("'%s' key type is not supported yet", 
     			scanner.currentToken.tokenStr);
     	}

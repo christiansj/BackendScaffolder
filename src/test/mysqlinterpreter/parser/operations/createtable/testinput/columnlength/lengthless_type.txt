@@ -1,0 +1,5 @@
+CREATE TABLE Employee(
+	id INT PRIMARY KEY,
+	start_dt DATE,
+	occupation VARCHAR(255)
+);
