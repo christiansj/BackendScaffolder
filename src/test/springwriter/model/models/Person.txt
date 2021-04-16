@@ -1,5 +1,7 @@
 package test.springwriter.model.models;
 
+import javax.validation.constraints.Size;
+
 import javax.persistance.Entity;
 import javax.persistance.Id;
 
@@ -18,6 +20,8 @@ import lombok.NoArgsConstructor;
 public class Person {
 
 	private Integer id;
+	@Size(max = 100)
 	private String firstName;
+	@Size(max = 100)
 	private String lastName;
 }

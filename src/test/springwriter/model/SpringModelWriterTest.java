@@ -36,4 +36,14 @@ public class SpringModelWriterTest {
 		modelWriter.writeFile();
 		TestUtility.evaluateFileContents(table, "model");
 	}
+	
+	@Test
+	@DisplayName("should generate model with Date import")
+	public void testModelWithDate() throws Exception {
+		MySQLTable table = WriterTestData.employeeTable();
+		SpringModelWriter modelWriter = newModelWriter(MODEL_DIR, table);
+		
+		modelWriter.writeFile();
+		TestUtility.evaluateFileContents(table, "model");
+	}
 }

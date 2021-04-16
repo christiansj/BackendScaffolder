@@ -22,4 +22,13 @@ public class WriterTestData {
 		
 		return table;
 	}
+	
+	public static MySQLTable employeeTable() throws Exception {
+		MySQLTable table = new MySQLTable("Employee");
+		table.addColumn(new MySQLColumn("id", MySQLType.INT, 100));
+		table.addColumn(new MySQLColumn("start_date", MySQLType.DATE, 0));
+		table.addPrimaryKey("id", true);
+		
+		return table;
+	}
 }

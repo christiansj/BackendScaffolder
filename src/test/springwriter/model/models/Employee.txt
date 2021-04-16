@@ -1,6 +1,6 @@
 package test.springwriter.model.models;
 
-import javax.validation.constraints.Size;
+import java.util.Date;
 
 import javax.persistance.Entity;
 import javax.persistance.Id;
@@ -17,10 +17,9 @@ import lombok.NoArgsConstructor;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Book {
+public class Employee {
 
 	@Id
 	private Integer id;
-	@Size(max = 255)
-	private String title;
+	private Date startDate;
 }

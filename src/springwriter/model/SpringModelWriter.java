@@ -59,11 +59,24 @@ public class SpringModelWriter extends SpringFileWriter implements SpringFileWri
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
 		
-		pw.println();	
+		pw.println();
+		writeOptionalImports(pw);
+		
 		pw.println(SpringWriterUtil.writeImports("javax.persistance", PERSISTANCES));
 		pw.println(SpringWriterUtil.writeImports("lombok", LOMBOKS));
 		
 		return sw.toString();
+	}
+	
+	private void writeOptionalImports(PrintWriter pw) {
+		if(mySQLTable.hasDate()) {
+			pw.println("import java.util.Date;");
+		}else if(mySQLTable.hasSize()) {
+			pw.println("import javax.validation.constraints.Size;");
+		}
+		if(mySQLTable.hasDate() || mySQLTable.hasSize()) {
+			pw.println();
+		}
 	}
 	
 	private String createVariableString() throws Exception {
@@ -73,13 +86,19 @@ public class SpringModelWriter extends SpringFileWriter implements SpringFileWri
 		for(MySQLColumn col : mySQLTable.getColumns()) {
 			String colType = col.getMySQLType().name();
 			
+			
 			if(!mySQLToJavaMap.containsKey(colType)) {
 				String err = String.format("'%s' is not in MySQLToJavaMap", colType);
 				throw new Exception(err);
 			}
+			final String VARIABLE_TYPE = mySQLToJavaMap.get(colType);
 			
 			if(col.isPrimaryKey()) {
 				pw.println("\t@Id");
+			}
+			
+			if(VARIABLE_TYPE.equals("String")  && col.getLength() > 0) {
+				pw.println(String.format("\t@Size(max = %d)", col.getLength()));
 			}
 			
 			pw.println(String.format("\tprivate %s %s;", 

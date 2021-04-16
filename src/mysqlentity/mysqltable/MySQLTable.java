@@ -10,7 +10,7 @@ import mysqlentity.mysqlcolumn.MySQLColumn;
 import springwriter.SpringWriterUtil;
 
 public class MySQLTable {
-	
+
 	private final String name;
 	private ArrayList<String> primaryKeyNames = new ArrayList<String>();
 	private ArrayList<MySQLColumn> columnList = new ArrayList<>();
