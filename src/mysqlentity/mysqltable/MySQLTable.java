@@ -1,8 +1,11 @@
 package mysqlentity.mysqltable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
+import mysqlentity.datatype.MySQLType;
 import mysqlentity.mysqlcolumn.MySQLColumn;
 import springwriter.SpringWriterUtil;
 
@@ -13,6 +16,9 @@ public class MySQLTable {
 	private ArrayList<MySQLColumn> columnList = new ArrayList<>();
 	private HashMap<String, MySQLColumn> columnMap = new HashMap<>();
 	
+	private boolean hasDate = false;
+	private boolean hasSize = false;
+	
 	public MySQLTable(String name) {
 		this.name = SpringWriterUtil.uppercaseFirstChar(SpringWriterUtil.formatMySQLVariable(name));
 	}
@@ -22,9 +28,21 @@ public class MySQLTable {
 			throw new Exception(String.format("Column '%s' already exists in table '%s'", 
 					column.getName(), name));
 		}
-
+		setBooleans(column);
+		
 		columnMap.put(column.getName(), column);
 		columnList.add(column);
+	}
+	
+	private void setBooleans(MySQLColumn column) {
+		List<String> SUPPORTED_SIZE_COLS =   Arrays.asList("VARCHAR", "CHAR"); 
+		final MySQLType colType = column.getMySQLType();
+		
+		if(colType == MySQLType.DATE) {
+			hasDate = true;
+		}else if(column.getLength() > 0 && SUPPORTED_SIZE_COLS.contains(colType.name())) {
+			hasSize = true;
+		}
 	}
 	
 	public void addPrimaryKey(String colName, boolean isPrimary) throws Exception {
@@ -67,6 +85,14 @@ public class MySQLTable {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public boolean hasDate() {
+		return hasDate;
+	}
+	
+	public boolean hasSize() {
+		return hasSize;
 	}
 	
 	public String toString() {

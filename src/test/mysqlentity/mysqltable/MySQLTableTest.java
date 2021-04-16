@@ -4,6 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import mysqlentity.datatype.MySQLType;
 import mysqlentity.mysqlcolumn.MySQLColumn;
@@ -11,9 +13,12 @@ import mysqlentity.mysqltable.MySQLTable;
 
 public class MySQLTableTest {
 	@Test
-	@DisplayName("constructor should set table name")
+	@DisplayName("constructor should set table name and booleans should be set to false")
 	public void testConstructor() {
-		assertEquals("NewTable", new MySQLTable("new_table").getName());
+		MySQLTable table = new MySQLTable("new_table");
+		assertEquals("NewTable", table.getName());
+		assertFalse(table.hasDate());
+		assertFalse(table.hasSize());
 	}
 	
 	@Test
@@ -36,6 +41,26 @@ public class MySQLTableTest {
 		});
 		
 		assertEquals("Column 'Apple' already exists in table 'Fruit'", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("adding Date column should set hasDate to true")
+	public void testAddDateColumn() throws Exception{
+		MySQLTable table = new MySQLTable("Employee");
+		table.addColumn(new MySQLColumn("start_dt", MySQLType.DATE, 0));
+		assertTrue(table.hasDate());
+	}
+	
+	@Test
+	@DisplayName("adding column compatible with Size should set hasSize to true")
+	public void testAddSizeColumn() throws Exception{
+		MySQLTable charTable = new MySQLTable("charTable");
+		charTable.addColumn(new MySQLColumn("my_char", MySQLType.CHAR, 12));
+		MySQLTable varCharTable = new MySQLTable("varCharTable");
+		varCharTable.addColumn(new MySQLColumn("my_char", MySQLType.VARCHAR, 15));
+		
+		assertTrue(charTable.hasSize());
+		assertTrue(varCharTable.hasSize());
 	}
 	
 	@Test
