@@ -6,7 +6,9 @@ import mysqlinterpreter.scanner.MySQLScanner;
 import mysqlinterpreter.scanner.Token;
 import mysqlinterpreter.symboltable.SymbolTable;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -139,5 +141,18 @@ public class MySqlScannerTest {
     @DisplayName("scanning in DEFINE (MySQL type) tokens")
     public void testDefineTokens() throws Exception{
         fileTokenClassTests("mysql_types.txt", Classif.CONTROL, Subclassif.DECLARE);
+    }
+    
+    @Test
+    @DisplayName("printCurrentLine should print current line with line number")
+    public void testPrintCurrentLine() throws Exception {
+    	ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    	final PrintStream originalOut = System.out;
+    	System.setOut(new PrintStream(outContent));
+    	MySQLScanner scanner = newTestScanner("test1.txt");
+    	scanner.printCurrentLine();
+    	
+    	assertEquals(" 1. CREATE TABLE MyTest( 1\n", outContent.toString());
+    	System.setOut(originalOut);
     }
 }
