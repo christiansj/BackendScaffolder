@@ -188,11 +188,7 @@ public class CreateTableOperation extends Operation {
     				expectedString, scanner.currentToken.tokenStr);
     	}
     }
-    
-    public String getTableName(){
-        return mySQLTable.getName();
-    }
-    
+        
     public MySQLTable getMySQLTable() {
     	return mySQLTable;
     }

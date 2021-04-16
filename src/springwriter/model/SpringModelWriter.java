@@ -71,9 +71,12 @@ public class SpringModelWriter extends SpringFileWriter implements SpringFileWri
 	private void writeOptionalImports(PrintWriter pw) {
 		if(mySQLTable.hasDate()) {
 			pw.println("import java.util.Date;");
-		}else if(mySQLTable.hasSize()) {
+		}
+		
+		if(mySQLTable.hasSize()) {
 			pw.println("import javax.validation.constraints.Size;");
 		}
+		
 		if(mySQLTable.hasDate() || mySQLTable.hasSize()) {
 			pw.println();
 		}
@@ -101,7 +104,7 @@ public class SpringModelWriter extends SpringFileWriter implements SpringFileWri
 				pw.println(String.format("\t@Size(max = %d)", col.getLength()));
 			}
 			
-			pw.println(String.format("\tprivate %s %s;", 
+			pw.println(String.format("\tprivate %s %s;\n", 
 					mySQLToJavaMap.get(colType), 
 					SpringWriterUtil.formatMySQLVariable(col.getName())
 			));

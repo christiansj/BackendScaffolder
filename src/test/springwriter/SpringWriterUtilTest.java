@@ -10,6 +10,7 @@ import mysqlentity.mysqltable.MySQLTable;
 import springwriter.SpringWriterUtil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SpringWriterUtilTest {
 	@Test
@@ -41,6 +42,40 @@ public class SpringWriterUtilTest {
 		table.addPrimaryKey("id", true);
 		
 		return table;
+	}
+	
+	@Test
+	@DisplayName("getPrimaryKeyType should throw an Exception when passed in a table with incompatible primary key")
+	public void getPrimaryKeyTypeIncompatibleTest() throws Exception {
+		Exception exception = assertThrows(Exception.class, ()->{
+			SpringWriterUtil.getPrimaryKeyType(newTable(MySQLType.DATE));
+		});
+		assertEquals("Primary key type 'DATE' isn't defined in mySQLToIdTypeMap", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("getPrimaryKeyType should throw an Exception when passed in a table with a composite key")
+	public void getPrimaryKeyTypeCompositeKey() throws Exception {
+		Exception exception = assertThrows(Exception.class, ()->{
+			MySQLTable table = newTable(MySQLType.INT);
+			table.addColumn(new MySQLColumn("id_two", MySQLType.INT, 11));
+			table.addPrimaryKey("id_two", true);
+			
+			SpringWriterUtil.getPrimaryKeyType(table);
+		});
+		assertEquals("composite keys are not supported yet", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("getPrimaryKeyType should throw an Exception when passed in a table without a primary key")
+	public void getPrimarykeyTypeWithoutPrimaryTest() throws Exception {
+		Exception exception = assertThrows(Exception.class, ()->{
+			MySQLTable table = new MySQLTable("test");
+			table.addColumn(new MySQLColumn("id", MySQLType.INT, 11));
+			
+			SpringWriterUtil.getPrimaryKeyType(table);
+		});
+		assertEquals("no primary key defined in table 'Test'", exception.getMessage());
 	}
 	
 	@Test

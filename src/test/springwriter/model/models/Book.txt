@@ -21,6 +21,8 @@ public class Book {
 
 	@Id
 	private Integer id;
+
 	@Size(max = 255)
 	private String title;
+
 }

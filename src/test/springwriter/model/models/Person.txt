@@ -20,8 +20,11 @@ import lombok.NoArgsConstructor;
 public class Person {
 
 	private Integer id;
+
 	@Size(max = 100)
 	private String firstName;
+
 	@Size(max = 100)
 	private String lastName;
+
 }
