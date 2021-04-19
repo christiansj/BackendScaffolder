@@ -18,6 +18,7 @@ public class TestUtility {
 		HashMap<String, String> springDirMap = new HashMap<>();
 		
 		springDirMap.put("model", "model/models/" + table.getName());
+		springDirMap.put("identity", "model/models/" + table.getName() + "Identity");
 		springDirMap.put("repository", String.format("repository/repositories/%sRepository", table.getName()));
 		springDirMap.put("controller", String.format("controller/controllers/%sController", table.getName()));
 		if(!springDirMap.containsKey(springFileType)) {

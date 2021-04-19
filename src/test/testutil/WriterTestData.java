@@ -31,4 +31,18 @@ public class WriterTestData {
 		
 		return table;
 	}
+	
+	public static MySQLTable studentTable() throws Exception {
+		MySQLTable table = new MySQLTable("Student");
+		table.addColumn(new MySQLColumn("id", MySQLType.INT, 11));
+		table.addColumn(new MySQLColumn("school_id", MySQLType.VARCHAR, 30));
+		table.addColumn(new MySQLColumn("first_name", MySQLType.VARCHAR, 255));
+		table.addColumn(new MySQLColumn("last_name", MySQLType.VARCHAR, 255));
+		table.addColumn(new MySQLColumn("major", MySQLType.VARCHAR, 100));
+		
+		table.addPrimaryKey("id", true);
+		table.addPrimaryKey("school_id", true);
+		
+		return table;
+	}
 }
