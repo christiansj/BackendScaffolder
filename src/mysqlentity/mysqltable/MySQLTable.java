@@ -95,6 +95,10 @@ public class MySQLTable {
 		return hasSize;
 	}
 	
+	public boolean hasCompositeKey() {
+		return primaryKeyNames.size() > 1;
+	}
+	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("=== MySQLTable ===\n");

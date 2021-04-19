@@ -20,6 +20,7 @@ public class MySQLTableTest {
 		assertEquals("NewTable", table.getName());
 		assertFalse(table.hasDate());
 		assertFalse(table.hasSize());
+		assertFalse(table.hasCompositeKey());
 	}
 	
 	@Test
@@ -97,6 +98,19 @@ public class MySQLTableTest {
 		
 		assertEquals(1, table.getPrimaryKeyNames().size());
 		assertEquals("id", table.getPrimaryKeyNames().get(0));
+	}
+	
+	@Test
+	@DisplayName("hasCompositeKey should return boolean based on primary key count")
+	public void testHasCompositeKey() throws Exception{
+		MySQLTable table = new MySQLTable("Student");
+		table.addColumn(new MySQLColumn("id", MySQLType.INT, 11));
+		table.addColumn(new MySQLColumn("school_id", MySQLType.INT, 11));
+		
+		table.addPrimaryKey("id", true);
+		assertFalse(table.hasCompositeKey());
+		table.addPrimaryKey("school_id", true);
+		assertTrue(table.hasCompositeKey());
 	}
 	
 	@Test
