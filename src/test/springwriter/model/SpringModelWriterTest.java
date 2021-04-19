@@ -1,5 +1,8 @@
 package test.springwriter.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +18,15 @@ public class SpringModelWriterTest {
 	private SpringModelWriter newModelWriter(MySQLTable table) throws Exception {
 		SpringWriter springWriter = new SpringWriter(MODEL_DIR, table);
 		return new SpringModelWriter(springWriter);
+	}
+	
+	@Test
+	@DisplayName("evaluateFileContents should throw an Excpetion when given invalid springFileType")
+	public void testEvaluateFileContents() throws Exception {
+		Exception exception = assertThrows(Exception.class, ()->{
+			TestUtility.evaluateFileContents(new MySQLTable("bad_type"), "bad");
+		});
+		assertEquals("TestUtility - bad springFileType '%s', springFileType must be 'model' 'repository' 'identity' or 'controller'", exception.getMessage());	
 	}
 	
 	@Test

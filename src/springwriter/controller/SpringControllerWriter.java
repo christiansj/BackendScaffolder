@@ -8,7 +8,7 @@ import springwriter.SpringWriterUtil;
 import springwriter.springfilewriter.SpringFileWriter;
 import springwriter.springfilewriter.SpringFileWriterInterface;
 
-public class SpringControllerWriter extends SpringFileWriter implements SpringFileWriterInterface {
+public class SpringControllerWriter extends SpringFileWriter {
 	final String MODEL_PATH;
 	final String TABLE_NAME;
 	final String PRIMARY_TYPE;

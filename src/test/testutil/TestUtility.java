@@ -6,9 +6,13 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 import mysqlentity.mysqltable.MySQLTable;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestUtility {
 	
@@ -22,7 +26,7 @@ public class TestUtility {
 		springDirMap.put("repository", String.format("repository/repositories/%sRepository", table.getName()));
 		springDirMap.put("controller", String.format("controller/controllers/%sController", table.getName()));
 		if(!springDirMap.containsKey(springFileType)) {
-			throw new Exception("TestUtility - '%s' springFileType must be 'model' 'repository' or 'controller'");
+			throw new Exception("TestUtility - bad springFileType '%s', springFileType must be 'model' 'repository' 'identity' or 'controller'");
 		}
 		
 		String testFilePath = String.format("%s%s.java", WRITER_DIR, springDirMap.get(springFileType), table.getName());

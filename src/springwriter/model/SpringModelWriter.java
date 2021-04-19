@@ -9,7 +9,7 @@ import springwriter.SpringWriterUtil;
 import springwriter.springfilewriter.SpringFileWriter;
 import springwriter.springfilewriter.SpringFileWriterInterface;
 
-public class SpringModelWriter extends SpringFileWriter implements SpringFileWriterInterface {
+public class SpringModelWriter extends SpringFileWriter {
 	private final boolean HAS_OPTIONAL_IMPORTS;
 	private final String PACKAGE_STR;
 	public SpringModelWriter(SpringWriter springWriter) throws Exception {

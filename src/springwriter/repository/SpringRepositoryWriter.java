@@ -8,7 +8,7 @@ import springwriter.SpringWriterUtil;
 import springwriter.springfilewriter.SpringFileWriter;
 import springwriter.springfilewriter.SpringFileWriterInterface;
 
-public class SpringRepositoryWriter extends SpringFileWriter implements SpringFileWriterInterface{
+public class SpringRepositoryWriter extends SpringFileWriter {
 
 	public SpringRepositoryWriter(SpringWriter springWriter) throws Exception {
 		super(springWriter, "repository", "repositories");

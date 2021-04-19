@@ -9,8 +9,8 @@ import springwriter.SpringWriterUtil;
 import springwriter.springfilewriter.SpringFileWriter;
 import springwriter.springfilewriter.SpringFileWriterInterface;
 
-public class SpringIdentityWriter extends SpringFileWriter implements SpringFileWriterInterface {
-
+public class SpringIdentityWriter extends SpringFileWriter {
+	
 	public SpringIdentityWriter(SpringWriter springWriter) {
 		super(springWriter, "model", "models");
 	}
