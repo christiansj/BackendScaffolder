@@ -11,27 +11,9 @@ import springwriter.springfilewriter.SpringFileWriter;
 import springwriter.springfilewriter.SpringFileWriterInterface;
 
 public class SpringModelWriter extends SpringFileWriter implements SpringFileWriterInterface {
-	HashMap<String, String> mySQLToJavaMap = new HashMap<>();
-	final String[] LOMBOKS = {"Data", "Getter", "Setter", "AllArgsConstructor", "NoArgsConstructor"};
 	
 	public SpringModelWriter(SpringWriter springWriter) throws Exception {
 		super(springWriter, "model", "models");
-
-		initMySqlToJavaMap();
-	}
-	
-	private void initMySqlToJavaMap() {
-		mySQLToJavaMap.put("INT", "Integer");
-		mySQLToJavaMap.put("BIGINT", "Long");
-		mySQLToJavaMap.put("TINYINT", "byte");
-		mySQLToJavaMap.put("BIT", "boolean");
-		mySQLToJavaMap.put("VARCHAR", "String");
-		mySQLToJavaMap.put("CHAR", "String");
-		mySQLToJavaMap.put("FLOAT", "double");
-		mySQLToJavaMap.put("DOUBLE", "double");
-		mySQLToJavaMap.put("DATE", "Date");
-		mySQLToJavaMap.put("DATETIME", "Date");
-		mySQLToJavaMap.put("TIMESTAMP", "Timestamp");
 	}
 		
 	public String createFileString() throws Exception {

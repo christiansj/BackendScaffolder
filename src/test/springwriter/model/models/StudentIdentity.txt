@@ -20,9 +20,9 @@ public class StudentIdentity {
 
 	@NotNull
 	private Integer id;
-	
+
 	@NotNull
 	@Size(max = 30)
 	private String schoolId;
-	
+
 }

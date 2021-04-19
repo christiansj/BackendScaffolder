@@ -12,7 +12,9 @@ public abstract class SpringFileWriter implements SpringFileWriterInterface{
 	public MySQLTable mySQLTable; 
 	public final String SINGULAR;
 	public final String PLURAL;
+	public final String[] LOMBOKS = {"Data", "Getter", "Setter", "AllArgsConstructor", "NoArgsConstructor"};
 	
+	public HashMap<String, String> mySQLToJavaMap = new HashMap<>();
 	private HashMap<String, String> classNameToFileNameMap = new HashMap<>();
 	
 	public SpringFileWriter(SpringWriter springWriter, String singular, String plural) {
@@ -20,15 +22,31 @@ public abstract class SpringFileWriter implements SpringFileWriterInterface{
 		this.SINGULAR = singular;
 		this.PLURAL = plural;
 		this.mySQLTable = springWriter.getMySqlTable();
-		initMap();
+		initClassNameToFileNameMap();
+		initMySQLToJavaMap();
 	}
 	
-	private void initMap() {
+	private void initClassNameToFileNameMap() {
 		String tableName = mySQLTable.getName();
 		
 		classNameToFileNameMap.put("SpringModelWriter", tableName);
+		classNameToFileNameMap.put("SpringIdentityWriter", tableName + "Identity");
 		classNameToFileNameMap.put("SpringRepositoryWriter", tableName + "Repository");
 		classNameToFileNameMap.put("SpringControllerWriter", tableName + "Controller");
+	}
+	
+	private void initMySQLToJavaMap() {
+		mySQLToJavaMap.put("INT", "Integer");
+		mySQLToJavaMap.put("BIGINT", "Long");
+		mySQLToJavaMap.put("TINYINT", "byte");
+		mySQLToJavaMap.put("BIT", "boolean");
+		mySQLToJavaMap.put("VARCHAR", "String");
+		mySQLToJavaMap.put("CHAR", "String");
+		mySQLToJavaMap.put("FLOAT", "double");
+		mySQLToJavaMap.put("DOUBLE", "double");
+		mySQLToJavaMap.put("DATE", "Date");
+		mySQLToJavaMap.put("DATETIME", "Date");
+		mySQLToJavaMap.put("TIMESTAMP", "Timestamp");
 	}
 	
 	public void writeFile() throws Exception {
