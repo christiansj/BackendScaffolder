@@ -6,7 +6,6 @@ import java.io.StringWriter;
 import springwriter.SpringWriter;
 import springwriter.SpringWriterUtil;
 import springwriter.springfilewriter.SpringFileWriter;
-import springwriter.springfilewriter.SpringFileWriterInterface;
 
 public class SpringRepositoryWriter extends SpringFileWriter {
 

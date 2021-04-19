@@ -7,7 +7,6 @@ import mysqlentity.mysqlcolumn.MySQLColumn;
 import springwriter.SpringWriter;
 import springwriter.SpringWriterUtil;
 import springwriter.springfilewriter.SpringFileWriter;
-import springwriter.springfilewriter.SpringFileWriterInterface;
 
 public class SpringIdentityWriter extends SpringFileWriter {
 	

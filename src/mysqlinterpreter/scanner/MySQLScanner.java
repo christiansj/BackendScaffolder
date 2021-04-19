@@ -44,6 +44,7 @@ public class MySQLScanner {
         while((line = reader.readLine()) != null){
             this.lineList.add(line);
         }
+        reader.close();
     }
 
     private Token readToken(){
