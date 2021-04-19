@@ -23,7 +23,7 @@ public class SpringRepositoryWriterTest {
 	@DisplayName("writeRepositoryFile should write repository file")
 	public void testWriteRepositoryFile() throws Exception {
 		MySQLTable table = WriterTestData.bookTable();
-		SpringRepositoryWriter repoWriter = newRepoWriter(REPO_DIR, WriterTestData.bookTable());
+		SpringRepositoryWriter repoWriter = newRepoWriter(REPO_DIR, table);
 		
 		repoWriter.writeFile();
 		TestUtility.evaluateFileContents(table, "repository");
@@ -38,6 +38,16 @@ public class SpringRepositoryWriterTest {
 			repoWriter.writeFile();
 		});
 		assertEquals("no primary key defined in table 'Person'", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("writeRepositoryFile should write identity as primary key if table has composite key")
+	public void testRepositoryWithCompositeKey() throws Exception {
+		MySQLTable table = WriterTestData.studentTable();
+		SpringRepositoryWriter repoWriter = newRepoWriter(REPO_DIR, table);
+		
+		repoWriter.writeFile();
+		TestUtility.evaluateFileContents(table, "repository");
 	}
 	
 }

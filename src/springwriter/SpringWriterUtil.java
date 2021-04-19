@@ -42,7 +42,7 @@ public class SpringWriterUtil {
 			throw new Exception(String.format("no primary key defined in table '%s'", 
 					table.getName()));
 		}else if(PRIMARY_COUNT > 1) {
-			throw new Exception("composite keys are not supported yet");
+			return table.getName() + "Identity";
 		}
 		
 		String primaryKeyName = table.getPrimaryKeyNames().get(0);

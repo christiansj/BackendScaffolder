@@ -1,0 +1,11 @@
+package test.springwriter.repository.repositories;
+
+import test.springwriter.repository.models.Student;
+import test.springwriter.repository.models.StudentIdentity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface StudentRepository extends JpaRepository<Student, StudentIdentity> {
+
+}

@@ -33,11 +33,17 @@ public class SpringRepositoryWriter extends SpringFileWriter implements SpringFi
 	private String importStrings() throws Exception{
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
-		
-		pw.println(String.format("import %s.%s;", 
+		final String PACKAGE_STR = String.format("%s.%s", 
 				springWriter.createPackageStr("model", "models"),
-				mySQLTable.getName())
+				mySQLTable.getName()
 		);
+		pw.println(String.format("import %s;", 
+				PACKAGE_STR
+		));
+		if(mySQLTable.hasCompositeKey()) {
+			pw.println(String.format("import %sIdentity;", PACKAGE_STR));
+		}
+			
 		pw.println("import org.springframework.data.jpa.repository.JpaRepository;");
 		pw.println("import org.springframework.stereotype.Repository;\n");
 		

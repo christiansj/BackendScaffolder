@@ -54,16 +54,15 @@ public class SpringWriterUtilTest {
 	}
 	
 	@Test
-	@DisplayName("getPrimaryKeyType should throw an Exception when passed in a table with a composite key")
+	@DisplayName("getPrimaryKeyType should return '<tablename>Identity'")
 	public void getPrimaryKeyTypeCompositeKey() throws Exception {
-		Exception exception = assertThrows(Exception.class, ()->{
-			MySQLTable table = newTable(MySQLType.INT);
-			table.addColumn(new MySQLColumn("id_two", MySQLType.INT, 11));
-			table.addPrimaryKey("id_two", true);
+
+		MySQLTable table = newTable(MySQLType.INT);
+		table.addColumn(new MySQLColumn("id_two", MySQLType.INT, 11));
+		table.addPrimaryKey("id_two", true);
 			
-			SpringWriterUtil.getPrimaryKeyType(table);
-		});
-		assertEquals("composite keys are not supported yet", exception.getMessage());
+	
+		assertEquals(table.getName()+"Identity", SpringWriterUtil.getPrimaryKeyType(table));
 	}
 	
 	@Test

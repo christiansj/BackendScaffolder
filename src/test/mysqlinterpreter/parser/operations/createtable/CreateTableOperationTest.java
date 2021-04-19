@@ -220,15 +220,11 @@ public class CreateTableOperationTest {
     
     private void evaulateAddedPrimaryKeyNames(String fileName, ArrayList<String> expectedPrimaryKeyNames) throws Exception {
     	CreateTableOperation createTableOperation = newCreateTableOperation("primarykey/"+fileName);
+ 
+    	createTableOperation.execute();
+  
+    	assertEquals(expectedPrimaryKeyNames, createTableOperation.getMySQLTable().getPrimaryKeyNames());
     	
-    	try{
-    		createTableOperation.execute();
-    	}catch(Exception exception) {
-    		if(!exception.getMessage().equals("composite keys are not supported yet")) {
-    			throw exception;
-    		}
-    		assertEquals(expectedPrimaryKeyNames, createTableOperation.getMySQLTable().getPrimaryKeyNames());
-    	}
     }
     
     @Test
