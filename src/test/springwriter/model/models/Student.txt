@@ -1,9 +1,10 @@
 package test.springwriter.model.models;
 
+import test.springwriter.model.models.StudentIdentity;
+
 import javax.validation.constraints.Size;
 
-import javax.persistance.Entity;
-import javax.persistance.Id;
+import javax.persistence.Entity;
 import javax.persistence.EmbeddedId;
 
 import lombok.Data;
@@ -19,17 +20,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Student {
-	
+
 	@EmbeddedId
-	private EnrollmentIdentity enrollmentIdentity;
-	
+	private StudentIdentity studentIdentity;
+
 	@Size(max = 255)
 	private String firstName;
-	
+
 	@Size(max = 255)
 	private String lastName;
 
 	@Size(max = 50)
 	private String major;
-	
+
 }

@@ -2,8 +2,8 @@ package test.springwriter.model.models;
 
 import java.util.Date;
 
-import javax.persistance.Entity;
-import javax.persistance.Id;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 import lombok.Data;
 import lombok.Getter;

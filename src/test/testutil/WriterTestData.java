@@ -38,7 +38,7 @@ public class WriterTestData {
 		table.addColumn(new MySQLColumn("school_id", MySQLType.VARCHAR, 30));
 		table.addColumn(new MySQLColumn("first_name", MySQLType.VARCHAR, 255));
 		table.addColumn(new MySQLColumn("last_name", MySQLType.VARCHAR, 255));
-		table.addColumn(new MySQLColumn("major", MySQLType.VARCHAR, 100));
+		table.addColumn(new MySQLColumn("major", MySQLType.VARCHAR, 50));
 		
 		table.addPrimaryKey("id", true);
 		table.addPrimaryKey("school_id", true);
