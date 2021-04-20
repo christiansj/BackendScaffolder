@@ -53,7 +53,7 @@ public class SpringControllerWriter extends SpringFileWriter {
 			// @RequestParam(name = "first-name") final String firstName;
 			String paramStr = String.format("@RequestParam(name = \"%s\") final %s %s", 
 					primaryKeyName.replace("_", "-").toLowerCase(), // hyphenate & lowercase
-					mySQLToJavaMap.get(paramType), 
+					mySQLToJavaMap.get(paramType), // variable type
 					SpringWriterUtil.formatMySQLVariable(primaryKeyName)
 			);
 			sb.append(paramStr);
@@ -129,7 +129,10 @@ public class SpringControllerWriter extends SpringFileWriter {
 	
 	private void writeGetAll(PrintWriter pw) {
 		pw.println(mappingStr("Get", LOWERCASE_TABLE_NAME));
-		pw.println(String.format("\tResponseEntity<List<%s>> getAll(){", TABLE_NAME));
+		
+		// Prototype
+		// ResponseEntity<List<Record>> getAllRecords()
+		pw.println(String.format("\tResponseEntity<List<%s>> getAll%s() {", TABLE_NAME, TABLE_NAME+"s"));
 		pw.println("\t\treturn ResponseEntity.ok(repository.findAll());");
 		pw.println("\t}\n");
 	}
@@ -143,37 +146,35 @@ public class SpringControllerWriter extends SpringFileWriter {
 		pw.println(mappingStr("Get", LOWERCASE_TABLE_NAME + mappingUrl));
 		
 		// Prototype
-		// ResponseEntity<Record> getOne(id-args)
-		pw.println(String.format("\t%s getOne(%s){",
-				responseEntityStr(), URL_PARAMS
-		));
+		// ResponseEntity<Record> getOneRecord(id-args...)
+		pw.println(singleRecordPrototypeStr("getOne"));
 		
-		// Record record = repository.findBy...(id...);
-		pw.println(String.format("\t\t%s %s = %s;", 
-				TABLE_NAME, LOWERCASE_TABLE_NAME, findByStr()
-		));
+		pw.println("\t\t"+recordEqualsFindByStr());
 		pw.println(ifNotFoundStr(false));
 		
 		pw.println(String.format("\t\treturn ResponseEntity.ok(%s);", LOWERCASE_TABLE_NAME));
 		pw.println("\t}\n");
 	}
 	
+	private String singleRecordPrototypeStr(String methodName) {
+		// @RequestBody Record newRecord
+		final String REQUEST_BODY_PARAM = String.format("@RequestBody %s new%s", TABLE_NAME, TABLE_NAME);
+		
+		String params = methodName.equals("put")  ?  REQUEST_BODY_PARAM + ", " + URL_PARAMS
+						: methodName.equals("post") ? REQUEST_BODY_PARAM
+						: URL_PARAMS;
+		
+		return String.format("\t%s %s%s(%s) {", responseEntityStr(), methodName, TABLE_NAME, params);
+	}
+	
 	private String responseEntityStr() {
 		return String.format("ResponseEntity<%s>", TABLE_NAME);
 	}
 	
-	private String ifNotFoundStr(boolean isFindInRepo) {
-		StringBuilder sb = new StringBuilder();
-		
-		// if(repositoryFindById(id) == null){
-		// OR if(record == null){
-		sb.append(String.format("\t\tif(%s == null){\n", 
-				isFindInRepo ? findByStr() : LOWERCASE_TABLE_NAME
-		));
-		sb.append(String.format("\t\t\treturn new %s(HttpStatus.NOT_FOUND);\n", responseEntityStr()));
-		sb.append("\t\t}\n");
-		
-		return sb.toString();
+	private String recordEqualsFindByStr() {
+		// Record record = repository.findBy...(id-args...);
+		return String.format("%s %s = %s;", 
+			TABLE_NAME, LOWERCASE_TABLE_NAME, findByStr());
 	}
 	
 	private String findByStr() {
@@ -202,14 +203,26 @@ public class SpringControllerWriter extends SpringFileWriter {
 		return sb.toString();
 	}
 	
+	private String ifNotFoundStr(boolean isFindInRepo) {
+		StringBuilder sb = new StringBuilder();
+		
+		// if(repositoryFindById(id) == null){
+		// OR if(record == null){
+		sb.append(String.format("\t\tif(%s == null){\n", 
+				isFindInRepo ? findByStr() : LOWERCASE_TABLE_NAME
+		));
+		sb.append(String.format("\t\t\treturn new %s(HttpStatus.NOT_FOUND);\n", responseEntityStr()));
+		sb.append("\t\t}\n");
+		
+		return sb.toString();
+	}
+	
 	private void writePost(PrintWriter pw) {
 		pw.println(mappingStr("Post", LOWERCASE_TABLE_NAME));
 		
 		// Prototype
 		// ResponseEntity<Record> postRecord(@RequestBody Record newRecord){
-		pw.println(String.format("\t%s post%s(@RequestBody %s new%s){", 
-				responseEntityStr(), TABLE_NAME, TABLE_NAME, TABLE_NAME
-		));
+		pw.println(singleRecordPrototypeStr("post"));
 		pw.println(String.format("\t\treturn ResponseEntity.ok(repository.save(new%s));", 
 				TABLE_NAME));
 		pw.println("\t}\n");
@@ -220,9 +233,7 @@ public class SpringControllerWriter extends SpringFileWriter {
 		
 		// Prototype
 		// ResponseEntity<Record> putRecord(@RequestBody newRecord, id-args...)
-		pw.println(String.format("\t%s put%s(@RequestBody %s new%s, %s){", 
-				responseEntityStr(), TABLE_NAME, TABLE_NAME, TABLE_NAME, URL_PARAMS
-		));
+		pw.println(singleRecordPrototypeStr("put"));
 		
 		pw.println(ifNotFoundStr(true));
 		
@@ -241,12 +252,12 @@ public class SpringControllerWriter extends SpringFileWriter {
 		
 		// Prototype
 		// ResponseEntity<Record> deleteRecord(id-args...)
-		pw.println(String.format("\t%s delete%s(%s){", 
-				responseEntityStr(), TABLE_NAME, URL_PARAMS
-		));
-		pw.println(ifNotFoundStr(true));
+		pw.println(singleRecordPrototypeStr("delete"));
 		
+		pw.println("\t\t"+recordEqualsFindByStr());
+		pw.println(ifNotFoundStr(false));
 		
+		pw.println(String.format("\t\trepository.delete(%s);", LOWERCASE_TABLE_NAME));
 		pw.println(String.format("\t\treturn new %s(HttpStatus.OK);", responseEntityStr()));
 		pw.println("\t}\n");
 	}
