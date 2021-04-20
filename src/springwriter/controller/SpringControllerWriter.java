@@ -54,7 +54,7 @@ public class SpringControllerWriter extends SpringFileWriter {
 			String paramStr = String.format("@RequestParam(name = \"%s\") final %s %s", 
 					primaryKeyName.replace("_", "-").toLowerCase(), // hyphenate & lowercase
 					mySQLToJavaMap.get(paramType), // variable type
-					SpringWriterUtil.formatMySQLVariable(primaryKeyName)
+					SpringWriterUtil.camelCaseMySQLVariable(primaryKeyName)
 			);
 			sb.append(paramStr);
 			
@@ -187,7 +187,7 @@ public class SpringControllerWriter extends SpringFileWriter {
 		StringBuilder parameterBuilder = new StringBuilder();
 		
 		for(String primaryKeyName : PRIMARY_KEY_NAMES) {
-			String camelCasedName = SpringWriterUtil.formatMySQLVariable(primaryKeyName);
+			String camelCasedName = SpringWriterUtil.camelCaseMySQLVariable(primaryKeyName);
 			
 			sb.append(SpringWriterUtil.uppercaseFirstChar(camelCasedName));
 			parameterBuilder.append(camelCasedName);

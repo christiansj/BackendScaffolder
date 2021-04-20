@@ -108,7 +108,7 @@ public class SpringModelWriter extends SpringFileWriter {
 			
 			pw.println(String.format("\tprivate %s %s;\n", 
 					mySQLToJavaMap.get(colType), 
-					SpringWriterUtil.formatMySQLVariable(col.getName())
+					SpringWriterUtil.camelCaseMySQLVariable(col.getName())
 			));
 		}
 		

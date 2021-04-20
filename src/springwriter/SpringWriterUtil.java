@@ -15,7 +15,7 @@ public class SpringWriterUtil {
 		return sb.toString();
 	}
 	
-	public static String formatMySQLVariable(String mysqlVar) {
+	public static String camelCaseMySQLVariable(String mysqlVar) {
 		final String[] TOKENS = mysqlVar.split("_");
 		StringBuilder sb = new StringBuilder(TOKENS[0]);
 		

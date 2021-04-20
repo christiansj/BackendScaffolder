@@ -20,7 +20,7 @@ public class MySQLTable {
 	private boolean hasSize = false;
 	
 	public MySQLTable(String name) {
-		this.name = SpringWriterUtil.uppercaseFirstChar(SpringWriterUtil.formatMySQLVariable(name));
+		this.name = SpringWriterUtil.uppercaseFirstChar(SpringWriterUtil.camelCaseMySQLVariable(name));
 	}
 
 	public void addColumn(MySQLColumn column) throws Exception{

@@ -24,8 +24,8 @@ public class SpringWriterUtilTest {
 	@Test
 	@DisplayName("formatMySQLVariable should return camelcased String with removed underscores")
 	public void formatMySQLVariableTest() {
-		assertEquals("one", SpringWriterUtil.formatMySQLVariable("one"));
-		assertEquals("alphaBravoCharlie", SpringWriterUtil.formatMySQLVariable("alpha_bravo_charlie"));
+		assertEquals("one", SpringWriterUtil.camelCaseMySQLVariable("one"));
+		assertEquals("alphaBravoCharlie", SpringWriterUtil.camelCaseMySQLVariable("alpha_bravo_charlie"));
 	}
 	
 	@Test

@@ -71,7 +71,7 @@ public class SpringIdentityWriter extends SpringFileWriter {
 			
 			pw.println(String.format("\tprivate %s %s;\n", 
 					VARIABLE_TYPE, 
-					SpringWriterUtil.formatMySQLVariable(col.getName())
+					SpringWriterUtil.camelCaseMySQLVariable(col.getName())
 			));
 		}
 		
