@@ -8,6 +8,7 @@ import java.util.List;
 
 import mysqlentity.mysqltable.MySQLTable;
 import springwriter.controller.SpringControllerWriter;
+import springwriter.model.SpringIdentityWriter;
 import springwriter.model.SpringModelWriter;
 import springwriter.repository.SpringRepositoryWriter;
 
@@ -73,6 +74,10 @@ public class SpringWriter {
 		SpringControllerWriter controllerWriter = new SpringControllerWriter(this);
 		
 		modelWriter.writeFile();
+		if(mySQLTable.hasCompositeKey()) {
+			SpringIdentityWriter identityWriter = new SpringIdentityWriter(this);
+			identityWriter.writeFile();
+		}
 		repoWriter.writeFile();
 		controllerWriter.writeFile();
 	}
