@@ -1,0 +1,65 @@
+package test.springwriter.controller.controllers;
+
+import java.util.List;
+import test.springwriter.controller.models.Student;
+import test.springwriter.controller.repositories.StudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@RestController
+class StudentController {
+
+	@Autowired
+	private StudentRepository repository;
+
+	@GetMapping("/student")
+	ResponseEntity<List<Student>> getAll(){
+		return ResponseEntity.ok(repository.findAll());
+	}
+
+	@GetMapping("/student-by-composite-key")
+	ResponseEntity<Student> getOne(@RequestParam(name = "id") final Integer id, 
+								@RequestParam(name = "school-id") final String schoolId){
+		Student student = repository.findByIdAndSchoolId(id, schoolId);
+		if(student == null){
+			return new ResponseEntity<Student>(HttpStatus.NOT_FOUND);
+		}
+
+		return ResponseEntity.ok(student);
+	}
+
+	@PostMapping("/student")
+	ResponseEntity<Student> postStudent(@RequestBody Student newStudent){
+		return ResponseEntity.ok(repository.save(newStudent));
+	}
+
+	@PutMapping("/student")
+	ResponseEntity<Student> putStudent(@RequestBody Student newStudent, @RequestParam(name = "id") final Integer id, 
+								@RequestParam(name = "school-id") final String schoolId){
+		if(repository.findByIdAndSchoolId(id, schoolId) == null){
+			return new ResponseEntity<Student>(HttpStatus.NOT_FOUND);
+		}
+
+		newStudent.setId(id);
+		return ResponseEntity.ok(repository.save(newStudent));
+	}
+
+	@DeleteMapping("/student")
+	ResponseEntity<Student> deleteStudent(@RequestParam(name = "id") final Integer id, 
+								@RequestParam(name = "school-id") final String schoolId){
+		if(repository.findByIdAndSchoolId(id, schoolId) == null){
+			return new ResponseEntity<Student>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<Student>(HttpStatus.OK);
+	}
+
+}

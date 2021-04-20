@@ -2,28 +2,78 @@ package springwriter.controller;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 
 import springwriter.SpringWriter;
 import springwriter.SpringWriterUtil;
 import springwriter.springfilewriter.SpringFileWriter;
 
 public class SpringControllerWriter extends SpringFileWriter {
-	final String MODEL_PATH;
+	
 	final String TABLE_NAME;
-	final String PRIMARY_TYPE;
+	final String LOWERCASE_TABLE_NAME;
+	final String URL_PARAMS;
+	final String SINGLE_RECORD_URL;
+	
+	final ArrayList<String> PRIMARY_KEY_NAMES;
+	final String LAST_PRIMARY_NAME;
+	
 	public SpringControllerWriter(SpringWriter springWriter) throws Exception {
 		super(springWriter, "controller", "controllers");
 		
 		this.TABLE_NAME = mySQLTable.getName();
-		this.MODEL_PATH = SpringWriterUtil.lowercaseFirstChar(TABLE_NAME);
-		this.PRIMARY_TYPE = SpringWriterUtil.getPrimaryKeyType(mySQLTable);
+		this.LOWERCASE_TABLE_NAME = SpringWriterUtil.lowercaseFirstChar(TABLE_NAME);
+		this.PRIMARY_KEY_NAMES = mySQLTable.getPrimaryKeyNames();
+		this.LAST_PRIMARY_NAME = PRIMARY_KEY_NAMES.get(PRIMARY_KEY_NAMES.size()-1);
+		
+		this.URL_PARAMS = urlParameters();
+		this.SINGLE_RECORD_URL = mySQLTable.hasCompositeKey() ? LOWERCASE_TABLE_NAME : LOWERCASE_TABLE_NAME + "/{id}";
+	}
+	
+	private String urlParameters() throws Exception {
+		if(!mySQLTable.hasCompositeKey()) {
+			// @PathVariable String id
+			return String.format("@PathVariable %s id", SpringWriterUtil.getPrimaryKeyType(mySQLTable));
+		}
+		final int TAB_COUNT = 8;
+		StringBuilder sb = new StringBuilder();
+		
+		
+		for(String primaryKeyName : PRIMARY_KEY_NAMES) {
+
+			if(!primaryKeyName.equals(PRIMARY_KEY_NAMES.get(0))) {
+				sb.append("\n");
+				for(int t = 0; t < TAB_COUNT; t++) {
+					sb.append("\t");
+				}
+			}
+			
+			String paramType = mySQLTable.getColumn(primaryKeyName).getMySQLType().name();
+			
+			// @RequestParam(name = "first-name") final String firstName;
+			String paramStr = String.format("@RequestParam(name = \"%s\") final %s %s", 
+					primaryKeyName.replace("_", "-").toLowerCase(), // hyphenate & lowercase
+					mySQLToJavaMap.get(paramType), 
+					SpringWriterUtil.formatMySQLVariable(primaryKeyName)
+			);
+			sb.append(paramStr);
+			
+			if(!primaryKeyName.equals(LAST_PRIMARY_NAME)) {
+				sb.append(", ");
+			}
+		}
+		
+		return sb.toString();
 	}
 	
 	public String createFileString() throws Exception{
 		StringBuilder sb = new StringBuilder();
 		
+		// package and imports
 		sb.append("package " + springWriter.createPackageStr(SINGULAR, PLURAL) + ";");
 		sb.append(importStrings());
+		
+		// class body
 		sb.append("@RestController\n");
 		sb.append(String.format("class %sController {\n\n", TABLE_NAME));
 		sb.append(classBodyString());
@@ -36,21 +86,27 @@ public class SpringControllerWriter extends SpringFileWriter {
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
 
-		final String[] ANNOTATIONS = {"RestController", "GetMapping", "PostMapping", "RequestBody", "PathVariable"};
+		String[] annotations = {"RestController", "GetMapping", "PostMapping", "RequestBody", ""};
+		annotations[annotations.length-1] = mySQLTable.hasCompositeKey() ? "RequestParam" : "PathVariable";
+		
 		final String[] HTTPS = {"ResponseEntity", "HttpStatus"};
 		pw.println("\n");
 		pw.println("import java.util.List;");
+		
+		// model import - import path.model.Record;
 		pw.println(String.format("import %s.%s;", 
 				springWriter.createPackageStr("model", "models"), 
 				TABLE_NAME));
+		
+		// repository import - import path.model.RecordRepository;
 		pw.println(String.format("import %s.%sRepository;",
 				springWriter.createPackageStr("repository", "repositories"),
 				TABLE_NAME));
+		
 		pw.println("import org.springframework.beans.factory.annotation.Autowired;\n");
 		
 		pw.println(SpringWriterUtil.writeImports("org.springframework.http", HTTPS));
-		pw.println(SpringWriterUtil.writeImports("org.springframework.web.bind.annotation", ANNOTATIONS));
-//		pw.println("\n");
+		pw.println(SpringWriterUtil.writeImports("org.springframework.web.bind.annotation", annotations));
 		
 		return sw.toString();
 	}
@@ -61,7 +117,7 @@ public class SpringControllerWriter extends SpringFileWriter {
 		
 		pw.println("\t@Autowired");
 		pw.println(String.format("\tprivate %sRepository repository;\n", TABLE_NAME));
-		
+
 		writeGetAll(pw);
 		writeGetOne(pw);
 		writePost(pw);
@@ -72,46 +128,87 @@ public class SpringControllerWriter extends SpringFileWriter {
 	}
 	
 	private void writeGetAll(PrintWriter pw) {
-		pw.println(mappingStr("Get", MODEL_PATH));
+		pw.println(mappingStr("Get", LOWERCASE_TABLE_NAME));
 		pw.println(String.format("\tResponseEntity<List<%s>> getAll(){", TABLE_NAME));
 		pw.println("\t\treturn ResponseEntity.ok(repository.findAll());");
 		pw.println("\t}\n");
 	}
 	
+	private String mappingStr(String method, String url) {
+		return String.format("\t@%sMapping(\"/%s\")", method, url);
+	}
+	
 	private void writeGetOne(PrintWriter pw) throws Exception {
-		pw.println(mappingStr("Get", MODEL_PATH + "/{id}"));
-		pw.println(String.format("\t%s getOne(@PathVariable %s id){",
-				entityStr(), PRIMARY_TYPE
+		String mappingUrl = mySQLTable.hasCompositeKey() ? "-by-composite-key" : "/{id}";
+		pw.println(mappingStr("Get", LOWERCASE_TABLE_NAME + mappingUrl));
+		
+		// Prototype
+		// ResponseEntity<Record> getOne(id-args)
+		pw.println(String.format("\t%s getOne(%s){",
+				responseEntityStr(), URL_PARAMS
 		));
-		pw.println(String.format("\t\t%s %s = repository.findById(id);", 
-				TABLE_NAME, MODEL_PATH
+		
+		// Record record = repository.findBy...(id...);
+		pw.println(String.format("\t\t%s %s = %s;", 
+				TABLE_NAME, LOWERCASE_TABLE_NAME, findByStr()
 		));
 		pw.println(ifNotFoundStr(false));
 		
-		pw.println(String.format("\t\treturn ResponseEntity.ok(%s);", MODEL_PATH));
+		pw.println(String.format("\t\treturn ResponseEntity.ok(%s);", LOWERCASE_TABLE_NAME));
 		pw.println("\t}\n");
+	}
+	
+	private String responseEntityStr() {
+		return String.format("ResponseEntity<%s>", TABLE_NAME);
 	}
 	
 	private String ifNotFoundStr(boolean isFindInRepo) {
 		StringBuilder sb = new StringBuilder();
 		
+		// if(repositoryFindById(id) == null){
+		// OR if(record == null){
 		sb.append(String.format("\t\tif(%s == null){\n", 
-				isFindInRepo ? "repository.findById(id)" : MODEL_PATH
+				isFindInRepo ? findByStr() : LOWERCASE_TABLE_NAME
 		));
-		sb.append(String.format("\t\t\treturn new %s(HttpStatus.NOT_FOUND);\n", entityStr()));
+		sb.append(String.format("\t\t\treturn new %s(HttpStatus.NOT_FOUND);\n", responseEntityStr()));
 		sb.append("\t\t}\n");
 		
 		return sb.toString();
 	}
 	
-	private String entityStr() {
-		return String.format("ResponseEntity<%s>", TABLE_NAME);
+	private String findByStr() {
+		if(!mySQLTable.hasCompositeKey()) {
+			return "repository.findById(id)";
+		}
+		
+		// repository.findByFirstAndLastName(firstName, lastName)
+		StringBuilder sb = new StringBuilder("repository.findBy");
+		StringBuilder parameterBuilder = new StringBuilder();
+		
+		for(String primaryKeyName : PRIMARY_KEY_NAMES) {
+			String camelCasedName = SpringWriterUtil.formatMySQLVariable(primaryKeyName);
+			
+			sb.append(SpringWriterUtil.uppercaseFirstChar(camelCasedName));
+			parameterBuilder.append(camelCasedName);
+			
+			if(!primaryKeyName.equals(LAST_PRIMARY_NAME)) {
+				sb.append("And");
+				parameterBuilder.append(", ");
+			}
+		}
+		
+		sb.append("(" + parameterBuilder.toString() + ")");
+		
+		return sb.toString();
 	}
 	
 	private void writePost(PrintWriter pw) {
-		pw.println(mappingStr("Post", MODEL_PATH));
+		pw.println(mappingStr("Post", LOWERCASE_TABLE_NAME));
+		
+		// Prototype
+		// ResponseEntity<Record> postRecord(@RequestBody Record newRecord){
 		pw.println(String.format("\t%s post%s(@RequestBody %s new%s){", 
-				entityStr(), TABLE_NAME, TABLE_NAME, TABLE_NAME
+				responseEntityStr(), TABLE_NAME, TABLE_NAME, TABLE_NAME
 		));
 		pw.println(String.format("\t\treturn ResponseEntity.ok(repository.save(new%s));", 
 				TABLE_NAME));
@@ -119,10 +216,14 @@ public class SpringControllerWriter extends SpringFileWriter {
 	}
 	
 	private void writePut(PrintWriter pw) {
-		pw.println(mappingStr("Put", MODEL_PATH + "/{id}"));
-		pw.println(String.format("\t%s put%s(@RequestBody %s new%s, @PathVariable %s id){", 
-				entityStr(), TABLE_NAME, TABLE_NAME, TABLE_NAME, PRIMARY_TYPE
+		pw.println(mappingStr("Put", SINGLE_RECORD_URL));
+		
+		// Prototype
+		// ResponseEntity<Record> putRecord(@RequestBody newRecord, id-args...)
+		pw.println(String.format("\t%s put%s(@RequestBody %s new%s, %s){", 
+				responseEntityStr(), TABLE_NAME, TABLE_NAME, TABLE_NAME, URL_PARAMS
 		));
+		
 		pw.println(ifNotFoundStr(true));
 		
 		final String PRIMARY_NAME = mySQLTable.getPrimaryKeyNames().get(0);
@@ -136,18 +237,17 @@ public class SpringControllerWriter extends SpringFileWriter {
 	}
 	
 	private void writeDelete(PrintWriter pw) {
-		pw.println(mappingStr("Delete", MODEL_PATH + "/{id}"));
-		pw.println(String.format("\t%s delete%s(@PathVariable %s id){", 
-				entityStr(), TABLE_NAME, PRIMARY_TYPE
+		pw.println(mappingStr("Delete", SINGLE_RECORD_URL));
+		
+		// Prototype
+		// ResponseEntity<Record> deleteRecord(id-args...)
+		pw.println(String.format("\t%s delete%s(%s){", 
+				responseEntityStr(), TABLE_NAME, URL_PARAMS
 		));
 		pw.println(ifNotFoundStr(true));
 		
 		
-		pw.println(String.format("\t\treturn new %s(HttpStatus.OK);", entityStr()));
+		pw.println(String.format("\t\treturn new %s(HttpStatus.OK);", responseEntityStr()));
 		pw.println("\t}\n");
-	}
-	
-	private String mappingStr(String method, String url) {
-		return String.format("\t@%sMapping(\"/%s\")", method, url);
 	}
 }

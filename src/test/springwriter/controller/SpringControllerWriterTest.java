@@ -19,9 +19,19 @@ public class SpringControllerWriterTest {
 	}
 	
 	@Test
-	@DisplayName("testWriterControllerFile should write Controller")
-	public void testWriterControllerFile() throws Exception{
+	@DisplayName("writeControllerFile should write Controller")
+	public void testWriteControllerFile() throws Exception {
 		MySQLTable table = WriterTestData.bookTable();
+		SpringControllerWriter controllerWriter = newControllerWriter(CONTROL_DIR, table);
+		
+		controllerWriter.writeFile();
+		TestUtility.evaluateFileContents(table, "controller");
+	}
+	
+	@Test
+	@DisplayName("writeControllerFile should write appropiate Controller for table with a composite key")
+	public void testWriteControllerFileCompositeKey() throws Exception {
+		MySQLTable table = WriterTestData.studentTable();
 		SpringControllerWriter controllerWriter = newControllerWriter(CONTROL_DIR, table);
 		
 		controllerWriter.writeFile();
