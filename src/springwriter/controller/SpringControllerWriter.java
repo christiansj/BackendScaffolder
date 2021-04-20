@@ -35,9 +35,9 @@ public class SpringControllerWriter extends SpringFileWriter {
 			// @PathVariable String id
 			return String.format("@PathVariable %s id", SpringWriterUtil.getPrimaryKeyType(mySQLTable));
 		}
+		
 		final int TAB_COUNT = 8;
 		StringBuilder sb = new StringBuilder();
-		
 		
 		for(String primaryKeyName : PRIMARY_KEY_NAMES) {
 
@@ -86,7 +86,7 @@ public class SpringControllerWriter extends SpringFileWriter {
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
 
-		String[] annotations = {"RestController", "GetMapping", "PostMapping", "RequestBody", ""};
+		String[] annotations = {"RestController", "GetMapping", "PostMapping", "PutMapping", "DeleteMapping", "RequestBody", ""};
 		annotations[annotations.length-1] = mySQLTable.hasCompositeKey() ? "RequestParam" : "PathVariable";
 		
 		final String[] HTTPS = {"ResponseEntity", "HttpStatus"};
@@ -206,7 +206,7 @@ public class SpringControllerWriter extends SpringFileWriter {
 	private String ifNotFoundStr(boolean isFindInRepo) {
 		StringBuilder sb = new StringBuilder();
 		
-		// if(repositoryFindById(id) == null){
+		// if(repository.findById(id) == null){
 		// OR if(record == null){
 		sb.append(String.format("\t\tif(%s == null){\n", 
 				isFindInRepo ? findByStr() : LOWERCASE_TABLE_NAME
