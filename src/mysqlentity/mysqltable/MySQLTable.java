@@ -12,6 +12,7 @@ import springwriter.SpringWriterUtil;
 /**
  * This class represents a MySQL table. It stores collections of MySQLColumns.
  * 
+ * @see MySQLColumn
  */
 public class MySQLTable {
 
@@ -53,6 +54,7 @@ public class MySQLTable {
 	 * 
 	 * @param column new <code>MySQLColumn</code> to be added to this table
 	 * @throws Exception if this table contains a column with the same name
+	 * @see MySQLColumn
 	 */
 	public void addColumn(MySQLColumn column) throws Exception{
 		if(columnMap.containsKey(column.getName())) {
@@ -120,6 +122,7 @@ public class MySQLTable {
 	 * @param columnName String name of the column to return
 	 * @return <code>MySQLColumn</code> that has <code>columnName</code>
 	 * @throws Exception if a column with <code>columnName</code> is not found
+	 * @see MySQLColumn
 	 */
 	public MySQLColumn getColumn(String columnName) throws Exception{
 		if(!columnMap.containsKey(columnName)) {

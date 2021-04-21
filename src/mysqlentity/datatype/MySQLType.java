@@ -1,5 +1,8 @@
 package mysqlentity.datatype;
 
+/**
+ * The type of a MySQL column
+ */
 public enum MySQLType {
     INT,
     BIGINT,

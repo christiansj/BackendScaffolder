@@ -2,6 +2,9 @@ package mysqlentity.mysqlcolumn;
 
 import mysqlentity.datatype.MySQLType;
 
+/**
+ * <code>MySQLColumn</code> represents a column in MySQL. Contains information such as: name, type, and length.
+ */
 public class MySQLColumn {
 	final String name;
 	final MySQLType mySQLType;
@@ -10,6 +13,13 @@ public class MySQLColumn {
 	private boolean isNotNull = false;
 	private boolean isPrimaryKey = false;
 	
+	/**
+	 * Creates a <code>MySQLColumn</code> object.
+	 * 
+	 * @param name String name of this column
+	 * @param mySQLType <code>MySQLType</code> type of this column
+	 * @param length int length of this column
+	 */
 	public MySQLColumn(String name, MySQLType mySQLType, int length) {
 		this.name = name;
 		this.mySQLType = mySQLType;
