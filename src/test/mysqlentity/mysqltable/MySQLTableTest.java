@@ -70,7 +70,7 @@ public class MySQLTableTest {
 	public void testAddingNonexistentPrimaryColumn() {
 		MySQLTable table = new MySQLTable("Person");
 		Exception exception = assertThrows(Exception.class, ()->{
-			table.addPrimaryKey("id", true);
+			table.addPrimaryKey("id");
 		});
 		
 		assertEquals("'id' doesn't exist in table 'Person'", exception.getMessage());
@@ -81,10 +81,10 @@ public class MySQLTableTest {
 	public void testAddingExistingPrimaryKey() throws Exception {
 		MySQLTable table = new MySQLTable("Person");
 		table.addColumn(new MySQLColumn("id", MySQLType.INT, 11));
-		table.addPrimaryKey("id", true);
+		table.addPrimaryKey("id");
 		
 		Exception exception = assertThrows(Exception.class, ()->{
-			table.addPrimaryKey("id", true);
+			table.addPrimaryKey("id");
 		});
 		assertEquals("table 'Person' already has PRIMARY KEY 'id'", exception.getMessage());
 	}
@@ -94,7 +94,7 @@ public class MySQLTableTest {
 	public void testAddPrimaryKeyName() throws Exception {
 		MySQLTable table = new MySQLTable("Person");
 		table.addColumn(new MySQLColumn("id", MySQLType.INT, 11));
-		table.addPrimaryKey("id", true);
+		table.addPrimaryKey("id");
 		
 		assertEquals(1, table.getPrimaryKeyNames().size());
 		assertEquals("id", table.getPrimaryKeyNames().get(0));
@@ -107,21 +107,10 @@ public class MySQLTableTest {
 		table.addColumn(new MySQLColumn("id", MySQLType.INT, 11));
 		table.addColumn(new MySQLColumn("school_id", MySQLType.INT, 11));
 		
-		table.addPrimaryKey("id", true);
+		table.addPrimaryKey("id");
 		assertFalse(table.hasCompositeKey());
-		table.addPrimaryKey("school_id", true);
+		table.addPrimaryKey("school_id");
 		assertTrue(table.hasCompositeKey());
-	}
-	
-	@Test
-	@DisplayName("addPrimaryKeyName should remove primary key name when isPrimary is false")
-	public void testRemovingPrimaryKeyName() throws Exception{
-		MySQLTable table = new MySQLTable("Person");
-		table.addColumn(new MySQLColumn("id", MySQLType.INT, 11));
-		table.addPrimaryKey("id", true);
-		table.addPrimaryKey("id", false);
-		
-		assertEquals(0, table.getPrimaryKeyNames().size());
 	}
 	
 	@Test
@@ -131,7 +120,7 @@ public class MySQLTableTest {
 		table.addColumn(new MySQLColumn("id", MySQLType.INT, 11));
 		table.addColumn(new MySQLColumn("first_name", MySQLType.VARCHAR, 255));
 		table.addColumn(new MySQLColumn("last_name", MySQLType.VARCHAR, 255));
-		table.addPrimaryKey("id", true);
+		table.addPrimaryKey("id");
 		
 		assertEquals(expectedToString(), table.toString());
 	}

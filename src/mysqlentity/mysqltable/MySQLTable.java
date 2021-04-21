@@ -9,20 +9,51 @@ import mysqlentity.datatype.MySQLType;
 import mysqlentity.mysqlcolumn.MySQLColumn;
 import springwriter.SpringWriterUtil;
 
+/**
+ * This class represents a MySQL table. It stores collections of MySQLColumns.
+ * 
+ */
 public class MySQLTable {
 
 	private final String name;
-	private ArrayList<String> primaryKeyNames = new ArrayList<String>();
+	private ArrayList<String> primaryKeyNames = new ArrayList<>();
+	
+	/**
+	 * ArrayList to retain order of columns
+	 */
 	private ArrayList<MySQLColumn> columnList = new ArrayList<>();
+	
+	/**
+	 * HashMap to easily retrieve columns 
+	 */
 	private HashMap<String, MySQLColumn> columnMap = new HashMap<>();
 	
+	/**
+	 * indicates whether to include <code>import java.util.Date;</code> in a Spring Boot model class.
+	 */
 	private boolean hasDate = false;
+	
+	/**
+	 * indicates whether to include @Size and its import for Spring Boot model and entity (composite key) class
+	 */
 	private boolean hasSize = false;
 	
+	
+	/**
+	 * Creates a new MySQLTable object
+	 * 
+	 * @param name String of the table's name
+	 */
 	public MySQLTable(String name) {
 		this.name = SpringWriterUtil.uppercaseFirstChar(SpringWriterUtil.camelCaseMySQLVariable(name));
 	}
 
+	/**
+	 * Adds a <code>MySQLColumn</code> to this table.
+	 * 
+	 * @param column new <code>MySQLColumn</code> to be added to this table
+	 * @throws Exception if this table contains a column with the same name
+	 */
 	public void addColumn(MySQLColumn column) throws Exception{
 		if(columnMap.containsKey(column.getName())) {
 			throw new Exception(String.format("Column '%s' already exists in table '%s'", 
@@ -34,6 +65,11 @@ public class MySQLTable {
 		columnList.add(column);
 	}
 	
+	/**
+	 * Sets boolean <code>hasDate</code> and <code>hasSize</code> based on passed in column  
+	 * 
+	 * @param column MySQLColumn to evaluate whether to set stated booleans to true
+	 */
 	private void setBooleans(MySQLColumn column) {
 		List<String> SUPPORTED_SIZE_COLS =   Arrays.asList("VARCHAR", "CHAR"); 
 		final MySQLType colType = column.getMySQLType();
@@ -45,26 +81,29 @@ public class MySQLTable {
 		}
 	}
 	
-	public void addPrimaryKey(String colName, boolean isPrimary) throws Exception {
+	/**
+	 * Adds a primary key to this table given the passed in <code>colName</code> 
+	 * 
+	 * @param colName String of the new primary key column name
+	 * @throws Exception if a column doesn't have <code>colName</code> or if
+	 * a primary key with <code>colName</code> already exists
+	 */
+	public void addPrimaryKey(String colName) throws Exception {
 		MySQLColumn col = columnMap.get(colName);
 		if(col == null) {
 			String fmt = "'%s' doesn't exist in table '%s'";
 			throw new Exception(String.format(fmt, colName, name));
 		}
-		else if(primaryKeyNames.contains(colName) && isPrimary) {
+		else if(primaryKeyNames.contains(colName)) {
 			String fmt = "table '%s' already has PRIMARY KEY '%s'";
 			throw new Exception(String.format(fmt, name, colName));
 		}
 		
-		col.setIsPrimaryKey(isPrimary);
+		col.setIsPrimaryKey(true);
 		columnList.set(columnList.indexOf(col), col);
 		columnMap.put(colName, col);
 		
-		if(isPrimary) {
-			primaryKeyNames.add(colName);
-		}else {
-			primaryKeyNames.remove(colName);
-		}
+		primaryKeyNames.add(colName);
 	}
 	
 	public ArrayList<String> getPrimaryKeyNames(){
@@ -75,6 +114,13 @@ public class MySQLTable {
 		return columnList;
 	}
 	
+	/**
+	 * Retrieves a <code>MySQLColumn</code> given a columnn name.
+	 * 
+	 * @param columnName String name of the column to return
+	 * @return <code>MySQLColumn</code> that has <code>columnName</code>
+	 * @throws Exception if a column with <code>columnName</code> is not found
+	 */
 	public MySQLColumn getColumn(String columnName) throws Exception{
 		if(!columnMap.containsKey(columnName)) {
 			String fmt = String.format("column '%s' isn't defined in table '%s'", columnName, name);
@@ -87,14 +133,31 @@ public class MySQLTable {
 		return name;
 	}
 	
+	/**
+	 * Returns true if this table has a DATE column
+	 * 
+	 * @return true if this table has a DATE column.
+	 */
 	public boolean hasDate() {
 		return hasDate;
 	}
 	
+	/**
+	 * Returns true if this table has a column supporting the Spring Boot
+	 * <code>@Size</code> annotation.
+	 * 
+	 * @return true if this table has a column supporting the Spring Boot
+	 * <code>@Size</code> annotation.
+	 */
 	public boolean hasSize() {
 		return hasSize;
 	}
 	
+	/**
+	 * Returns true if this table has a composite key - having more than one primary key
+	 * 
+	 * @return true if this table has a composite key
+	 */
 	public boolean hasCompositeKey() {
 		return primaryKeyNames.size() > 1;
 	}

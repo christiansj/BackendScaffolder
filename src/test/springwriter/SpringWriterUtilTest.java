@@ -39,7 +39,7 @@ public class SpringWriterUtilTest {
 	private MySQLTable newTable(MySQLType primaryType) throws Exception {
 		MySQLTable table = new MySQLTable("test_table");
 		table.addColumn(new MySQLColumn("id", primaryType, 100));
-		table.addPrimaryKey("id", true);
+		table.addPrimaryKey("id");
 		
 		return table;
 	}
@@ -59,7 +59,7 @@ public class SpringWriterUtilTest {
 
 		MySQLTable table = newTable(MySQLType.INT);
 		table.addColumn(new MySQLColumn("id_two", MySQLType.INT, 11));
-		table.addPrimaryKey("id_two", true);
+		table.addPrimaryKey("id_two");
 			
 	
 		assertEquals(table.getName()+"Identity", SpringWriterUtil.getPrimaryKeyType(table));

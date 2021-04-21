@@ -103,7 +103,7 @@ public class CreateTableOperation extends Operation {
     private void addPrimaryKey() throws Exception {
     	checkSubclassif(Subclassif.IDENTIFIER);
     	MySQLColumn col = mySQLTable.getColumn(scanner.currentToken.tokenStr);
-    	mySQLTable.addPrimaryKey(col.getName(), true);
+    	mySQLTable.addPrimaryKey(col.getName());
     	
     	if(scanner.getNext().equals(",")) {
     		scanner.getNext();
@@ -131,7 +131,7 @@ public class CreateTableOperation extends Operation {
     	
     	mySQLTable.addColumn(col);
     	if(col.isPrimaryKey()) {
-    		mySQLTable.addPrimaryKey(col.getName(), col.isPrimaryKey());
+    		mySQLTable.addPrimaryKey(col.getName());
     	}
     }
     

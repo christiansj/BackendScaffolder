@@ -9,7 +9,7 @@ public class WriterTestData {
 		MySQLTable table = new MySQLTable("Book");
 		table.addColumn(new MySQLColumn("id", MySQLType.INT, 10));
 		table.addColumn(new MySQLColumn("title", MySQLType.VARCHAR, 255));
-		table.addPrimaryKey("id", true);
+		table.addPrimaryKey("id");
 		
 		return table;
 	}
@@ -27,7 +27,7 @@ public class WriterTestData {
 		MySQLTable table = new MySQLTable("Employee");
 		table.addColumn(new MySQLColumn("id", MySQLType.INT, 100));
 		table.addColumn(new MySQLColumn("start_date", MySQLType.DATE, 0));
-		table.addPrimaryKey("id", true);
+		table.addPrimaryKey("id");
 		
 		return table;
 	}
@@ -40,8 +40,8 @@ public class WriterTestData {
 		table.addColumn(new MySQLColumn("last_name", MySQLType.VARCHAR, 255));
 		table.addColumn(new MySQLColumn("major", MySQLType.VARCHAR, 50));
 		
-		table.addPrimaryKey("id", true);
-		table.addPrimaryKey("school_id", true);
+		table.addPrimaryKey("id");
+		table.addPrimaryKey("school_id");
 		
 		return table;
 	}
