@@ -29,7 +29,7 @@ public class SpringControllerWriterTest {
 	}
 	
 	@Test
-	@DisplayName("writeControllerFile should write appropiate Controller for table with a composite key")
+	@DisplayName("writeControllerFile should write appropriate  Controller for table with a composite key")
 	public void testWriteControllerFileCompositeKey() throws Exception {
 		MySQLTable table = WriterTestData.studentTable();
 		SpringControllerWriter controllerWriter = newControllerWriter(CONTROL_DIR, table);

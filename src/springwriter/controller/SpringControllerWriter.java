@@ -91,6 +91,7 @@ public class SpringControllerWriter extends SpringFileWriter {
 		
 		final String[] HTTPS = {"ResponseEntity", "HttpStatus"};
 		pw.println("\n");
+		pw.println("import java.util.Optional;");
 		pw.println("import java.util.List;");
 		
 		// model import - import path.model.Record;
@@ -152,7 +153,7 @@ public class SpringControllerWriter extends SpringFileWriter {
 		pw.println("\t\t"+recordEqualsFindByStr());
 		pw.println(ifNotFoundStr(false));
 		
-		pw.println(String.format("\t\treturn ResponseEntity.ok(%s);", LOWERCASE_TABLE_NAME));
+		pw.println(String.format("\t\treturn ResponseEntity.ok(%s.get());", LOWERCASE_TABLE_NAME));
 		pw.println("\t}\n");
 	}
 	
@@ -172,8 +173,8 @@ public class SpringControllerWriter extends SpringFileWriter {
 	}
 	
 	private String recordEqualsFindByStr() {
-		// Record record = repository.findBy...(id-args...);
-		return String.format("%s %s = %s;", 
+		// Optional<Record> record = repository.findBy...(id-args...);
+		return String.format("Optional<%s> %s = %s;", 
 			TABLE_NAME, LOWERCASE_TABLE_NAME, findByStr());
 	}
 	
@@ -206,10 +207,13 @@ public class SpringControllerWriter extends SpringFileWriter {
 	private String ifNotFoundStr(boolean isFindInRepo) {
 		StringBuilder sb = new StringBuilder();
 		
-		// if(repository.findById(id) == null){
-		// OR if(record == null){
-		sb.append(String.format("\t\tif(%s == null){\n", 
-				isFindInRepo ? findByStr() : LOWERCASE_TABLE_NAME
+		// !repository.findById(id).isPresent()
+		// OR if !record.isPresent()
+		final String IS_NOT_PRESENT_STR = String.format("!%s.isPresent()", 
+				isFindInRepo ? findByStr() : LOWERCASE_TABLE_NAME);
+		
+		sb.append(String.format("\t\tif(%s){\n", 
+				IS_NOT_PRESENT_STR
 		));
 		sb.append(String.format("\t\t\treturn new %s(HttpStatus.NOT_FOUND);\n", responseEntityStr()));
 		sb.append("\t\t}\n");
@@ -257,7 +261,7 @@ public class SpringControllerWriter extends SpringFileWriter {
 		pw.println("\t\t"+recordEqualsFindByStr());
 		pw.println(ifNotFoundStr(false));
 		
-		pw.println(String.format("\t\trepository.delete(%s);", LOWERCASE_TABLE_NAME));
+		pw.println(String.format("\t\trepository.delete(%s.get());", LOWERCASE_TABLE_NAME));
 		pw.println(String.format("\t\treturn new %s(HttpStatus.OK);", responseEntityStr()));
 		pw.println("\t}\n");
 	}

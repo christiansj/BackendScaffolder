@@ -1,5 +1,6 @@
 package test.springwriter.controller.controllers;
 
+import java.util.Optional;
 import java.util.List;
 import test.springwriter.controller.models.Book;
 import test.springwriter.controller.repositories.BookRepository;
@@ -29,12 +30,12 @@ class BookController {
 
 	@GetMapping("/book/{id}")
 	ResponseEntity<Book> getOneBook(@PathVariable Integer id) {
-		Book book = repository.findById(id);
-		if(book == null){
+		Optional<Book> book = repository.findById(id);
+		if(!book.isPresent()){
 			return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
 		}
 
-		return ResponseEntity.ok(book);
+		return ResponseEntity.ok(book.get());
 	}
 
 	@PostMapping("/book")
@@ -44,7 +45,7 @@ class BookController {
 
 	@PutMapping("/book/{id}")
 	ResponseEntity<Book> putBook(@RequestBody Book newBook, @PathVariable Integer id) {
-		if(repository.findById(id) == null){
+		if(!repository.findById(id).isPresent()){
 			return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
 		}
 
@@ -54,12 +55,12 @@ class BookController {
 
 	@DeleteMapping("/book/{id}")
 	ResponseEntity<Book> deleteBook(@PathVariable Integer id) {
-		Book book = repository.findById(id);
-		if(book == null){
+		Optional<Book> book = repository.findById(id);
+		if(!book.isPresent()){
 			return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
 		}
 
-		repository.delete(book);
+		repository.delete(book.get());
 		return new ResponseEntity<Book>(HttpStatus.OK);
 	}
 

@@ -1,5 +1,6 @@
 package test.springwriter.controller.controllers;
 
+import java.util.Optional;
 import java.util.List;
 import test.springwriter.controller.models.Student;
 import test.springwriter.controller.repositories.StudentRepository;
@@ -30,12 +31,12 @@ class StudentController {
 	@GetMapping("/student-by-composite-key")
 	ResponseEntity<Student> getOneStudent(@RequestParam(name = "id") final Integer id, 
 								@RequestParam(name = "school-id") final String schoolId) {
-		Student student = repository.findByIdAndSchoolId(id, schoolId);
-		if(student == null){
+		Optional<Student> student = repository.findByIdAndSchoolId(id, schoolId);
+		if(!student.isPresent()){
 			return new ResponseEntity<Student>(HttpStatus.NOT_FOUND);
 		}
 
-		return ResponseEntity.ok(student);
+		return ResponseEntity.ok(student.get());
 	}
 
 	@PostMapping("/student")
@@ -46,7 +47,7 @@ class StudentController {
 	@PutMapping("/student")
 	ResponseEntity<Student> putStudent(@RequestBody Student newStudent, @RequestParam(name = "id") final Integer id, 
 								@RequestParam(name = "school-id") final String schoolId) {
-		if(repository.findByIdAndSchoolId(id, schoolId) == null){
+		if(!repository.findByIdAndSchoolId(id, schoolId).isPresent()){
 			return new ResponseEntity<Student>(HttpStatus.NOT_FOUND);
 		}
 
@@ -57,12 +58,12 @@ class StudentController {
 	@DeleteMapping("/student")
 	ResponseEntity<Student> deleteStudent(@RequestParam(name = "id") final Integer id, 
 								@RequestParam(name = "school-id") final String schoolId) {
-		Student student = repository.findByIdAndSchoolId(id, schoolId);
-		if(student == null){
+		Optional<Student> student = repository.findByIdAndSchoolId(id, schoolId);
+		if(!student.isPresent()){
 			return new ResponseEntity<Student>(HttpStatus.NOT_FOUND);
 		}
 
-		repository.delete(student);
+		repository.delete(student.get());
 		return new ResponseEntity<Student>(HttpStatus.OK);
 	}
 
