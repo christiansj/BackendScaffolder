@@ -10,6 +10,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import mysqlentity.mysqltable.MySQLTable;
+import springwriter.SpringWriter;
+import springwriter.controller.SpringControllerWriter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -45,5 +47,10 @@ public class TestUtility {
 		reader.close();
 		
 		return str;
+	}
+	
+	public static SpringControllerWriter newControllerWriter(String directoryPath, MySQLTable table) throws Exception {
+		SpringWriter writer = new SpringWriter(directoryPath, table);
+		return new SpringControllerWriter(writer);
 	}
 }
