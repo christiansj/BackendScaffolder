@@ -16,7 +16,7 @@ public class OperationTest {
     @DisplayName("constructor should assign scanner and parser member variables")
     public void testConstructor() throws Exception{
         MySQLScanner scanner = new MySQLScanner(INPUT_FOLDER_PATH + "createtable/testinput/missing_table.txt", new SymbolTable());
-        MySQLParser parser = new MySQLParser(scanner);
+        MySQLParser parser = new MySQLParser(scanner, "src/output");
         Operation operation = new Operation(parser);
 
         assertEquals(scanner, operation.getScanner());

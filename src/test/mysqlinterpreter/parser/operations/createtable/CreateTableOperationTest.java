@@ -24,7 +24,7 @@ public class CreateTableOperationTest {
         MySQLScanner scanner = new MySQLScanner(INPUT_FOLDER_PATH + fileName, new SymbolTable());
         scanner.getNext();
 
-        return new CreateTableOperation(new MySQLParser(scanner));
+        return new CreateTableOperation(new MySQLParser(scanner, "src/output"));
     }
 
     private void exceptionMessageTest(String fileName, String expectedMessage, boolean isParserException){

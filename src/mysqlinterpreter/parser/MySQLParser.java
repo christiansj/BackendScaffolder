@@ -7,9 +7,11 @@ import mysqlinterpreter.scanner.Token;
 
 public class MySQLParser {
     private MySQLScanner scanner;
-
-    public MySQLParser(MySQLScanner scanner){
+    private final String outputPath;
+    
+    public MySQLParser(MySQLScanner scanner, String outputPath){
         this.scanner = scanner;
+        this.outputPath = outputPath;
     }
 
     public void run() throws Exception{
@@ -49,5 +51,9 @@ public class MySQLParser {
     /** Getters */
     public MySQLScanner getScanner(){
         return scanner;
+    }
+    
+    public String getOutputPath() {
+    	return outputPath;
     }
 }

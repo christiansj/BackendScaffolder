@@ -5,6 +5,7 @@ import mysqlinterpreter.scanner.MySQLScanner;
 import mysqlinterpreter.symboltable.SymbolTable;
 
 public class MySQLInterpreter {
+	
     private static void runScanner(String filePath) throws Exception{
         MySQLScanner scanner = new MySQLScanner(filePath, new SymbolTable());
 
@@ -30,9 +31,9 @@ public class MySQLInterpreter {
                 , "tokenStr");
     }
     
-    private static void runParser(String filePath) throws Exception{
-    	MySQLScanner scanner = new MySQLScanner(filePath, new SymbolTable());
-    	MySQLParser parser = new MySQLParser(scanner);
+    private static void runParser(String inputFilePath, String outputPath) throws Exception{
+    	MySQLScanner scanner = new MySQLScanner(inputFilePath, new SymbolTable());
+    	MySQLParser parser = new MySQLParser(scanner, outputPath);
     	
     	parser.run();
     }
@@ -40,7 +41,7 @@ public class MySQLInterpreter {
     public static void main(String[] args) {
         try{
 //            runScanner(args[0]);
-            runParser(args[0]);
+            runParser(args[0], args[1]);
         }catch(Exception e){
         	e.printStackTrace();
 //            System.err.println(e);

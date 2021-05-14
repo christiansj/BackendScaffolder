@@ -36,7 +36,8 @@ public class CreateTableOperation extends Operation {
     	if(DEBUG_TABLE) {
     		System.out.println(mySQLTable);
     	}
-    	SpringWriter springWriter = new SpringWriter("src/output", mySQLTable);
+    	
+    	SpringWriter springWriter = new SpringWriter(getOutputPath(), mySQLTable);
     	springWriter.writeFiles();
     }
 
