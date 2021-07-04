@@ -48,6 +48,23 @@ public class SpringWriterUtil {
 	}
 	
 	/**
+	 * Hyphenates the passed in MySQL variable String. Joins the passed
+	 * by any found underscores in the String.
+	 * @param mysqlVar to be hyphenated
+	 * @return <code>mysqlVar</code> hyphenated
+	 */
+	public static String hyphenateMySQLVariable(String mysqlVar) {
+		final String[] TOKENS = mysqlVar.split("_");
+		StringBuilder sb = new StringBuilder(TOKENS[0].toLowerCase());
+		
+		for(int i = 1; i < TOKENS.length; i++) {
+			sb.append("-" + TOKENS[i]);
+		}
+				
+		return sb.toString();
+	}
+	
+	/**
 	 * Returns the primary key type of the passed in MySQLTable
 	 * in the form of a Java variable type (ex: String, Integer)
 	 * 

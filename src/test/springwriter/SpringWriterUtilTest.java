@@ -22,10 +22,17 @@ public class SpringWriterUtilTest {
 	}
 	
 	@Test
-	@DisplayName("formatMySQLVariable should return camelcased String with removed underscores")
-	public void formatMySQLVariableTest() {
+	@DisplayName("camelCaseMySQLVariable should return camelcased String with removed underscores")
+	public void camelCaseMySQLVariableTest() {
 		assertEquals("one", SpringWriterUtil.camelCaseMySQLVariable("one"));
 		assertEquals("alphaBravoCharlie", SpringWriterUtil.camelCaseMySQLVariable("alpha_bravo_charlie"));
+	}
+	
+	@Test
+	@DisplayName("hyphenateMySQLVariable should return hyphenated String with removed underscores")
+	public void hyphenateMySQlVariable() {
+		assertEquals("one", SpringWriterUtil.hyphenateMySQLVariable("one"));
+		assertEquals("one-two-three", SpringWriterUtil.hyphenateMySQLVariable("one_two_three"));
 	}
 	
 	@Test
