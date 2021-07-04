@@ -54,14 +54,7 @@ public class SpringWriterUtil {
 	 * @return <code>mysqlVar</code> hyphenated
 	 */
 	public static String hyphenateMySQLVariable(String mysqlVar) {
-		final String[] TOKENS = mysqlVar.split("_");
-		StringBuilder sb = new StringBuilder(TOKENS[0].toLowerCase());
-		
-		for(int i = 1; i < TOKENS.length; i++) {
-			sb.append("-" + TOKENS[i]);
-		}
-				
-		return sb.toString();
+		return mysqlVar.replace("_", "-").toLowerCase();
 	}
 	
 	/**
