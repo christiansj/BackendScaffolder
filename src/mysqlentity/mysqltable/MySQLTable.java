@@ -17,6 +17,8 @@ import springwriter.SpringWriterUtil;
 public class MySQLTable {
 
 	private final String name;
+	private final String urlName;
+	
 	private ArrayList<String> primaryKeyNames = new ArrayList<>();
 	
 	/**
@@ -47,6 +49,7 @@ public class MySQLTable {
 	 */
 	public MySQLTable(String name) {
 		this.name = SpringWriterUtil.uppercaseFirstChar(SpringWriterUtil.camelCaseMySQLVariable(name));
+		this.urlName = name.replace("_", "-").toLowerCase();
 	}
 
 	/**
@@ -134,6 +137,10 @@ public class MySQLTable {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public String getUrlName() {
+		return urlName;
 	}
 	
 	/**

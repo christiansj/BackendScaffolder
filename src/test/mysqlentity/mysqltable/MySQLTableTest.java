@@ -18,6 +18,7 @@ public class MySQLTableTest {
 	public void testConstructor() {
 		MySQLTable table = new MySQLTable("new_table");
 		assertEquals("NewTable", table.getName());
+		assertEquals("new-table", table.getUrlName());
 		assertFalse(table.hasDate());
 		assertFalse(table.hasSize());
 		assertFalse(table.hasCompositeKey());

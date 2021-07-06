@@ -31,7 +31,8 @@ public abstract class AbstractControllerMethodString implements ControllerMethod
 		this.LAST_PRIMARY_NAME = PRIMARY_KEY_NAMES.get(PRIMARY_KEY_NAMES.size()-1);
 		
 		this.URL_PARAMS = urlParameters();
-		this.SINGLE_RECORD_URL = mySQLTable.hasCompositeKey() ? LOWERCASE_TABLE_NAME : LOWERCASE_TABLE_NAME + "/{id}";
+		String urlTableName = mySQLTable.getUrlName();
+		this.SINGLE_RECORD_URL = mySQLTable.hasCompositeKey() ? urlTableName : urlTableName + "/{id}";
 	}
 	
 	private String urlParameters() throws Exception {
@@ -55,8 +56,8 @@ public abstract class AbstractControllerMethodString implements ControllerMethod
 			String paramType = mySQLTable.getColumn(primaryKeyName).getMySQLType().name();
 			
 			// @RequestParam(name = "first-name") final String firstName;
-			String paramStr = String.format("@RequestParam(name = \"%s\") final %s %s", 
-					primaryKeyName.replace("_", "-").toLowerCase(), // hyphenate & lowercase
+			String paramStr = String.format("@RequestParam(name = \"%s\") final %s %s",
+					SpringWriterUtil.hyphenateMySQLVariable(primaryKeyName),
 					controllerWriter.mySQLToJavaMap.get(paramType), // variable type
 					SpringWriterUtil.camelCaseMySQLVariable(primaryKeyName)
 			);
