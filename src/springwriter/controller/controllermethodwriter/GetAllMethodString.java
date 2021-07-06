@@ -9,7 +9,7 @@ public class GetAllMethodString extends AbstractControllerMethodString {
 	}
 
 	public String mappingAnnotationStr() {
-		return mappingStr("Get", LOWERCASE_TABLE_NAME);
+		return mappingStr("Get", URL_TABLE_NAME);
 	}
 
 	// ResponseEntity<List<Record>> getAllRecords()

@@ -9,7 +9,7 @@ public class PostMethodString extends AbstractControllerMethodString {
 	}
 
 	public String mappingAnnotationStr() {
-		return mappingStr("Post", LOWERCASE_TABLE_NAME);
+		return mappingStr("Post", URL_TABLE_NAME);
 	}
 
 	public String prototypeStr() {

@@ -14,6 +14,7 @@ public abstract class AbstractControllerMethodString implements ControllerMethod
 	MySQLTable mySQLTable;
 	
 	final String TABLE_NAME;
+	final String URL_TABLE_NAME;
 	final String LOWERCASE_TABLE_NAME;
 	final String URL_PARAMS;
 	final String SINGLE_RECORD_URL;
@@ -26,13 +27,14 @@ public abstract class AbstractControllerMethodString implements ControllerMethod
 		this.mySQLTable = controllerWriter.springWriter.getMySqlTable();
 		
 		this.TABLE_NAME = mySQLTable.getName();
+		this.URL_TABLE_NAME = mySQLTable.getUrlName();
 		this.LOWERCASE_TABLE_NAME = SpringWriterUtil.lowercaseFirstChar(TABLE_NAME);
 		this.PRIMARY_KEY_NAMES = mySQLTable.getPrimaryKeyNames();
 		this.LAST_PRIMARY_NAME = PRIMARY_KEY_NAMES.get(PRIMARY_KEY_NAMES.size()-1);
 		
 		this.URL_PARAMS = urlParameters();
-		String urlTableName = mySQLTable.getUrlName();
-		this.SINGLE_RECORD_URL = mySQLTable.hasCompositeKey() ? urlTableName : urlTableName + "/{id}";
+		
+		this.SINGLE_RECORD_URL = mySQLTable.hasCompositeKey() ? URL_TABLE_NAME : URL_TABLE_NAME + "/{id}";
 	}
 	
 	private String urlParameters() throws Exception {

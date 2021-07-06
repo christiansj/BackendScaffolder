@@ -13,7 +13,7 @@ public class GetOneMethodString extends AbstractControllerMethodString {
 
 	public String mappingAnnotationStr() {
 		final String MAPPING_URL = mySQLTable.hasCompositeKey() ? "-by-composite-key" : "/{id}";
-		return mappingStr("Get", LOWERCASE_TABLE_NAME + MAPPING_URL);
+		return mappingStr("Get", URL_TABLE_NAME + MAPPING_URL);
 	}
 
 	public String prototypeStr() {
