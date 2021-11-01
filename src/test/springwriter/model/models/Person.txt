@@ -1,6 +1,6 @@
 package test.springwriter.model.models;
 
-import javax.validation.constraints.Size;
+import javax.persistence.Column;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -21,10 +21,10 @@ public class Person {
 
 	private Integer id;
 
-	@Size(max = 100)
+	@Column(length = 100)
 	private String firstName;
 
-	@Size(max = 100)
+	@Column(length = 100)
 	private String lastName;
 
 }

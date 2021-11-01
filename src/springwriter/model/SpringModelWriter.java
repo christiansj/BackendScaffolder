@@ -11,6 +11,7 @@ import springwriter.springfilewriter.SpringFileWriter;
 public class SpringModelWriter extends SpringFileWriter {
 	private final boolean HAS_OPTIONAL_IMPORTS;
 	private final String PACKAGE_STR;
+	
 	public SpringModelWriter(SpringWriter springWriter) throws Exception {
 		super(springWriter, "model", "models");
 		PACKAGE_STR = springWriter.createPackageStr(SINGULAR, PLURAL);
@@ -68,7 +69,7 @@ public class SpringModelWriter extends SpringFileWriter {
 		}
 		
 		if(mySQLTable.hasSize()) {
-			pw.println("import javax.validation.constraints.Size;");
+			pw.println("import javax.persistence.Column;");
 		}
 		
 		pw.println();
@@ -98,12 +99,13 @@ public class SpringModelWriter extends SpringFileWriter {
 			}
 			final String VARIABLE_TYPE = mySQLToJavaMap.get(colType);
 			
+			// @Id
 			if(col.isPrimaryKey()) {
 				pw.println("\t@Id");
 			}
 			
 			if(VARIABLE_TYPE.equals("String")  && col.getLength() > 0) {
-				pw.println(String.format("\t@Size(max = %d)", col.getLength()));
+				pw.println(String.format("\t@Column(length = %d)", col.getLength()));
 			}
 			
 			pw.println(String.format("\tprivate %s %s;\n", 

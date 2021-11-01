@@ -2,7 +2,7 @@ package test.springwriter.model.models;
 
 import test.springwriter.model.models.StudentIdentity;
 
-import javax.validation.constraints.Size;
+import javax.persistence.Column;
 
 import javax.persistence.Entity;
 import javax.persistence.EmbeddedId;
@@ -24,13 +24,13 @@ public class Student {
 	@EmbeddedId
 	private StudentIdentity studentIdentity;
 
-	@Size(max = 255)
+	@Column(length = 255)
 	private String firstName;
 
-	@Size(max = 255)
+	@Column(length = 255)
 	private String lastName;
 
-	@Size(max = 50)
+	@Column(length = 50)
 	private String major;
 
 }

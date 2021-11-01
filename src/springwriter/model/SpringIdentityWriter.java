@@ -10,7 +10,7 @@ import springwriter.springfilewriter.SpringFileWriter;
 
 public class SpringIdentityWriter extends SpringFileWriter {
 	
-	public SpringIdentityWriter(SpringWriter springWriter) {
+	public SpringIdentityWriter(SpringWriter springWriter) throws Exception {
 		super(springWriter, "model", "models");
 	}
 
@@ -39,7 +39,7 @@ public class SpringIdentityWriter extends SpringFileWriter {
 		pw.println("import javax.validation.constraints.NotNull;");
 		
 		if(mySQLTable.hasSize()) {
-			pw.println("import javax.validation.constraints.Size;");
+			pw.println("import javax.persistence.Column;");
 		}
 		
 		pw.println();
@@ -66,7 +66,7 @@ public class SpringIdentityWriter extends SpringFileWriter {
 			final String VARIABLE_TYPE = mySQLToJavaMap.get(col.getMySQLType().name());
 			final int COL_LENGTH = col.getLength();
 			if(VARIABLE_TYPE == "String" && COL_LENGTH > 0) {
-				pw.println(String.format("\t@Size(max = %d)", COL_LENGTH));
+				pw.println(String.format("\t@Column(length = %d)", COL_LENGTH));
 			}
 			
 			pw.println(String.format("\tprivate %s %s;\n", 
