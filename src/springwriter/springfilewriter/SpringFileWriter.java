@@ -1,7 +1,12 @@
 package springwriter.springfilewriter;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 import mysqlentity.mysqltable.MySQLTable;
@@ -16,14 +21,26 @@ public abstract class SpringFileWriter implements SpringFileWriterInterface{
 	
 	public HashMap<String, String> mySQLToJavaMap = new HashMap<>();
 	private HashMap<String, String> classNameToFileNameMap = new HashMap<>();
+	private final String FILE_PATH; 
 	
-	public SpringFileWriter(SpringWriter springWriter, String singular, String plural) {
+	public SpringFileWriter(SpringWriter springWriter, String singular, String plural) throws Exception{
 		this.springWriter = springWriter;
 		this.SINGULAR = singular;
 		this.PLURAL = plural;
 		this.mySQLTable = springWriter.getMySqlTable();
 		initClassNameToFileNameMap();
 		initMySQLToJavaMap();
+		
+		final String CLASS_NAME = this.getClass().getSimpleName();
+
+		if(!classNameToFileNameMap.containsKey(CLASS_NAME)) {
+			throw new Exception(String.format("'%s' is not defined in classNameToFileNameMap", CLASS_NAME));
+		}
+		
+		FILE_PATH = String.format("%s/%s.java", 
+				springWriter.setDirectory(SINGULAR, PLURAL),
+				classNameToFileNameMap.get(CLASS_NAME)
+		);
 	}
 	
 	private void initClassNameToFileNameMap() {
@@ -49,22 +66,29 @@ public abstract class SpringFileWriter implements SpringFileWriterInterface{
 		mySQLToJavaMap.put("TIMESTAMP", "Timestamp");
 	}
 	
-	public void writeFile() throws Exception {
-		final String CLASS_NAME = this.getClass().getSimpleName();
-
-		if(!classNameToFileNameMap.containsKey(CLASS_NAME)) {
-			throw new Exception(String.format("'%s' is not defined in classNameToFileNameMap", CLASS_NAME));
-		}
+	public boolean writeFile() throws Exception {
 		
-		String filePath = String.format("%s/%s.java", 
-				springWriter.setDirectory(SINGULAR, PLURAL),
-				classNameToFileNameMap.get(CLASS_NAME)
-		);
+//		if(Files.exists(Paths.get(FILE_PATH)) && !isOverrideExistingFile()) {
+//			System.out.println("didn't write...");
+//			return false;
+//		}
 		
 		final String FILE_STRING = createFileString();
-		BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH));
 		
 		writer.write(FILE_STRING);
 		writer.close();
+		
+		return true;
+	}
+	
+	private boolean isOverrideExistingFile() {
+		final String FILE_NAME = classNameToFileNameMap.get(this.getClass().getSimpleName())+".java";
+		
+		return JOptionPane.showConfirmDialog(new JFrame(), 
+				String.format("%s already exists. Override this file?", FILE_NAME), // message 
+				FILE_NAME + " already exists", // title 
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.WARNING_MESSAGE) == 0;
 	}
 }
