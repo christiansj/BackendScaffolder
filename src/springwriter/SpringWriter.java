@@ -49,7 +49,7 @@ public class SpringWriter {
 		return String.format("%s.%s", packageRootStr, plural);
 	}
 	
-	public String setDirectory(String singular, String plural) throws Exception {
+	public String setDirectory(String singular, String plural) {
 		String directory = packageStr.replaceAll("\\.", "\\/");
 		String singularPath = directory + "/" + singular;
 		String pluralPath = directory + "/" + plural;
