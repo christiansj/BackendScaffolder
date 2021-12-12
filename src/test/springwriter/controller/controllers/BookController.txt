@@ -40,6 +40,7 @@ class BookController {
 
 	@PostMapping("/book")
 	ResponseEntity<Book> postBook(@RequestBody Book newBook) {
+		newBook.setId(repository.maxId() + 1);
 		return ResponseEntity.ok(repository.save(newBook));
 	}
 

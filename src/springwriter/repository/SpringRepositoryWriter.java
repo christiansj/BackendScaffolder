@@ -23,6 +23,9 @@ public class SpringRepositoryWriter extends SpringFileWriter {
 		// class body
 		sb.append("@Repository\n");
 		sb.append(prototypeString());
+		if(mySQLTable.hasMaxIdMethod()) {
+			sb.append(bodyString());
+		}
 		sb.append("\n");
 		sb.append("}\n");
 		
@@ -39,10 +42,14 @@ public class SpringRepositoryWriter extends SpringFileWriter {
 		pw.println(String.format("import %s;", 
 				PACKAGE_STR
 		));
+		
 		if(mySQLTable.hasCompositeKey()) {
 			pw.println(String.format("import %sIdentity;", PACKAGE_STR));
 		}
-			
+		if(mySQLTable.hasMaxIdMethod()) {
+			pw.println("import org.springframework.data.jpa.repository.Query;");
+		}
+		
 		pw.println("import org.springframework.data.jpa.repository.JpaRepository;");
 		pw.println("import org.springframework.stereotype.Repository;\n");
 		
@@ -56,4 +63,25 @@ public class SpringRepositoryWriter extends SpringFileWriter {
 				SpringWriterUtil.getPrimaryKeyType(mySQLTable)
 		);
 	}
+	
+	private String bodyString() throws Exception {
+		if(!mySQLTable.hasMaxIdMethod()) {
+			return "";
+		}
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		
+		String primaryKeyName = mySQLTable.getPrimaryKeyNames().get(0);
+		primaryKeyName = mySQLTable.getColumn(primaryKeyName).getName();
+		
+		// @Query(value = "SELECT MAX(id) from table_name", nativeQuery = true)
+		String queryString = String.format("\t@Query(value = \"SELECT MAX(%s) FROM %s\", nativeQuery = true)\n",
+				primaryKeyName, mySQLTable.getOriginalName());
+		// Integer maxId();
+		String methodString = String.format("\t%s maxId();\n", 
+				SpringWriterUtil.getPrimaryKeyType(mySQLTable));
+		return queryString + methodString;
+	}
+	
+	
 }
