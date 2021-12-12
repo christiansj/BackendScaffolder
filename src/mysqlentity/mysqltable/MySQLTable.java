@@ -15,7 +15,7 @@ import springwriter.SpringWriterUtil;
  * @see MySQLColumn
  */
 public class MySQLTable {
-
+	private final String originalName;
 	private final String name;
 	private final String urlName;
 	
@@ -48,6 +48,7 @@ public class MySQLTable {
 	 * @param name String of the table's name
 	 */
 	public MySQLTable(String name) {
+		this.originalName = name;
 		this.name = SpringWriterUtil.uppercaseFirstChar(SpringWriterUtil.camelCaseMySQLVariable(name));
 		this.urlName = name.replace("_", "-").toLowerCase();
 	}
@@ -135,6 +136,10 @@ public class MySQLTable {
 		return columnMap.get(columnName);
 	}
 	
+	public String getOriginalName() {
+		return originalName;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -170,6 +175,15 @@ public class MySQLTable {
 	 */
 	public boolean hasCompositeKey() {
 		return primaryKeyNames.size() > 1;
+	}
+	
+	public boolean hasMaxIdMethod() throws Exception {
+		if(hasCompositeKey()) {
+			return false;
+		}
+
+		String primaryKeyType = SpringWriterUtil.getPrimaryKeyType(this);
+		return primaryKeyType.equals("Integer") || primaryKeyType.equals("Long");
 	}
 	
 	public String toString() {

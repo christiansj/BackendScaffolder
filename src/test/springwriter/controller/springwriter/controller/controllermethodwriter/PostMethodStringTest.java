@@ -39,7 +39,8 @@ public class PostMethodStringTest {
 	@Test
 	@DisplayName("bodyStr should return correct body for post")
 	public void testBodyStr() {
-		final String EXPECTED = "\t\treturn ResponseEntity.ok(repository.save(newBook));";
-		assertEquals(EXPECTED, postMethodString.bodyStr());
+		String setIdString = "\t\tnewBook.setId(repository.maxId() + 1);\n";
+		String returnString = "\t\treturn ResponseEntity.ok(repository.save(newBook));";
+		assertEquals(setIdString + returnString, postMethodString.bodyStr());
 	}
 }
