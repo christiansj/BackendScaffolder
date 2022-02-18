@@ -75,7 +75,7 @@ public class SpringRepositoryWriter extends SpringFileWriter {
 		primaryKeyName = mySQLTable.getColumn(primaryKeyName).getName();
 		
 		// @Query(value = "SELECT MAX(id) from table_name", nativeQuery = true)
-		String queryString = String.format("\t@Query(value = \"SELECT MAX(%s) FROM %s\", nativeQuery = true)\n",
+		String queryString = String.format("\t@Query(value = \"SELECT IFNULL(MAX(%s), 0) FROM %s\", nativeQuery = true)\n",
 				primaryKeyName, mySQLTable.getOriginalName());
 		// Integer maxId();
 		String methodString = String.format("\t%s maxId();\n", 
