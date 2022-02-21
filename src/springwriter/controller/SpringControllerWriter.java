@@ -21,7 +21,7 @@ public class SpringControllerWriter extends SpringFileWriter {
 		StringBuilder sb = new StringBuilder();
 		
 		// package and imports
-		sb.append("package " + springWriter.createPackageStr(SINGULAR, PLURAL) + ";");
+		sb.append("package " + springWriter.getPackageStr() + ";");
 		sb.append(importStrings());
 		
 		// class body
@@ -43,17 +43,8 @@ public class SpringControllerWriter extends SpringFileWriter {
 		final String[] HTTPS = {"ResponseEntity", "HttpStatus"};
 		pw.println("\n");
 		pw.println("import java.util.Optional;");
-		pw.println("import java.util.List;");
-		
-		// model import - import path.model.Record;
-		pw.println(String.format("import %s.%s;", 
-				springWriter.createPackageStr("model", "models"), 
-				TABLE_NAME));
-		
-		// repository import - import path.model.RecordRepository;
-		pw.println(String.format("import %s.%sRepository;",
-				springWriter.createPackageStr("repository", "repositories"),
-				TABLE_NAME));
+		pw.println("import java.util.List;\n");
+
 		
 		pw.println("import org.springframework.beans.factory.annotation.Autowired;\n");
 		

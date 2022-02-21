@@ -20,13 +20,13 @@ public class TestUtility {
 	
 	public static void evaluateFileContents(MySQLTable table, String springFileType) throws Exception {
 		final String WRITER_DIR = "src/test/springwriter/";
-
+		String lowerCaseTableName = table.getName().toLowerCase();
 		HashMap<String, String> springDirMap = new HashMap<>();
 		
-		springDirMap.put("model", "model/models/" + table.getName());
-		springDirMap.put("identity", "model/models/" + table.getName() + "Identity");
-		springDirMap.put("repository", String.format("repository/repositories/%sRepository", table.getName()));
-		springDirMap.put("controller", String.format("controller/controllers/%sController", table.getName()));
+		springDirMap.put("model", String.format("model/%s/%s", lowerCaseTableName, table.getName()));
+		springDirMap.put("identity", String.format("model/%s/%s", lowerCaseTableName, table.getName() + "Identity"));
+		springDirMap.put("repository", String.format("repository/%s/%sRepository", lowerCaseTableName, table.getName()));
+		springDirMap.put("controller", String.format("controller/%s/%sController", lowerCaseTableName, table.getName()));
 		if(!springDirMap.containsKey(springFileType)) {
 			throw new Exception("TestUtility - bad springFileType '%s', springFileType must be 'model' 'repository' 'identity' or 'controller'");
 		}

@@ -16,7 +16,7 @@ public class SpringRepositoryWriter extends SpringFileWriter {
 	public String createFileString() throws Exception{
 		StringBuilder sb = new StringBuilder();
 		// package and imports
-		sb.append("package " + springWriter.createPackageStr(SINGULAR, PLURAL)+ ";\n");
+		sb.append("package " + springWriter.getPackageStr()+ ";\n");
 		sb.append("\n");
 		sb.append(importStrings());
 		
@@ -35,17 +35,7 @@ public class SpringRepositoryWriter extends SpringFileWriter {
 	private String importStrings() throws Exception{
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
-		final String PACKAGE_STR = String.format("%s.%s", 
-				springWriter.createPackageStr("model", "models"),
-				mySQLTable.getName()
-		);
-		pw.println(String.format("import %s;", 
-				PACKAGE_STR
-		));
-		
-		if(mySQLTable.hasCompositeKey()) {
-			pw.println(String.format("import %sIdentity;", PACKAGE_STR));
-		}
+
 		if(mySQLTable.hasMaxIdMethod()) {
 			pw.println("import org.springframework.data.jpa.repository.Query;");
 		}

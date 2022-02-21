@@ -5,8 +5,6 @@ import javax.swing.JOptionPane;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 
 import mysqlentity.mysqltable.MySQLTable;
@@ -38,11 +36,11 @@ public abstract class SpringFileWriter implements SpringFileWriterInterface{
 		}
 		
 		FILE_PATH = String.format("%s/%s.java", 
-				springWriter.setDirectory(SINGULAR, PLURAL),
+				springWriter.getDirectoryPath(),
 				classNameToFileNameMap.get(CLASS_NAME)
 		);
 	}
-	
+
 	private void initClassNameToFileNameMap() {
 		String tableName = mySQLTable.getName();
 		
@@ -74,7 +72,8 @@ public abstract class SpringFileWriter implements SpringFileWriterInterface{
 //		}
 		
 		final String FILE_STRING = createFileString();
-		BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH));
+
+		BufferedWriter writer = new BufferedWriter(new FileWriter( FILE_PATH));
 		
 		writer.write(FILE_STRING);
 		writer.close();

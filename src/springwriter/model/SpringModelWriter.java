@@ -14,7 +14,7 @@ public class SpringModelWriter extends SpringFileWriter {
 	
 	public SpringModelWriter(SpringWriter springWriter) throws Exception {
 		super(springWriter, "model", "models");
-		PACKAGE_STR = springWriter.createPackageStr(SINGULAR, PLURAL);
+		PACKAGE_STR = springWriter.getPackageStr();
 		HAS_OPTIONAL_IMPORTS = mySQLTable.hasCompositeKey() || mySQLTable.hasDate() || mySQLTable.hasSize();
 	}
 		
@@ -58,12 +58,6 @@ public class SpringModelWriter extends SpringFileWriter {
 	}
 	
 	private void writeOptionalImports(PrintWriter pw) {
-		if(mySQLTable.hasCompositeKey()) {
-			pw.println(String.format("import %s.%s;\n",
-					PACKAGE_STR, mySQLTable.getName() + "Identity"
-			));
-		}
-		
 		if(mySQLTable.hasDate()) {
 			pw.println("import java.util.Date;");
 		}

@@ -16,7 +16,7 @@ public class SpringIdentityWriter extends SpringFileWriter {
 
 	public String createFileString() throws Exception {
 		StringBuilder sb = new StringBuilder();
-		sb.append("package " + springWriter.createPackageStr(SINGULAR, PLURAL) + ";\n");
+		sb.append("package " + springWriter.getPackageStr() + ";\n");
 		sb.append(importStrings());
 		
 		sb.append("@Embeddable\n");
