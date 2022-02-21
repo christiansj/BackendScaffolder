@@ -65,12 +65,6 @@ public abstract class SpringFileWriter implements SpringFileWriterInterface{
 	}
 	
 	public boolean writeFile() throws Exception {
-		
-//		if(Files.exists(Paths.get(FILE_PATH)) && !isOverrideExistingFile()) {
-//			System.out.println("didn't write...");
-//			return false;
-//		}
-		
 		final String FILE_STRING = createFileString();
 
 		BufferedWriter writer = new BufferedWriter(new FileWriter( FILE_PATH));

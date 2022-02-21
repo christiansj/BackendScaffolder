@@ -44,8 +44,6 @@ public class SpringWriter {
 	}
 
 	public String getDirectoryPath() {
-		System.out.println("root " + rootPackageStr);
-		System.out.println("package " + packageStr);
 		return packageStr.replaceAll("\\.", "\\/");
 	}
 
