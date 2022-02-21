@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentIdentity {
+public class StudentIdentity implements Serializable {
 
 	@NotNull
 	private Integer id;

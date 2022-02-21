@@ -23,7 +23,7 @@ public class SpringIdentityWriter extends SpringFileWriter {
 		for(String l : LOMBOKS) {
 			sb.append(String.format("@%s\n", l));
 		}
-		sb.append(String.format("public class %sIdentity {\n\n", mySQLTable.getName()));
+		sb.append(String.format("public class %sIdentity implements Serializable {\n\n", mySQLTable.getName()));
 		sb.append(variableString());
 		sb.append("}\n");
 		
