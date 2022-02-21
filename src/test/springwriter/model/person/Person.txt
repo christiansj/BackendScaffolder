@@ -1,11 +1,9 @@
-package test.springwriter.model.models;
-
-import test.springwriter.model.models.StudentIdentity;
+package test.springwriter.model.person;
 
 import javax.persistence.Column;
 
 import javax.persistence.Entity;
-import javax.persistence.EmbeddedId;
+import javax.persistence.Id;
 
 import lombok.Data;
 import lombok.Getter;
@@ -19,18 +17,14 @@ import lombok.NoArgsConstructor;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Student {
+public class Person {
 
-	@EmbeddedId
-	private StudentIdentity studentIdentity;
+	private Integer id;
 
-	@Column(length = 255)
+	@Column(length = 100)
 	private String firstName;
 
-	@Column(length = 255)
+	@Column(length = 100)
 	private String lastName;
-
-	@Column(length = 50)
-	private String major;
 
 }

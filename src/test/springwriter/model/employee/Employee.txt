@@ -1,6 +1,6 @@
-package test.springwriter.model.models;
+package test.springwriter.model.employee;
 
-import javax.persistence.Column;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,14 +17,11 @@ import lombok.NoArgsConstructor;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Person {
+public class Employee {
 
+	@Id
 	private Integer id;
 
-	@Column(length = 100)
-	private String firstName;
-
-	@Column(length = 100)
-	private String lastName;
+	private Date startDate;
 
 }

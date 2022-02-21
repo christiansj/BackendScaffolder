@@ -1,7 +1,5 @@
-package test.springwriter.repository.repositories;
+package test.springwriter.repository.student;
 
-import test.springwriter.repository.models.Student;
-import test.springwriter.repository.models.StudentIdentity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

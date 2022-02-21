@@ -1,4 +1,4 @@
-package test.springwriter.model.models;
+package test.springwriter.model.book;
 
 import javax.persistence.Column;
 
