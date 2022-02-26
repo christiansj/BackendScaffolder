@@ -20,6 +20,7 @@ public class MySQLTable {
 	private final String urlName;
 	
 	private ArrayList<String> primaryKeyNames = new ArrayList<>();
+	private ArrayList<String> uniqueKeyNames = new ArrayList<>();
 	
 	/**
 	 * ArrayList to retain order of columns
@@ -95,21 +96,36 @@ public class MySQLTable {
 	 * a primary key with <code>colName</code> already exists
 	 */
 	public void addPrimaryKey(String colName) throws Exception {
-		MySQLColumn col = columnMap.get(colName);
-		if(col == null) {
-			String fmt = "'%s' doesn't exist in table '%s'";
-			throw new Exception(String.format(fmt, colName, name));
-		}
-		else if(primaryKeyNames.contains(colName)) {
+		MySQLColumn col = getColumn(colName);
+		
+		if(primaryKeyNames.contains(colName)) {
 			String fmt = "table '%s' already has PRIMARY KEY '%s'";
 			throw new Exception(String.format(fmt, name, colName));
 		}
 		
 		col.setIsPrimaryKey(true);
-		columnList.set(columnList.indexOf(col), col);
-		columnMap.put(colName, col);
+		updateColumn(col, colName);
 		
 		primaryKeyNames.add(colName);
+	}
+	
+	public void addUniqueKey(String colName) throws Exception {
+		MySQLColumn col = getColumn(colName);
+		
+		if(uniqueKeyNames.contains(colName)) {
+			String fmt = "table '%s' already has UNIQUE key '%s'";
+			throw new Exception(String.format(fmt, name, colName));
+		}
+		
+		col.setIsUnique(true);
+		updateColumn(col, colName);
+		
+		uniqueKeyNames.add(colName);
+	}
+	
+	private void updateColumn(MySQLColumn col, String colName) {
+		columnList.set(columnList.indexOf(col), col);
+		columnMap.put(colName, col);
 	}
 	
 	public ArrayList<String> getPrimaryKeyNames(){
@@ -146,6 +162,10 @@ public class MySQLTable {
 	
 	public String getUrlName() {
 		return urlName;
+	}
+	
+	public ArrayList<String> getUniqueKeyNames() {
+		return uniqueKeyNames;
 	}
 	
 	/**
@@ -213,6 +233,18 @@ public class MySQLTable {
 			sb.append(primaryKeyNames.get(i));
 			sb.append(i+1 < primaryKeyNames.size() ? ", " : "\n");
 		}
+		
+		if(!uniqueKeyNames.isEmpty()) {
+			sb.append(String.format("Unique Constraint%s: \n\t", 
+					uniqueKeyNames.size() > 1 ? "s" : ""
+			));
+			
+			for(int i = 0; i < uniqueKeyNames.size(); i++) {
+				sb.append(uniqueKeyNames.get(i));
+				sb.append(i+1 < uniqueKeyNames.size() ? ", " : "\n");
+			}
+		}
+		
 		
 		return sb.toString();
 	}

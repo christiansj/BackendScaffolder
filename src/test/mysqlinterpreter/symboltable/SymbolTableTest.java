@@ -17,7 +17,7 @@ import static junit.framework.TestCase.assertTrue;
 public class SymbolTableTest {
     private SymbolTable symbolTable;
     final String[]  EXPECTED_KEYS = {"CREATE", "ALTER", "UPDATE", "DROP", "RENAME", "REFERENCES", "TABLE", "COLUMN",
-            "KEY", "PRIMARY", "FOREIGN", "TO", "AUTO_INCREMENT"};
+            "KEY", "PRIMARY", "FOREIGN", "TO", "AUTO_INCREMENT", "UNIQUE"};
 
     @BeforeEach
     void setUp(){
