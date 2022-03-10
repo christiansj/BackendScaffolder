@@ -62,6 +62,7 @@ public class CreateTableOperation extends Operation {
     private void readColumns() throws Exception {
     	while(!scanner.currentToken.tokenStr.equals(")")) {
     		if(scanner.currentToken.primClassif == Classif.KEY_TYPE) {
+    			System.out.println("GOT" + scanner.currentToken.tokenStr);
     			readKey();
     		}else {
     			readColumn();
@@ -79,8 +80,18 @@ public class CreateTableOperation extends Operation {
     		parser.error("FOREIGN keys are not supported yet");
     	}else if(tokenStr.equals("AUTO_INCREMENT")) {
     		parser.error("AUTO_INCREMENT is not connected to a column");
+    	}else if(tokenStr.equals("PRIMARY")) {
+    		readPrimaryKey();
+    	}else if(tokenStr.equals("UNIQUE")) {
+    		readUniqueKey();
     	}
     	
+    	
+    	
+    }
+
+    private void readPrimaryKey() throws Exception {
+    	String tokenStr = scanner.currentToken.tokenStr;
     	checkTokenStr("PRIMARY", false);
     	checkTokenStr("KEY", true);
     	checkTokenStr("(", true);
@@ -108,6 +119,33 @@ public class CreateTableOperation extends Operation {
     	
     	if(scanner.getNext().equals(",")) {
     		scanner.getNext();
+    	}
+    }
+    
+    private void readUniqueKey() throws Exception {
+    	String tokenStr = scanner.currentToken.tokenStr;
+    	checkTokenStr("UNIQUE", false);
+    	checkTokenStr("(", true);
+    	
+    	tokenStr = scanner.getNext();
+    	
+    	if(tokenStr.equals(")")) {
+    		parser.error("Expected column name for UNIQUE key");
+    	}
+    	
+    	while(!scanner.currentToken.tokenStr.equals(")")) {
+    		addUniqueKey();
+    	}
+    	scanner.getNext();
+    }
+    
+    private void addUniqueKey() throws Exception {
+    	checkSubclassif(Subclassif.IDENTIFIER);
+    	MySQLColumn col = mySQLTable.getColumn(scanner.currentToken.tokenStr);
+    	mySQLTable.addUniqueKey(col.getName());
+    	
+    	if(scanner.getNext().equals(",")) {
+    		parser.error("composite UNIQUE constraints are not supported yet");
     	}
     }
     

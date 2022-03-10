@@ -74,7 +74,7 @@ public class MySQLTableTest {
 			table.addPrimaryKey("id");
 		});
 		
-		assertEquals("'id' doesn't exist in table 'Person'", exception.getMessage());
+		assertEquals("column 'id' isn't defined in table 'Person'", exception.getMessage());
 	}
 	
 	@Test
@@ -142,5 +142,40 @@ public class MySQLTableTest {
 		sb.append("\tid\n");
 		
 		return sb.toString();
+	}
+	
+	@Test
+	@DisplayName("addUniqueKey should add to uniqueKeys")
+	public void testAddUniqueKey() throws Exception{
+		MySQLTable table = new MySQLTable("color");
+		table.addColumn(new MySQLColumn("id", MySQLType.INT, 11));
+		table.addColumn(new MySQLColumn("name", MySQLType.VARCHAR, 255));
+		
+		table.addUniqueKey("name");
+		assertEquals(1, table.getUniqueKeyNames().size());
+		table.addUniqueKey("id");
+		assertEquals(2, table.getUniqueKeyNames().size());
+	}
+	
+	@Test
+	@DisplayName("addUniqueKey should throw Excpetion for nonexistent colName")
+	public void testNonexistentUniqueKey() throws Exception {
+		MySQLTable table = new MySQLTable("empty");
+		//TODO start making separate Exception types (ConstraintAlreadyExistsException)
+		assertThrows(Exception.class, ()->{
+			table.addUniqueKey("bad_id");
+		});
+	}
+	
+	@Test
+	@DisplayName("addUniqueKey should throw Exception for colName already uniqueKeys")
+	public void testExistentUniqueKey() throws Exception {
+		MySQLTable table = new MySQLTable("duo");
+		table.addColumn(new MySQLColumn("name", MySQLType.VARCHAR, 255));
+		table.addUniqueKey("name");
+		
+		assertThrows(Exception.class, () -> {
+			table.addUniqueKey("name");
+		});
 	}
 }

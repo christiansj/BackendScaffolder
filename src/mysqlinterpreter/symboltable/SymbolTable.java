@@ -19,7 +19,7 @@ public class SymbolTable {
     private void initTable(){
         final String[] OPERATION_STRINGS = {"CREATE", "ALTER", "UPDATE", "DROP", "RENAME", "REFERENCES"};
         final String[] ARTICLE_STRINGS = {"TABLE", "COLUMN", "KEY"};
-        final String[] KEY_TYPE_STRINGS = {"PRIMARY", "FOREIGN", "AUTO_INCREMENT"};
+        final String[] KEY_TYPE_STRINGS = {"PRIMARY", "FOREIGN", "AUTO_INCREMENT", "UNIQUE"};
 
         for (MySQLType mySQLType :  MySQLType.values()) {
             entryHashMap.put(mySQLType.name(), new STEntry(mySQLType.name(), Classif.CONTROL, Subclassif.DECLARE));

@@ -12,6 +12,7 @@ public class MySQLColumn {
 	
 	private boolean isNotNull = false;
 	private boolean isPrimaryKey = false;
+	private boolean isUnique = false;
 	
 	/**
 	 * Creates a <code>MySQLColumn</code> object.
@@ -34,6 +35,10 @@ public class MySQLColumn {
 		this.isPrimaryKey = isPrimaryKey;
 	}
 	
+	public void setIsUnique(boolean isUnique) {
+		this.isUnique = isUnique;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -48,5 +53,9 @@ public class MySQLColumn {
 	
 	public boolean isPrimaryKey() {
 		return isPrimaryKey;
+	}
+	
+	public boolean isUnique() {
+		return isUnique;
 	}
 }
